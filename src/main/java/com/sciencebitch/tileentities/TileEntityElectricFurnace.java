@@ -149,9 +149,8 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public void update() {
 
-		handleEnergy();
-
 		boolean isBurningBeforeUpdate = this.hasEnergy();
+		handleEnergy();
 		boolean updated = false;
 
 		if (this.hasEnergy()) {

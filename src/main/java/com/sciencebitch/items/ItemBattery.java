@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemBattery extends ItemBase implements IEnergyProvider {
 
-	public static final int MAX_ENERGY = 12801;
+	public static final int MAX_ENERGY = 200 * 4;
 
 	public ItemBattery(String name) {
 		super(name);
