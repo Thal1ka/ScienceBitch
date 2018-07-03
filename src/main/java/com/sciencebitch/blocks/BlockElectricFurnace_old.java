@@ -11,6 +11,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,18 +29,15 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockElectricFurnace extends BlockBase implements ITileEntityProvider {
+public class BlockElectricFurnace_old extends BlockBase implements ITileEntityProvider {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	private final boolean isBurning;
-	private static boolean keepInventory = false;
+	public static final PropertyBool BURNING = PropertyBool.create("burning");
 
-	public BlockElectricFurnace(String name, boolean burning) {
-
+	public BlockElectricFurnace_old(String name) {
 		super(name, Material.IRON);
-		this.isBurning = burning;
 		setSoundType(SoundType.METAL);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
 	}
 
 	@Override
@@ -86,20 +84,14 @@ public class BlockElectricFurnace extends BlockBase implements ITileEntityProvid
 	}
 
 	public static void setState(boolean active, World worldIn, BlockPos pos) {
-
-		IBlockState iblockstate = worldIn.getBlockState(pos);
+		IBlockState state = worldIn.getBlockState(pos);
 		TileEntity tileentity = worldIn.getTileEntity(pos);
-		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
 		}
-
-		keepInventory = false;
 
 		if (tileentity != null) {
 			tileentity.validate();
@@ -124,16 +116,8 @@ public class BlockElectricFurnace extends BlockBase implements ITileEntityProvid
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-
-		if (!keepInventory) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-
-			if (tileentity instanceof TileEntityElectricFurnace) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
-			}
-		}
-
+		TileEntityElectricFurnace tileentity = (TileEntityElectricFurnace) worldIn.getTileEntity(pos);
+		InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
 		super.breakBlock(worldIn, pos, state);
 	}
 
@@ -154,7 +138,7 @@ public class BlockElectricFurnace extends BlockBase implements ITileEntityProvid
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, new IProperty[] { BURNING, FACING });
 	}
 
 	@Override

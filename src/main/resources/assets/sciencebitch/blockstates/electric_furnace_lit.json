@@ -1,0 +1,9 @@
+{
+    "variants": 
+    {
+        "facing=north": { "model": "sciencebitch:electric_furnace_lit" },
+        "facing=east": { "model": "sciencebitch:electric_furnace_lit", "y": 90 },
+        "facing=south": { "model": "sciencebitch:electric_furnace_lit", "y": 180 },
+        "facing=west": { "model": "sciencebitch:electric_furnace_lit", "y": 270 }
+    }
+}

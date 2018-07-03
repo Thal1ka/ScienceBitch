@@ -1,13 +1,9 @@
 {
-    "variants":
+    "variants": 
     {
-        "burning=false, facing=north": { "model": "sciencebitch:electric_furnace" },
-        "burning=false, facing=east": { "model": "sciencebitch:electric_furnace", "y": 90 },
-        "burning=false, facing=south": { "model": "sciencebitch:electric_furnace", "y": 180 },
-        "burning=false, facing=west": { "model": "sciencebitch:electric_furnace", "y": 270 },
-        "burning=true, facing=north": { "model": "sciencebitch:electric_furnace_lit" },
-        "burning=true, facing=east": { "model": "sciencebitch:electric_furnace_lit", "y": 90 },
-        "burning=true, facing=south": { "model": "sciencebitch:electric_furnace_lit", "y": 180 },
-        "burning=true, facing=west": { "model": "sciencebitch:electric_furnace_lit", "y": 270 }
+        "facing=north": { "model": "sciencebitch:electric_furnace" },
+        "facing=east": { "model": "sciencebitch:electric_furnace", "y": 90 },
+        "facing=south": { "model": "sciencebitch:electric_furnace", "y": 180 },
+        "facing=west": { "model": "sciencebitch:electric_furnace", "y": 270 }
     }
 }

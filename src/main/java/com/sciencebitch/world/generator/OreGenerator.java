@@ -1,4 +1,4 @@
-package com.sciencebitch.mod;
+package com.sciencebitch.world.generator;
 
 import java.util.HashMap;
 import java.util.Map;

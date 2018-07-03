@@ -1,5 +1,6 @@
 package com.sciencebitch.mod;
 
+import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid = ScienceBitch.MODID, name = ScienceBitch.MODNAME, version = ScienceBitch.MODVERSION)
 public class ScienceBitch {
@@ -35,6 +37,8 @@ public class ScienceBitch {
 
 		ScienceBitch.proxy.initialize();
 		RecipeManager.initialize();
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 
 	@EventHandler

@@ -2,9 +2,9 @@
     "parent": "block/orientable",
     "textures":
     {
-        "particle": "sciencebitch:blocks/electric_furnace_front_off",
-        "up": "sciencebitch:blocks/electric_furnace_front_off",
-        "down": "sciencebitch:blocks/electric_furnace_front_off",
+        "particle": "sciencebitch:blocks/electric_furnace_front_on",
+        "up": "sciencebitch:blocks/electric_furnace_top",
+        "down": "sciencebitch:blocks/electric_furnace_top",
         "north": "sciencebitch:blocks/electric_furnace_front_on",
         "east": "sciencebitch:blocks/electric_furnace_side",
         "south": "sciencebitch:blocks/electric_furnace_side",

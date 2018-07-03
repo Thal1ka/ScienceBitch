@@ -1,4 +1,4 @@
-package com.sciencebitch.mod;
+package com.sciencebitch.mod.handlers;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.items.SB_Items;
@@ -24,6 +24,7 @@ public class RegistryHandler {
 	public static void onBlockRegister(RegistryEvent.Register<Block> e) {
 
 		e.getRegistry().registerAll(SB_Blocks.BLOCKS.toArray(new Block[0]));
+		TileEntityHandler.registerTileEntities();
 	}
 
 	@SubscribeEvent

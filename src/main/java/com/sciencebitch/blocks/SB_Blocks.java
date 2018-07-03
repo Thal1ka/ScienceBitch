@@ -24,7 +24,8 @@ public class SB_Blocks {
 	public static final Block LEMON_LEAVES_BLOCK = new BlockLeavesBase("lemon_leaves_block", SB_Items.COPPER_INGOT);
 
 	// MACHINES
-	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace");
+	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
+	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
 
 	// -------------------
 

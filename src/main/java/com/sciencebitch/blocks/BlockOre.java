@@ -1,6 +1,6 @@
 package com.sciencebitch.blocks;
 
-import com.sciencebitch.mod.OreGenerator;
+import com.sciencebitch.world.generator.OreGenerator;
 
 import net.minecraft.block.material.Material;
 

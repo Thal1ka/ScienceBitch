@@ -1,6 +1,6 @@
 package com.sciencebitch.proxy;
 
-import com.sciencebitch.mod.OreGenerator;
+import com.sciencebitch.world.generator.OreGenerator;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -12,7 +12,6 @@ public class CommonProxy {
 	}
 
 	public void registerItemRenderer(Item item, int meta, String id) {
-
 	}
 
 }
