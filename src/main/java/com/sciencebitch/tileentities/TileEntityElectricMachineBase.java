@@ -2,6 +2,7 @@ package com.sciencebitch.tileentities;
 
 import com.sciencebitch.interfaces.IEnergyProvider;
 import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.util.EnergyHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -10,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public abstract class TileEntityElectricMachineBase extends TileEntity implements IInventory, ITickable, IEnergySink {
 
@@ -21,7 +24,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	private int maxEnergyInput = 20;
 	private final int energyCapacity;
 
-	protected int energyStored;
+	protected int storedEnergy;
 
 	public TileEntityElectricMachineBase(String name, int energyCapacity) {
 
@@ -56,30 +59,72 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 
 	@Override
 	public int getCapacityLeft(ItemStack stack) {
-		return this.energyCapacity - this.energyStored;
+		return this.energyCapacity - this.storedEnergy;
 	}
 
 	@Override
 	public int injectEnergy(IEnergyProvider provider, int amount, ItemStack stack) {
 
 		amount = Math.min(amount, getCapacityLeft(stack));
-		energyStored += amount;
+		storedEnergy += amount;
 
 		return amount;
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 
+		boolean isWorkingBeforeUpdate = hasEnergy();
+		boolean updated = false;
+		boolean canSmelt = canSmelt();
+
+		if (hasEnergy()) {
+			this.storedEnergy--;
+		}
+
+		if (canSmelt) {
+			handleEnergy();
+		}
+
+		if (world.isRemote) return;
+
+		if (canSmelt && hasEnergy()) {
+			doWork();
+		}
+
+		if (!canSmelt || !hasEnergy()) {
+			onWorkCanceled();
+		}
+
+		boolean isWorkingAfterUpdate = hasEnergy();
+
+		if (isWorkingBeforeUpdate != isWorkingAfterUpdate) {
+			updateState(isWorkingAfterUpdate, this.world, this.pos);
+			updated = true;
+		}
+
+		if (updated) {
+			this.markDirty();
+		}
+	}
+
+	protected boolean hasEnergy() {
+		return storedEnergy > 0;
+	}
+
+	private void handleEnergy() {
+
+		ItemStack fuelStack = getFuelStack();
+		if (fuelStack.isEmpty()) return;
+
+		EnergyHelper.transferEnergy((IEnergyProvider) fuelStack.getItem(), fuelStack, this);
 	}
 
 	@Override
 	public boolean isEmpty() {
 
 		for (ItemStack stack : inventory) {
-			if (!stack.isEmpty())
-				return false;
+			if (!stack.isEmpty()) return false;
 		}
 
 		return true;
@@ -121,25 +166,18 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	}
 
 	@Override
-	public int getField(int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public int getFieldCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public void clear() {
 		inventory.clear();
 	}
+
+	protected abstract boolean canSmelt();
+
+	protected abstract ItemStack getFuelStack();
+
+	protected abstract void doWork();
+
+	protected abstract void onWorkCanceled();
+
+	protected abstract void updateState(boolean isWorking, World world, BlockPos pos);
 
 }
