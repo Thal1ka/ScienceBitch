@@ -1,9 +1,9 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.BlockElectricFurnace;
+import com.sciencebitch.interfaces.IEnergyProvider;
+import com.sciencebitch.interfaces.IEnergySink;
 import com.sciencebitch.util.EnergyHelper;
-import com.sciencebitch.util.IEnergyProvider;
-import com.sciencebitch.util.IEnergySink;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

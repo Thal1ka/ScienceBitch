@@ -1,7 +1,10 @@
 package com.sciencebitch.mod;
 
+import com.sciencebitch.containers.ContainerElectricFurnace;
+import com.sciencebitch.gui.GuiElectricFurnace;
 import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.proxy.CommonProxy;
+import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -25,11 +28,14 @@ public class ScienceBitch {
 	@Instance
 	public static ScienceBitch instance;
 
+	private static final GuiHandler guiHandler = new GuiHandler();
+
 	@SidedProxy(clientSide = ScienceBitch.CLIENT_PROXY_CLASS, serverSide = ScienceBitch.COMMON_PROXY_CLASS)
 	public static CommonProxy proxy;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
+		// MachineCreator.initialize();
 	}
 
 	@EventHandler
@@ -38,11 +44,20 @@ public class ScienceBitch {
 		ScienceBitch.proxy.initialize();
 		RecipeManager.initialize();
 
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		registerGUIs();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, getGuiHandler());
+	}
+
+	private void registerGUIs() {
+
+		guiHandler.registerGui((i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
 	}
 
+	public static GuiHandler getGuiHandler() {
+		return guiHandler;
+	}
 }

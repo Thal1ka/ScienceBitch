@@ -23,7 +23,7 @@ public class RecipeManager {
 
 		GameRegistry.addShapedRecipe(new ResourceLocation("copperBlock"), null, new ItemStack(SB_Blocks.COPPER_BLOCK), new String[] { "III", "III", "III" }, 'I', SB_Items.COPPER_INGOT);
 		GameRegistry.addShapedRecipe(new ResourceLocation("tinBlock"), null, new ItemStack(SB_Blocks.TIN_BLOCK), new String[] { "TTT", "TTT", "TTT" }, 'T', SB_Items.TIN_INGOT);
-		GameRegistry.addShapedRecipe(new ResourceLocation("battery"), null, new ItemStack(SB_Items.BATTERY, 3), new String[] { "TCT", "TJT", "TTT" }, 'T', SB_Items.TIN_INGOT, 'J', SB_Items.APPLE_JUICE_BOTTLE, 'C', SB_Items.COPPER_INGOT);
+		GameRegistry.addShapedRecipe(new ResourceLocation("battery"), null, new ItemStack(SB_Items.BATTERY), new String[] { "TCT", "TJT", "TTT" }, 'T', SB_Items.TIN_INGOT, 'J', SB_Items.APPLE_JUICE_BOTTLE, 'C', SB_Items.COPPER_INGOT);
 
 		GameRegistry.addShapelessRecipe(new ResourceLocation("copperBlockToIngot"), null, new ItemStack(SB_Items.COPPER_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.COPPER_BLOCK));
 		GameRegistry.addShapelessRecipe(new ResourceLocation("tinBlockToIngot"), null, new ItemStack(SB_Items.TIN_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.TIN_BLOCK));

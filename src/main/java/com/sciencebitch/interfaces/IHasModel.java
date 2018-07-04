@@ -1,4 +1,4 @@
-package com.sciencebitch.util;
+package com.sciencebitch.interfaces;
 
 public interface IHasModel {
 

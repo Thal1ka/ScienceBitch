@@ -1,8 +1,8 @@
 package com.sciencebitch.blocks;
 
+import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.util.IHasModel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

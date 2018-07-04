@@ -11,7 +11,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -99,19 +98,25 @@ public class ContainerElectricFurnace extends Container {
 
 			if (index == TileEntityElectricFurnace.ID_OUTPUTFIELD) {
 
-				if (!this.mergeItemStack(stackInSlot, 3, 39, true)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 3, 39, true))
+					return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityElectricFurnace.ID_FUELFIELD && index != TileEntityElectricFurnace.ID_INPUTFIELD) {
 				// From inventory to furnace
 				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
-				} else if (TileEntityFurnace.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
+						return ItemStack.EMPTY;
+				} else if (TileEntityElectricFurnace.isItemFuel(stackInSlot)) {
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
+						return ItemStack.EMPTY;
 				} else if (index >= 3 && index < 30) {
-					if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return ItemStack.EMPTY;
-				} else if (index >= 30 && index < 39 && !this.mergeItemStack(stackInSlot, 3, 30, false)) return ItemStack.EMPTY;
-			} else if (!this.mergeItemStack(stackInSlot, 3, 39, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 30, 39, false))
+						return ItemStack.EMPTY;
+				} else if (index >= 30 && index < 39 && !this.mergeItemStack(stackInSlot, 3, 30, false))
+					return ItemStack.EMPTY;
+			} else if (!this.mergeItemStack(stackInSlot, 3, 39, false))
+				return ItemStack.EMPTY;
 
 			if (stackInSlot.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
@@ -119,7 +124,8 @@ public class ContainerElectricFurnace extends Container {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount())
+				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

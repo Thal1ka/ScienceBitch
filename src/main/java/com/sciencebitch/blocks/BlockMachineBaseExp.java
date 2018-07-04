@@ -1,19 +1,27 @@
-
 package com.sciencebitch.blocks;
 
 import java.util.Random;
 
+import com.sciencebitch.interfaces.IHasModel;
+import com.sciencebitch.interfaces.ITileEntityCreator;
+import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -24,30 +32,60 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockElectricFurnace extends BlockMachineBase implements ITileEntityProvider {
+public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntityProvider {
 
-	private static boolean keepInventory = false;
+	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	public BlockElectricFurnace(String name, boolean isBurning) {
+	private static BlockMachineBaseExp BLOCK_ACTIVE;
+	private static BlockMachineBaseExp BLOCK_IDLE;
 
-		super(name, isBurning);
+	private static boolean keepInventory;
+	private final ITileEntityCreator tileEntityCreator;
+	private final boolean isBurning;
+	private final int guiId;
+
+	public BlockMachineBaseExp(String name, boolean isBurning, ITileEntityCreator tileEntityCreator, int guiId) {
+
+		super(Material.IRON);
+		setSoundType(SoundType.METAL);
+
+		this.tileEntityCreator = tileEntityCreator;
+		this.isBurning = isBurning;
+		this.guiId = guiId;
+		setUnlocalizedName(name);
+		setRegistryName(name);
+
+		if (!isBurning) {
+			BLOCK_IDLE = this;
+			SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(name));
+		} else {
+			BLOCK_ACTIVE = this;
+		}
+	}
+
+	@Override
+	public void registerModel() {
+
+		if (!isBurning) {
+			ScienceBitch.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
+		}
 	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(SB_Blocks.ELECTRIC_FURNACE);
+		return Item.getItemFromBlock(BLOCK_IDLE);
 	}
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(SB_Blocks.ELECTRIC_FURNACE);
+		return new ItemStack(BLOCK_IDLE);
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		if (!worldIn.isRemote) {
-			playerIn.openGui(ScienceBitch.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(ScienceBitch.instance, this.guiId, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;
@@ -83,11 +121,11 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, BLOCK_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, BLOCK_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, BLOCK_IDLE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, BLOCK_IDLE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 
 		keepInventory = false;
@@ -100,16 +138,19 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityElectricFurnace();
+
+		return this.tileEntityCreator.createNewTileEntity(worldIn, meta);
 	}
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+
 		worldIn.setBlockState(pos, this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 
@@ -119,10 +160,8 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 		if (!keepInventory) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityElectricFurnace) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
-				worldIn.updateComparatorOutputLevel(pos, this);
-			}
+			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
+			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 
 		super.breakBlock(worldIn, pos, state);
@@ -161,4 +200,5 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
 	}
+
 }

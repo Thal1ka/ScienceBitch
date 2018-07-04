@@ -1,5 +1,8 @@
 package com.sciencebitch.util;
 
+import com.sciencebitch.interfaces.IEnergyProvider;
+import com.sciencebitch.interfaces.IEnergySink;
+
 import net.minecraft.item.ItemStack;
 
 public class EnergyHelper {

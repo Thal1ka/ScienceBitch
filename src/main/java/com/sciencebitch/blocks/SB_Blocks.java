@@ -27,9 +27,16 @@ public class SB_Blocks {
 	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
 	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
 
+//	public static final Block ELECTRIC_FURNACE = MachineCreator.getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
+//	public static final Block ELECTRIC_FURNACE_ACTIVE = MachineCreator.getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
+
 	// -------------------
 
 	public static void add(Block block) {
 		SB_Blocks.BLOCKS.add(block);
+	}
+
+	private static Block getBlock() {
+		return null;
 	}
 }

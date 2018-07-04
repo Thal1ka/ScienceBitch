@@ -1,7 +1,7 @@
 package com.sciencebitch.items;
 
+import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.util.IHasModel;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
