@@ -8,14 +8,12 @@ import com.sciencebitch.util.IEnergySink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -65,7 +63,8 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public boolean isEmpty() {
 		for (ItemStack stack : this.inventory) {
-			if (!stack.isEmpty()) return false;
+			if (!stack.isEmpty())
+				return false;
 		}
 		return true;
 	}
@@ -149,54 +148,46 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public void update() {
 
-		boolean isBurningBeforeUpdate = this.hasEnergy();
-		handleEnergy();
+		boolean isBurningBeforeUpdate = hasEnergy();
 		boolean updated = false;
+		boolean canSmelt = canSmelt();
 
-		if (this.hasEnergy()) {
+		if (hasEnergy()) {
 			this.storedEnergy--;
 		}
 
-		if (!this.world.isRemote) {
-			ItemStack stack = getFuelStack();
+		if (canSmelt) {
+			handleEnergy();
+		}
 
-			if (this.hasEnergy() || !stack.isEmpty() && !getInputStack().isEmpty()) {
-				if (!this.hasEnergy() && this.canSmelt()) {
+		if (world.isRemote)
+			return;
 
-					if (this.hasEnergy()) {
-						updated = true;
+		if (canSmelt) {
 
-						if (!stack.isEmpty()) {
-							Item fuelItem = stack.getItem();
-							stack.shrink(1);
+			if (hasEnergy()) {
 
-							if (stack.isEmpty()) {
-								ItemStack fuelContainerItem = fuelItem.getContainerItem(stack);
-								this.inventory.set(ID_FUELFIELD, fuelContainerItem);
-							}
-						}
-					}
-				}
-				if (this.hasEnergy() && this.canSmelt()) {
-					++this.cookTime;
-
-					if (this.cookTime == this.totalCookTime) {
-						this.cookTime = 0;
-						this.totalCookTime = this.getCookTime(getInputStack());
-						this.smeltItem();
-						updated = true;
-					}
-				} else {
-					this.cookTime = 0;
-				}
-			} else if (!this.hasEnergy() && this.cookTime > 0) {
-				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
-			}
-			if (isBurningBeforeUpdate != this.hasEnergy()) {
 				updated = true;
-				BlockElectricFurnace.setState(this.hasEnergy(), this.world, this.pos);
+
+				cookTime++;
+				if (cookTime == totalCookTime) {
+					smeltItem();
+					cookTime = 0;
+				}
 			}
 		}
+
+		if (!canSmelt || !hasEnergy()) {
+			cookTime = 0;
+		}
+
+		boolean isBurningAfterUpdate = hasEnergy();
+
+		if (isBurningBeforeUpdate != isBurningAfterUpdate) {
+			BlockElectricFurnace.setState(isBurningAfterUpdate, this.world, this.pos);
+			updated = true;
+		}
+
 		if (updated) {
 			this.markDirty();
 		}
@@ -205,7 +196,8 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	private void handleEnergy() {
 
 		ItemStack fuelStack = getFuelStack();
-		if (fuelStack == null || fuelStack.isEmpty()) return;
+		if (fuelStack == null || fuelStack.isEmpty())
+			return;
 
 		EnergyHelper.transferEnergy((IEnergyProvider) fuelStack.getItem(), fuelStack, this);
 	}
@@ -216,15 +208,19 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 
 	private boolean canSmelt() {
 
-		if (getInputStack().isEmpty()) return false;
+		if (getInputStack().isEmpty())
+			return false;
 
 		ItemStack result = getSmeltingResult(getInputStack());
 
-		if (result.isEmpty()) return false;
+		if (result.isEmpty())
+			return false;
 
 		ItemStack output = getOutputStack();
-		if (output.isEmpty()) return true;
-		if (!output.isItemEqual(result)) return false;
+		if (output.isEmpty())
+			return true;
+		if (!output.isItemEqual(result))
+			return false;
 		int res = output.getCount() + result.getCount();
 		return res <= getInventoryStackLimit() && res <= output.getMaxStackSize();
 	}
@@ -271,8 +267,10 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index != ID_FUELFIELD) return true;
+		if (index == ID_OUTPUTFIELD)
+			return false;
+		if (index != ID_FUELFIELD)
+			return true;
 
 		return isItemFuel(stack);
 	}
