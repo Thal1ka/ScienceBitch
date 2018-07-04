@@ -63,8 +63,7 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public boolean isEmpty() {
 		for (ItemStack stack : this.inventory) {
-			if (!stack.isEmpty())
-				return false;
+			if (!stack.isEmpty()) return false;
 		}
 		return true;
 	}
@@ -160,14 +159,11 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 			handleEnergy();
 		}
 
-		if (world.isRemote)
-			return;
+		if (world.isRemote) return;
 
 		if (canSmelt) {
 
 			if (hasEnergy()) {
-
-				updated = true;
 
 				cookTime++;
 				if (cookTime == totalCookTime) {
@@ -196,8 +192,7 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	private void handleEnergy() {
 
 		ItemStack fuelStack = getFuelStack();
-		if (fuelStack == null || fuelStack.isEmpty())
-			return;
+		if (fuelStack == null || fuelStack.isEmpty()) return;
 
 		EnergyHelper.transferEnergy((IEnergyProvider) fuelStack.getItem(), fuelStack, this);
 	}
@@ -208,19 +203,15 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 
 	private boolean canSmelt() {
 
-		if (getInputStack().isEmpty())
-			return false;
+		if (getInputStack().isEmpty()) return false;
 
 		ItemStack result = getSmeltingResult(getInputStack());
 
-		if (result.isEmpty())
-			return false;
+		if (result.isEmpty()) return false;
 
 		ItemStack output = getOutputStack();
-		if (output.isEmpty())
-			return true;
-		if (!output.isItemEqual(result))
-			return false;
+		if (output.isEmpty()) return true;
+		if (!output.isItemEqual(result)) return false;
 		int res = output.getCount() + result.getCount();
 		return res <= getInventoryStackLimit() && res <= output.getMaxStackSize();
 	}
@@ -267,10 +258,8 @@ public class TileEntityElectricFurnace extends TileEntity implements IInventory,
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD)
-			return false;
-		if (index != ID_FUELFIELD)
-			return true;
+		if (index == ID_OUTPUTFIELD) return false;
+		if (index != ID_FUELFIELD) return true;
 
 		return isItemFuel(stack);
 	}
