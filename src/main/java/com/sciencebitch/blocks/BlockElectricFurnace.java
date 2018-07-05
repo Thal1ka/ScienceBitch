@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.TileEntityElectricFurnaceNew;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
@@ -84,9 +85,7 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 
 		if (active) {
 			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 
@@ -100,7 +99,7 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityElectricFurnace();
+		return new TileEntityElectricFurnaceNew();
 	}
 
 	@Override

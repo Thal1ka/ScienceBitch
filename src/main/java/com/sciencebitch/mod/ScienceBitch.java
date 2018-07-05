@@ -4,7 +4,7 @@ import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.gui.GuiElectricFurnace;
 import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.proxy.CommonProxy;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.TileEntityElectricFurnaceNew;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -50,7 +50,7 @@ public class ScienceBitch {
 
 	private void registerGUIs() {
 
-		guiHandler.registerGui((i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
+		guiHandler.registerGui((i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnaceNew) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnaceNew) t));
 	}
 
 	@EventHandler

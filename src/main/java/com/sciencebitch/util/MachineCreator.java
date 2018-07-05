@@ -12,6 +12,7 @@ import com.sciencebitch.interfaces.IGuiProvider;
 import com.sciencebitch.interfaces.ITileEntityCreator;
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.TileEntityElectricFurnaceNew;
 
 import net.minecraft.block.Block;
 
@@ -24,7 +25,7 @@ public class MachineCreator {
 
 	private MachineCreator() {
 
-		create(ELECTRIC_FURNACE, (w, m) -> new TileEntityElectricFurnace(), (i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
+		create(ELECTRIC_FURNACE, (w, m) -> new TileEntityElectricFurnace(), (i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnaceNew) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnaceNew) t));
 
 	}
 

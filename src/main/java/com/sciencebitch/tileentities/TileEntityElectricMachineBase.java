@@ -12,6 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public abstract class TileEntityElectricMachineBase extends TileEntity implements IInventory, ITickable, IEnergySink {
@@ -19,7 +22,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	private final String name;
 	private String customName;
 
-	private NonNullList<ItemStack> inventory;
+	protected NonNullList<ItemStack> inventory;
 
 	private int maxEnergyInput = 20;
 	private final int energyCapacity;
@@ -53,6 +56,11 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	}
 
 	@Override
+	public ITextComponent getDisplayName() {
+		return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName());
+	}
+
+	@Override
 	public int getMaxEnergyInput() {
 		return this.maxEnergyInput;
 	}
@@ -76,7 +84,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 
 		boolean isWorkingBeforeUpdate = hasEnergy();
 		boolean updated = false;
-		boolean canSmelt = canSmelt();
+		boolean canSmelt = canWork();
 
 		if (hasEnergy()) {
 			this.storedEnergy--;
@@ -170,9 +178,13 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 		inventory.clear();
 	}
 
-	protected abstract boolean canSmelt();
+	public static boolean isItemFuel(ItemStack stack) {
+		return (stack.getItem() instanceof IEnergyProvider);
+	}
 
 	protected abstract ItemStack getFuelStack();
+
+	protected abstract boolean canWork();
 
 	protected abstract void doWork();
 
