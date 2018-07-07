@@ -51,6 +51,7 @@ public class MachineCreator {
 		return machines.get(name);
 	}
 
+	@SuppressWarnings("unused")
 	public List<Block> getBlocksToRegister() {
 
 		if (true)
