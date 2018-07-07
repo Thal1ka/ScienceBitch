@@ -1,18 +1,14 @@
 
-package com.sciencebitch.blocks;
+package com.sciencebitch.blocks.machines;
 
 import java.util.Random;
 
+import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,15 +25,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockElectricFurnace_old extends BlockBase implements ITileEntityProvider {
+public class BlockElectricFurnace extends BlockMachineBase implements ITileEntityProvider {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final PropertyBool BURNING = PropertyBool.create("burning");
+	private static boolean keepInventory = false;
 
-	public BlockElectricFurnace_old(String name) {
-		super(name, Material.IRON);
-		setSoundType(SoundType.METAL);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
+	public BlockElectricFurnace(String name, boolean isBurning) {
+
+		super(name, isBurning);
 	}
 
 	@Override
@@ -84,14 +78,18 @@ public class BlockElectricFurnace_old extends BlockBase implements ITileEntityPr
 	}
 
 	public static void setState(boolean active, World worldIn, BlockPos pos) {
-		IBlockState state = worldIn.getBlockState(pos);
+
+		IBlockState iblockstate = worldIn.getBlockState(pos);
 		TileEntity tileentity = worldIn.getTileEntity(pos);
+		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
+
+		keepInventory = false;
 
 		if (tileentity != null) {
 			tileentity.validate();
@@ -116,8 +114,16 @@ public class BlockElectricFurnace_old extends BlockBase implements ITileEntityPr
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntityElectricFurnace tileentity = (TileEntityElectricFurnace) worldIn.getTileEntity(pos);
-		InventoryHelper.dropInventoryItems(worldIn, pos, tileentity);
+
+		if (!keepInventory) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+
+			if (tileentity instanceof TileEntityElectricFurnace) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
+		}
+
 		super.breakBlock(worldIn, pos, state);
 	}
 
@@ -138,7 +144,7 @@ public class BlockElectricFurnace_old extends BlockBase implements ITileEntityPr
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { BURNING, FACING });
+		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 
 	@Override
@@ -154,5 +160,4 @@ public class BlockElectricFurnace_old extends BlockBase implements ITileEntityPr
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
 	}
-
 }

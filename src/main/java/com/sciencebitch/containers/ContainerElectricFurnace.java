@@ -2,7 +2,7 @@ package com.sciencebitch.containers;
 
 import com.sciencebitch.containers.slots.SlotElectricFuel;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
-import com.sciencebitch.tileentities.TileEntityElectricFurnaceNew;
+import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,10 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerElectricFurnace extends Container {
 
-	private final TileEntityElectricFurnaceNew tileEntity;
+	private final TileEntityElectricFurnace tileEntity;
 	private int cookTime, totalCookTime, burnTime, currentBurnTime;
 
-	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnaceNew tileEntity) {
+	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
 
 		this.tileEntity = tileEntity;
 
@@ -97,16 +97,16 @@ public class ContainerElectricFurnace extends Container {
 			ItemStack stackInSlot = slot.getStack();
 			stackCopy = stackInSlot.copy();
 
-			if (index == TileEntityElectricFurnaceNew.ID_OUTPUTFIELD) {
+			if (index == TileEntityElectricFurnace.ID_OUTPUTFIELD) {
 
 				if (!this.mergeItemStack(stackInSlot, 3, 39, true)) return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
-			} else if (index != TileEntityElectricFurnace.ID_FUELFIELD && index != TileEntityElectricFurnaceNew.ID_INPUTFIELD) {
+			} else if (index != TileEntityElectricFurnace.ID_FUELFIELD && index != TileEntityElectricFurnace.ID_INPUTFIELD) {
 				// From inventory to furnace
 				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
 					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
-				} else if (TileEntityElectricFurnaceNew.isItemFuel(stackInSlot)) {
+				} else if (TileEntityElectricFurnace.isItemFuel(stackInSlot)) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
 				} else if (index >= 3 && index < 30) {
 					if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return ItemStack.EMPTY;

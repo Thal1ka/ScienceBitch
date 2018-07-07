@@ -1,4 +1,4 @@
-package com.sciencebitch.blocks;
+package com.sciencebitch.blocks.machines;
 
 import java.util.Random;
 
@@ -122,9 +122,7 @@ public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntity
 
 		if (active) {
 			worldIn.setBlockState(pos, BLOCK_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-			worldIn.setBlockState(pos, BLOCK_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, BLOCK_IDLE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 			worldIn.setBlockState(pos, BLOCK_IDLE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 

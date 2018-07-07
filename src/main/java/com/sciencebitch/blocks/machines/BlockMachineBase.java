@@ -1,5 +1,6 @@
-package com.sciencebitch.blocks;
+package com.sciencebitch.blocks.machines;
 
+import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;

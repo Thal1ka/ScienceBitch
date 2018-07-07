@@ -94,7 +94,8 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 			handleEnergy();
 		}
 
-		if (world.isRemote) return;
+		if (world.isRemote)
+			return;
 
 		if (canSmelt && hasEnergy()) {
 			doWork();
@@ -123,7 +124,8 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	private void handleEnergy() {
 
 		ItemStack fuelStack = getFuelStack();
-		if (fuelStack.isEmpty()) return;
+		if (fuelStack.isEmpty())
+			return;
 
 		EnergyHelper.transferEnergy((IEnergyProvider) fuelStack.getItem(), fuelStack, this);
 	}
@@ -132,7 +134,8 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	public boolean isEmpty() {
 
 		for (ItemStack stack : inventory) {
-			if (!stack.isEmpty()) return false;
+			if (!stack.isEmpty())
+				return false;
 		}
 
 		return true;

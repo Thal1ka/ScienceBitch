@@ -2,7 +2,7 @@ package com.sciencebitch.gui;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.tileentities.TileEntityElectricFurnaceNew;
+import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,9 +13,9 @@ public class GuiElectricFurnace extends GuiContainer {
 
 	private static final ResourceLocation TEXTURES = new ResourceLocation(ScienceBitch.MODID + ":textures/gui/container/electric_furnace.png");
 	private final InventoryPlayer playerInventory;
-	private final TileEntityElectricFurnaceNew tileEntity;
+	private final TileEntityElectricFurnace tileEntity;
 
-	public GuiElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnaceNew tileEntity) {
+	public GuiElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
 
 		super(new ContainerElectricFurnace(playerInventory, tileEntity));
 
@@ -30,7 +30,7 @@ public class GuiElectricFurnace extends GuiContainer {
 		this.mc.getTextureManager().bindTexture(TEXTURES);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		if (TileEntityElectricFurnaceNew.isWorking(tileEntity)) {
+		if (TileEntityElectricFurnace.isWorking(tileEntity)) {
 
 			int burnScale = getBurnLeftScaled(13);
 			int mirrorBurn = 12 - burnScale;

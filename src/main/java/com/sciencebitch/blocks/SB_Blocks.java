@@ -3,7 +3,7 @@ package com.sciencebitch.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sciencebitch.items.SB_Items;
+import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,14 +21,14 @@ public class SB_Blocks {
 	public static final Block TIN_BLOCK = new BlockBase("tin_block", Material.IRON).setHardness(3.5F).setResistance(8.0F);
 
 	// PLANTS
-	public static final Block LEMON_LEAVES_BLOCK = new BlockLeavesBase("lemon_leaves_block", SB_Items.COPPER_INGOT);
+//	public static final Block LEMON_LEAVES_BLOCK = new BlockLeavesBase("lemon_leaves_block", SB_Items.COPPER_INGOT);
 
 	// MACHINES
 	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
 	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
 
-//	public static final Block ELECTRIC_FURNACE = MachineCreator.getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
-//	public static final Block ELECTRIC_FURNACE_ACTIVE = MachineCreator.getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
+//	public static final Block ELECTRIC_FURNACE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
+//	public static final Block ELECTRIC_FURNACE_ACTIVE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
 
 	// -------------------
 

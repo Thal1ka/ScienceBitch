@@ -1,6 +1,7 @@
 package com.sciencebitch.mod.handlers;
 
 import com.sciencebitch.blocks.SB_Blocks;
+import com.sciencebitch.blocks.machines.MachineCreator;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 
@@ -23,8 +24,8 @@ public class RegistryHandler {
 	@SubscribeEvent
 	public static void onBlockRegister(RegistryEvent.Register<Block> e) {
 
-		// MachineCreator.registerAll();
 		e.getRegistry().registerAll(SB_Blocks.BLOCKS.toArray(new Block[0]));
+		e.getRegistry().registerAll(MachineCreator.instance().getBlocksToRegister().toArray(new Block[0]));
 		TileEntityHandler.registerTileEntities();
 	}
 
