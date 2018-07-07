@@ -12,11 +12,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerBase extends Container {
 
-	protected TileEntityElectricMachineBase tileEntity;
-	protected InventoryPlayer playerInventory;
+	protected final TileEntityElectricMachineBase tileEntity;
+	protected final InventoryPlayer playerInventory;
 
 	public ContainerBase(InventoryPlayer playerInventory, TileEntityElectricMachineBase tileEntity) {
 
+		this.playerInventory = playerInventory;
 		this.tileEntity = tileEntity;
 
 		// Playerinventory

@@ -17,12 +17,17 @@ import net.minecraft.block.Block;
 
 public class MachineCreator {
 
+	private final boolean disable = true;
+
 	private static MachineCreator instance;
 	private static final Map<String, Machine> machines = new HashMap<>();
 
 	public static final String ELECTRIC_FURNACE = "electric_furnace";
 
 	private MachineCreator() {
+
+		if (disable)
+			return;
 
 		create(ELECTRIC_FURNACE, (w, m) -> new TileEntityElectricFurnace(), (i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
 
@@ -51,11 +56,7 @@ public class MachineCreator {
 		return machines.get(name);
 	}
 
-	@SuppressWarnings("unused")
 	public List<Block> getBlocksToRegister() {
-
-		if (true)
-			return new ArrayList<>();
 
 		List<Block> blocks = new ArrayList<>();
 
