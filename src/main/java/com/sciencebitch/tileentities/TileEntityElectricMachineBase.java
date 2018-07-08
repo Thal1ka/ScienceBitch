@@ -23,7 +23,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	private final String name;
 	protected String customName;
 
-	protected NonNullList<ItemStack> inventory;
+	protected final NonNullList<ItemStack> inventory;
 
 	private int maxEnergyInput = 20;
 	private final int energyCapacity;

@@ -7,7 +7,6 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -193,11 +192,11 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	public void readData(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-		this.inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-		ItemStackHelper.loadAllItems(nbt, this.inventory);
+
 		this.storedEnergy = nbt.getInteger("BurnTime");
 		this.cookTime = nbt.getInteger("CookTime");
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
+		ItemStackHelper.loadAllItems(nbt, this.inventory);
 
 		if (nbt.hasKey("CustomName", 8)) {
 			this.customName = nbt.getString("CustomName");
@@ -208,6 +207,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	public NBTTagCompound writeData(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
+
 		nbt.setInteger("BurnTime", (short) this.storedEnergy);
 		nbt.setInteger("CookTime", (short) this.cookTime);
 		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
