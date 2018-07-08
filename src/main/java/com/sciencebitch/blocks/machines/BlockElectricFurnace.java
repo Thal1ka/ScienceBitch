@@ -153,6 +153,7 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 		if (facing.getAxis() == EnumFacing.Axis.Y) {
 			facing = EnumFacing.NORTH;
 		}
+
 		return this.getDefaultState().withProperty(FACING, facing);
 	}
 
