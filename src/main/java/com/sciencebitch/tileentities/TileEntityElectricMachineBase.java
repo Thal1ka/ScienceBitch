@@ -184,11 +184,15 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 
 	@Override
 	public final void readFromNBT(NBTTagCompound compound) {
+
+		super.readFromNBT(compound);
 		readData(compound);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+
+		super.writeToNBT(compound);
 		return writeData(compound);
 	}
 

@@ -59,7 +59,7 @@ public class GuiElectricFurnace extends GuiContainer {
 			currentBurnTime = 200;
 		}
 
-		return burnTime * pixels / currentBurnTime;
+		return (int) (burnTime * pixels / (double) currentBurnTime + 0.5);
 	}
 
 	private int getCookProgressScaled(int pixels) {
@@ -69,6 +69,6 @@ public class GuiElectricFurnace extends GuiContainer {
 
 		if (cookTime == 0 || totalCookTime == 0)
 			return 0;
-		return cookTime * pixels / totalCookTime;
+		return (int) (cookTime * pixels / (double) totalCookTime + 0.5);
 	}
 }

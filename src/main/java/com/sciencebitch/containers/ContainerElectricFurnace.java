@@ -5,23 +5,19 @@ import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerElectricFurnace extends Container {
+public class ContainerElectricFurnace extends ContainerBase {
 
 	private int cookTime, totalCookTime, burnTime, currentBurnTime;
-	private final TileEntityElectricFurnace tileEntity;
 
 	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
 
-		this.tileEntity = tileEntity;
+		super(playerInventory, tileEntity);
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
@@ -113,24 +109,5 @@ public class ContainerElectricFurnace extends Container {
 		}
 
 		return stackCopy;
-	}
-
-	@Override
-	public void addListener(IContainerListener listener) {
-
-		super.addListener(listener);
-		listener.sendAllWindowProperties(this, this.tileEntity);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int id, int data) {
-
-		this.tileEntity.setField(id, data);
-	}
-
-	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
-		return tileEntity.isUsableByPlayer(playerIn);
 	}
 }

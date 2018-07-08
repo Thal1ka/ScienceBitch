@@ -191,8 +191,6 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	public void readData(NBTTagCompound nbt) {
 
-		super.readFromNBT(nbt);
-
 		this.storedEnergy = nbt.getInteger("BurnTime");
 		this.cookTime = nbt.getInteger("CookTime");
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
@@ -205,8 +203,6 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 
 	@Override
 	public NBTTagCompound writeData(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
 
 		nbt.setInteger("BurnTime", (short) this.storedEnergy);
 		nbt.setInteger("CookTime", (short) this.cookTime);
