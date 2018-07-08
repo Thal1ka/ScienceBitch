@@ -3,8 +3,11 @@ package com.sciencebitch.tileentities;
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -54,8 +57,10 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD)
+			return false;
+		if (index == ID_FUELFIELD)
+			return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -117,15 +122,19 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty()) return false;
+		if (inputStack.isEmpty())
+			return false;
 
 		ItemStack smeltingResult = getSmeltingResult(inputStack);
-		if (smeltingResult.isEmpty()) return false;
+		if (smeltingResult.isEmpty())
+			return false;
 
 		ItemStack outputStack = getOutputStack();
-		if (outputStack.isEmpty()) return true;
+		if (outputStack.isEmpty())
+			return true;
 
-		if (!outputStack.isItemEqual(smeltingResult)) return false;
+		if (!outputStack.isItemEqual(smeltingResult))
+			return false;
 
 		int stackSize = outputStack.getCount() + smeltingResult.getCount();
 
@@ -155,16 +164,18 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 
 	private void smeltItem() {
 
-		ItemStack smeltingResult = getSmeltingResult(getInputStack());
-		ItemStack outputStack = getOutputStack();
+		if (canWork()) {
+			ItemStack smeltingResult = getSmeltingResult(getInputStack());
+			ItemStack outputStack = getOutputStack();
 
-		if (outputStack.isEmpty()) {
-			this.inventory.set(ID_OUTPUTFIELD, smeltingResult);
-		} else {
-			outputStack.grow(smeltingResult.getCount());
+			if (outputStack.isEmpty()) {
+				this.inventory.set(ID_OUTPUTFIELD, smeltingResult.copy());
+			} else {
+				outputStack.grow(smeltingResult.getCount());
+			}
+
+			getInputStack().shrink(1);
 		}
-
-		getInputStack().shrink(1);
 	}
 
 	@Override
@@ -176,5 +187,36 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@SideOnly(Side.CLIENT)
 	public static boolean isWorking(IInventory inventory) {
 		return inventory.getField(0) > 0;
+	}
+
+	@Override
+	public void readData(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+		this.inventory = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		ItemStackHelper.loadAllItems(nbt, this.inventory);
+		this.storedEnergy = nbt.getInteger("BurnTime");
+		this.cookTime = nbt.getInteger("CookTime");
+		this.totalCookTime = nbt.getInteger("CookTimeTotal");
+
+		if (nbt.hasKey("CustomName", 8)) {
+			this.customName = nbt.getString("CustomName");
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeData(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+		nbt.setInteger("BurnTime", (short) this.storedEnergy);
+		nbt.setInteger("CookTime", (short) this.cookTime);
+		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
+		ItemStackHelper.saveAllItems(nbt, this.inventory);
+
+		if (this.hasCustomName()) {
+			nbt.setString("CustomName", this.customName);
+		}
+
+		return nbt;
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
@@ -20,7 +21,7 @@ import net.minecraft.world.World;
 public abstract class TileEntityElectricMachineBase extends TileEntity implements IInventory, ITickable, IEnergySink {
 
 	private final String name;
-	private String customName;
+	protected String customName;
 
 	protected NonNullList<ItemStack> inventory;
 
@@ -80,28 +81,28 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	}
 
 	@Override
-	public void update() {
+	public final void update() {
 
 		boolean isWorkingBeforeUpdate = hasEnergy();
 		boolean updated = false;
-		boolean canSmelt = canWork();
+		boolean canWork = canWork();
 
 		if (hasEnergy()) {
 			this.storedEnergy--;
 		}
 
-		if (canSmelt) {
+		if (canWork) {
 			handleEnergy();
 		}
 
 		if (world.isRemote)
 			return;
 
-		if (canSmelt && hasEnergy()) {
+		if (canWork && hasEnergy()) {
 			doWork();
 		}
 
-		if (!canSmelt || !hasEnergy()) {
+		if (!canWork || !hasEnergy()) {
 			onWorkCanceled();
 		}
 
@@ -181,6 +182,16 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 		inventory.clear();
 	}
 
+	@Override
+	public final void readFromNBT(NBTTagCompound compound) {
+		readData(compound);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		return writeData(compound);
+	}
+
 	public static boolean isItemFuel(ItemStack stack) {
 		return (stack.getItem() instanceof IEnergyProvider);
 	}
@@ -194,5 +205,9 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	protected abstract void onWorkCanceled();
 
 	protected abstract void updateState(boolean isWorking, World world, BlockPos pos);
+
+	protected abstract void readData(NBTTagCompound nbt);
+
+	protected abstract NBTTagCompound writeData(NBTTagCompound nbt);
 
 }
