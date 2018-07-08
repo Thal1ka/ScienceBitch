@@ -5,23 +5,39 @@ import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerElectricFurnace extends ContainerBase {
+public class ContainerElectricFurnace extends Container {
 
 	private int cookTime, totalCookTime, burnTime, currentBurnTime;
+	private final TileEntityElectricFurnace tileEntity;
 
 	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
 
-		super(playerInventory, tileEntity);
+		this.tileEntity = tileEntity;
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 2, 116, 35));
+
+		// Playerinventory
+		for (int row = 0; row < 3; row++) {
+			for (int column = 0; column < 9; column++) {
+				this.addSlotToContainer(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, 84 + row * 18));
+			}
+		}
+
+		// Single row of playerinventory
+		for (int field = 0; field < 9; field++) {
+			this.addSlotToContainer(new Slot(playerInventory, field, 8 + field * 18, 142));
+		}
 	}
 
 	@Override
@@ -97,5 +113,24 @@ public class ContainerElectricFurnace extends ContainerBase {
 		}
 
 		return stackCopy;
+	}
+
+	@Override
+	public void addListener(IContainerListener listener) {
+
+		super.addListener(listener);
+		listener.sendAllWindowProperties(this, this.tileEntity);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int id, int data) {
+
+		this.tileEntity.setField(id, data);
+	}
+
+	@Override
+	public boolean canInteractWith(EntityPlayer playerIn) {
+		return tileEntity.isUsableByPlayer(playerIn);
 	}
 }
