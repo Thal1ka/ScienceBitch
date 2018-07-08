@@ -32,9 +32,9 @@ public class GuiElectricFurnace extends GuiContainer {
 
 		if (TileEntityElectricFurnace.isWorking(tileEntity)) {
 
-			int burnScale = getBurnLeftScaled(13);
-			int mirrorBurn = 12 - burnScale;
-			this.drawTexturedModalRect(this.guiLeft + 57, this.guiTop + 37 + mirrorBurn, 176, mirrorBurn, 14, burnScale);
+			int burnScale = getEnergyLeftScaled(54);
+			int mirrorBurn = 54 - burnScale;
+			this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorBurn, 176, mirrorBurn + 31, 21, burnScale);
 		}
 
 		int cookScale = this.getCookProgressScaled(24);
@@ -50,7 +50,7 @@ public class GuiElectricFurnace extends GuiContainer {
 		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 122, this.ySize - 94, 0x404040);
 	}
 
-	private int getBurnLeftScaled(int pixels) {
+	private int getEnergyLeftScaled(int pixels) {
 
 		int currentBurnTime = this.tileEntity.getField(1);
 		int burnTime = this.tileEntity.getField(0);
@@ -67,7 +67,8 @@ public class GuiElectricFurnace extends GuiContainer {
 		int cookTime = this.tileEntity.getField(2);
 		int totalCookTime = this.tileEntity.getField(3);
 
-		if (cookTime == 0 || totalCookTime == 0) return 0;
+		if (cookTime == 0 || totalCookTime == 0)
+			return 0;
 		return cookTime * pixels / totalCookTime;
 	}
 }
