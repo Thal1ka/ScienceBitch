@@ -17,6 +17,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
@@ -36,8 +37,7 @@ public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntity
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	private static BlockMachineBaseExp BLOCK_ACTIVE;
-	private static BlockMachineBaseExp BLOCK_IDLE;
+	private static String machineName;
 
 	private static boolean keepInventory;
 	private final ITileEntityCreator tileEntityCreator;
@@ -49,6 +49,8 @@ public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntity
 		super(Material.IRON);
 		setSoundType(SoundType.METAL);
 
+		this.machineName = name;
+
 		this.tileEntityCreator = tileEntityCreator;
 		this.isBurning = isBurning;
 		this.guiId = guiId;
@@ -56,29 +58,30 @@ public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntity
 		setRegistryName(name);
 
 		if (!isBurning) {
-			BLOCK_IDLE = this;
+			this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 			SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(name));
-		} else {
-			BLOCK_ACTIVE = this;
 		}
 	}
 
 	@Override
 	public void registerModel() {
 
-		if (!isBurning) {
-			ScienceBitch.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
-		}
+		ScienceBitch.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
+
 	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(BLOCK_IDLE);
+
+		Block idleBlock = MachineCreator.instance().getMachine(getUnlocalizedName()).getIdleBlock();
+		return Item.getItemFromBlock(idleBlock);
 	}
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(BLOCK_IDLE);
+
+		Block idleBlock = MachineCreator.instance().getMachine(getUnlocalizedName()).getIdleBlock();
+		return new ItemStack(idleBlock);
 	}
 
 	@Override
@@ -121,9 +124,11 @@ public class BlockMachineBaseExp extends Block implements IHasModel, ITileEntity
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, BLOCK_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			Block activeBlock = MachineCreator.instance().getMachine(machineName).getActiveBlock();
+			worldIn.setBlockState(pos, activeBlock.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, BLOCK_IDLE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			Block idleBlock = MachineCreator.instance().getMachine(machineName).getIdleBlock();
+			worldIn.setBlockState(pos, idleBlock.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 
 		keepInventory = false;
