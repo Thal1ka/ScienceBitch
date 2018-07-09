@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.blocks.plants.crops.BlockCropBase;
+import com.sciencebitch.items.SB_Items;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,7 +23,7 @@ public class SB_Blocks {
 	public static final Block TIN_BLOCK = new BlockBase("tin_block", Material.IRON).setHardness(3.5F).setResistance(8.0F);
 
 	// PLANTS
-//	public static final Block LEMON_LEAVES_BLOCK = new BlockLeavesBase("lemon_leaves_block", SB_Items.COPPER_INGOT);
+	public static final Block CROP_HOPS = new BlockCropBase("plant_hops", null, SB_Items.BATTERY, 7);
 
 	// MACHINES
 	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
