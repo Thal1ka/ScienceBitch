@@ -14,12 +14,12 @@ public class BlockOre extends BlockBase {
 	private final int veinSize;
 	private final int veinAmount;
 
-	public BlockOre(String name, Material material, int veinAmount, int veinSize) {
-		this(name, material, veinAmount, veinSize, 0, 64);
+	public BlockOre(String name, int veinAmount, int veinSize) {
+		this(name, veinAmount, veinSize, 0, 64);
 	}
 
-	public BlockOre(String name, Material material, int veinAmount, int veinSize, int minHeight, int maxHeight) {
-		super(name, material);
+	public BlockOre(String name, int veinAmount, int veinSize, int minHeight, int maxHeight) {
+		super(name, Material.ROCK);
 
 		if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
 			throw new IllegalArgumentException(String.format("Can not create ore with minHeight %d and maxHeight %d", minHeight, maxHeight));

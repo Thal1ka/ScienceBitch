@@ -2,6 +2,7 @@
 //Items
 item.copper_ingot.name=Copper Ingot
 item.tin_ingot.name=Tin Ingot
+item.natrium_chunk.name=Natrium Chunk
 item.apple_juice_bottle.name=Apple juice Bottle
 item.battery.name=Battery
 
@@ -10,6 +11,7 @@ tile.copper_ore_block.name=Copper Ore
 tile.copper_block.name=Block of Copper
 tile.tin_ore_block.name=Tin Ore 
 tile.tin_block.name=Block of Tin
+tile.natrium_ore_block.name=Natrium Ore
 tile.lemon_leaves_block.name=Lemon leaves
 
 //Machines

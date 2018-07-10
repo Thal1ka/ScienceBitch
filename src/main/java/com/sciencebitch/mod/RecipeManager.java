@@ -35,6 +35,7 @@ public class RecipeManager {
 
 		GameRegistry.addSmelting(SB_Blocks.COPPER_ORE_BLOCK, new ItemStack(SB_Items.COPPER_INGOT), 0.7F);
 		GameRegistry.addSmelting(SB_Blocks.TIN_ORE_BLOCK, new ItemStack(SB_Items.TIN_INGOT), 0.5F);
+		GameRegistry.addSmelting(SB_Blocks.NATRIUM_ORE_BLOCK, new ItemStack(SB_Items.NATRIUM_CHUNK), 0.25F);
 	}
 
 	private static Ingredient getIngredient(Block block) {
