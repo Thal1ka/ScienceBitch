@@ -7,15 +7,17 @@ import java.util.Map;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.gui.GuiElectricFurnace;
+import com.sciencebitch.interfaces.IBlockHandler;
 import com.sciencebitch.interfaces.IContainerProvider;
 import com.sciencebitch.interfaces.IGuiProvider;
 import com.sciencebitch.interfaces.ITileEntityCreator;
 import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.mod.handlers.RegistryHandler;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.block.Block;
 
-public class MachineCreator {
+public class MachineCreator implements IBlockHandler {
 
 	private final boolean disable = true;
 
@@ -37,6 +39,8 @@ public class MachineCreator {
 
 		if (instance == null) {
 			instance = new MachineCreator();
+
+			RegistryHandler.registerBlockHandler(instance);
 		}
 
 		return instance;
@@ -56,6 +60,7 @@ public class MachineCreator {
 		return machines.get(name);
 	}
 
+	@Override
 	public List<Block> getBlocksToRegister() {
 
 		List<Block> blocks = new ArrayList<>();
