@@ -23,10 +23,12 @@ public class RecipeManager {
 
 		GameRegistry.addShapedRecipe(new ResourceLocation("copperBlock"), null, new ItemStack(SB_Blocks.COPPER_BLOCK), new String[] { "III", "III", "III" }, 'I', SB_Items.COPPER_INGOT);
 		GameRegistry.addShapedRecipe(new ResourceLocation("tinBlock"), null, new ItemStack(SB_Blocks.TIN_BLOCK), new String[] { "TTT", "TTT", "TTT" }, 'T', SB_Items.TIN_INGOT);
+		GameRegistry.addShapedRecipe(new ResourceLocation("leadBlock"), null, new ItemStack(SB_Blocks.LEAD_BLOCK), new String[] { "LLL", "LLL", "LLL" }, 'L', SB_Items.LEAD_INGOT);
 		GameRegistry.addShapedRecipe(new ResourceLocation("battery"), null, new ItemStack(SB_Items.BATTERY), new String[] { "TCT", "TJT", "TTT" }, 'T', SB_Items.TIN_INGOT, 'J', SB_Items.APPLE_JUICE_BOTTLE, 'C', SB_Items.COPPER_INGOT);
 
 		GameRegistry.addShapelessRecipe(new ResourceLocation("copperBlockToIngot"), null, new ItemStack(SB_Items.COPPER_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.COPPER_BLOCK));
 		GameRegistry.addShapelessRecipe(new ResourceLocation("tinBlockToIngot"), null, new ItemStack(SB_Items.TIN_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.TIN_BLOCK));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("leadBlockToIngot"), null, new ItemStack(SB_Items.LEAD_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.LEAD_BLOCK));
 		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), RecipeManager.getIngredient(Items.GLASS_BOTTLE), RecipeManager.getIngredient(Items.APPLE),
 				RecipeManager.getIngredient(Items.APPLE), RecipeManager.getIngredient(Items.APPLE));
 	}
@@ -36,6 +38,7 @@ public class RecipeManager {
 		GameRegistry.addSmelting(SB_Blocks.COPPER_ORE_BLOCK, new ItemStack(SB_Items.COPPER_INGOT), 0.7F);
 		GameRegistry.addSmelting(SB_Blocks.TIN_ORE_BLOCK, new ItemStack(SB_Items.TIN_INGOT), 0.5F);
 		GameRegistry.addSmelting(SB_Blocks.NATRIUM_ORE_BLOCK, new ItemStack(SB_Items.NATRIUM_CHUNK), 0.25F);
+		GameRegistry.addSmelting(SB_Blocks.LEAD_ORE_BLOCK, new ItemStack(SB_Items.LEAD_INGOT), 0.6F);
 	}
 
 	private static Ingredient getIngredient(Block block) {

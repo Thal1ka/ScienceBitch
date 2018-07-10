@@ -20,6 +20,8 @@ public class SB_Blocks {
 	public static final Block TIN_ORE_BLOCK = new BlockOre("tin_ore_block", 16, 8, 32, BlockOre.DEFAULT_MAX_HEIGHT).setHardness(8.0F);
 	public static final Block TIN_BLOCK = new BlockBase("tin_block", Material.IRON).setHardness(3.5F).setResistance(8.0F);
 	public static final Block NATRIUM_ORE_BLOCK = new BlockOre("natrium_ore_block", 25, 8, 56, BlockOre.DEFAULT_MAX_HEIGHT).setHardness(4.0F);
+	public static final Block LEAD_ORE_BLOCK = new BlockOre("lead_ore_block", 15, 8).setHardness(4.5F);
+	public static final Block LEAD_BLOCK = new BlockBase("lead_block", Material.IRON).setHardness(4.5F);
 //	public static final Block NATRIUM_BLOCK = new BlockBase("natrium_block", Material.IRON).setHardness(3.5F).setResistance(8.0F);
 
 	// PLANTS
