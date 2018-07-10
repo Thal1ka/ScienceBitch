@@ -3,6 +3,7 @@ package com.sciencebitch.blocks.plants.crops;
 import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
+import com.sciencebitch.mod.handlers.CropHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
@@ -27,19 +28,19 @@ public class BlockCropBase extends BlockBush implements IGrowable {
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
 
 	private final int maxAge;
-	private final Item seedItem;
+	private final String seedItemName;
 	private final Item cropItem;
 
 	private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] { new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) };
 
-	public BlockCropBase(String name, Item seedItem, Item cropItem, int maxAge) {
+	public BlockCropBase(String name, String seedItemName, Item cropItem, int maxAge) {
 
 		setUnlocalizedName(name);
 		setRegistryName(name);
 
-		this.seedItem = seedItem;
+		this.seedItemName = seedItemName;
 		this.cropItem = cropItem;
 		this.maxAge = maxAge;
 
@@ -173,7 +174,7 @@ public class BlockCropBase extends BlockBush implements IGrowable {
 	}
 
 	protected Item getSeed() {
-		return this.seedItem;
+		return CropHandler.instance().getSeedItem(seedItemName);
 	}
 
 	protected Item getCrop() {

@@ -1,5 +1,7 @@
 package com.sciencebitch.items;
 
+import com.sciencebitch.mod.handlers.CropHandler;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,16 +14,20 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 
-public class ItemSeedsBase extends Item implements net.minecraftforge.common.IPlantable {
+public class ItemSeedsBase extends Item implements IPlantable {
 
-	private final Block crops;
+	private final String cropsBlockName;
 	/** BlockID of the block the seeds can be planted on. */
 	private final Block soilBlockID;
 
-	public ItemSeedsBase(Block crops, Block soil) {
-		this.crops = crops;
+	public ItemSeedsBase(String cropsBlockName, Block soil) {
+
+		this.cropsBlockName = cropsBlockName;
 		this.soilBlockID = soil;
 		this.setCreativeTab(CreativeTabs.MATERIALS);
 	}
@@ -36,7 +42,9 @@ public class ItemSeedsBase extends Item implements net.minecraftforge.common.IPl
 		IBlockState state = worldIn.getBlockState(pos);
 
 		if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
-			worldIn.setBlockState(pos.up(), this.crops.getDefaultState());
+
+			Block cropBlock = CropHandler.instance().getCropBlock(cropsBlockName);
+			worldIn.setBlockState(pos.up(), cropBlock.getDefaultState());
 
 			if (player instanceof EntityPlayerMP) {
 				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
@@ -49,12 +57,14 @@ public class ItemSeedsBase extends Item implements net.minecraftforge.common.IPl
 	}
 
 	@Override
-	public net.minecraftforge.common.EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
-		return this.crops == net.minecraft.init.Blocks.NETHER_WART ? net.minecraftforge.common.EnumPlantType.Nether : net.minecraftforge.common.EnumPlantType.Crop;
+	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
+		return EnumPlantType.Plains;
 	}
 
 	@Override
-	public net.minecraft.block.state.IBlockState getPlant(net.minecraft.world.IBlockAccess world, BlockPos pos) {
-		return this.crops.getDefaultState();
+	public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+
+		Block cropBlock = CropHandler.instance().getCropBlock(cropsBlockName);
+		return cropBlock.getDefaultState();
 	}
 }
