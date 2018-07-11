@@ -1,6 +1,6 @@
 package com.sciencebitch.tileentities;
 
-import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.blocks.machines.BlockPulverizer;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -12,24 +12,25 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
+public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
-	public static final String NAME = "electric_furnace";
+	public static final String NAME = "pulverizer";
 	public static final int CAPACITY = 200;
 
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_FUELFIELD = 1;
-	public static final int ID_OUTPUTFIELD = 2;
+	public static final int ID_OUTPUTFIELD_1 = 2;
+	public static final int ID_OUTPUTFIELD_2 = 3;
 
 	private int totalCookTime, cookTime;
 
-	public TileEntityElectricFurnace() {
+	public TileEntityPulverizer() {
 		super(NAME, CAPACITY);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD)
+		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2)
 			return false;
 		if (index == ID_FUELFIELD)
 			return TileEntityElectricMachineBase.isItemFuel(stack);
@@ -113,8 +114,12 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 		return this.inventory.get(ID_INPUTFIELD);
 	}
 
-	private ItemStack getOutputStack() {
-		return this.inventory.get(ID_OUTPUTFIELD);
+	private ItemStack getOutputStack1() {
+		return this.inventory.get(ID_OUTPUTFIELD_1);
+	}
+
+	private ItemStack getOutputStack2() {
+		return this.inventory.get(ID_OUTPUTFIELD_2);
 	}
 
 	@Override
@@ -128,7 +133,11 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 		if (smeltingResult.isEmpty())
 			return false;
 
-		ItemStack outputStack = getOutputStack();
+		return isOutputStackValid(getOutputStack1(), smeltingResult) && isOutputStackValid(getOutputStack2(), smeltingResult);
+	}
+
+	private boolean isOutputStackValid(ItemStack outputStack, ItemStack smeltingResult) {
+
 		if (outputStack.isEmpty())
 			return true;
 
@@ -136,8 +145,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 			return false;
 
 		int stackSize = outputStack.getCount() + smeltingResult.getCount();
-
 		return stackSize <= getInventoryStackLimit() && stackSize <= outputStack.getMaxStackSize();
+
 	}
 
 	private ItemStack getSmeltingResult(ItemStack stack) {
@@ -165,12 +174,19 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 
 		if (canWork()) {
 			ItemStack smeltingResult = getSmeltingResult(getInputStack());
-			ItemStack outputStack = getOutputStack();
+			ItemStack outputStack1 = getOutputStack1();
+			ItemStack outputStack2 = getOutputStack2();
 
-			if (outputStack.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD, smeltingResult.copy());
+			if (outputStack1.isEmpty()) {
+				this.inventory.set(ID_OUTPUTFIELD_1, smeltingResult.copy());
 			} else {
-				outputStack.grow(smeltingResult.getCount());
+				outputStack1.grow(smeltingResult.getCount());
+			}
+
+			if (outputStack2.isEmpty()) {
+				this.inventory.set(ID_OUTPUTFIELD_2, smeltingResult.copy());
+			} else {
+				outputStack2.grow(smeltingResult.getCount());
 			}
 
 			getInputStack().shrink(1);
@@ -180,7 +196,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	protected void updateState(boolean isWorking, World world, BlockPos pos) {
 
-		BlockElectricFurnace.setState(isWorking, world, pos);
+		BlockPulverizer.setState(isWorking, world, pos);
 	}
 
 	@SideOnly(Side.CLIENT)

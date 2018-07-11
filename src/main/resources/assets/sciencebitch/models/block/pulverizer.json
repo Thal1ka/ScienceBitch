@@ -1,0 +1,13 @@
+{
+    "parent": "block/orientable",
+    "textures":
+    {
+        "particle": "sciencebitch:blocks/pulverizer_front_off",
+        "up": "sciencebitch:blocks/pulverizer_top",
+        "down": "sciencebitch:blocks/pulverizer_top",
+        "north": "sciencebitch:blocks/pulverizer_front_off",
+        "east": "sciencebitch:blocks/pulverizer_side",
+        "south": "sciencebitch:blocks/pulverizer_side",
+        "west": "sciencebitch:blocks/pulverizer_side"
+    }
+}

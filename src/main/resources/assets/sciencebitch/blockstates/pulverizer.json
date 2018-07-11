@@ -1,0 +1,9 @@
+{
+    "variants": 
+    {
+        "facing=north": { "model": "sciencebitch:pulverizer" },
+        "facing=east": { "model": "sciencebitch:pulverizer", "y": 90 },
+        "facing=south": { "model": "sciencebitch:pulverizer", "y": 180 },
+        "facing=west": { "model": "sciencebitch:pulverizer", "y": 270 }
+    }
+}

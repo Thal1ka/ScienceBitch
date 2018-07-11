@@ -18,7 +18,7 @@ public class SB_Items {
 	public static final Item LEAD_INGOT = new ItemBase("lead_ingot");
 
 	// FOOD
-	public static final Item APPLE_JUICE_BOTTLE = new ItemFoodBase("apple_juice_bottle", 4, 0.3F, false);
+	public static final Item APPLE_JUICE_BOTTLE = new ItemFoodDrinkable("apple_juice_bottle", 4, 0.3F, false);
 
 	// TECHNOLOGY
 	public static final Item BATTERY = new ItemBattery("battery");

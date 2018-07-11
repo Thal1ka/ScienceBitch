@@ -1,4 +1,4 @@
-
+  
 //Items
 item.copper_ingot.name=Copper Ingot
 item.tin_ingot.name=Tin Ingot
@@ -19,6 +19,7 @@ tile.lemon_leaves_block.name=Lemon leaves
 
 //Machines
 tile.electric_furnace.name=Electric Furnace
+tile.pulverizer.name=Pulverizer
 
 //Containers
 container.electric_furnace=Electric Furnace

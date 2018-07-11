@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.blocks.machines.BlockPulverizer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,6 +31,8 @@ public class SB_Blocks {
 	// MACHINES
 	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
 	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
+	public static final Block PULVERIZER = new BlockPulverizer("pulverizer", false);
+	public static final Block PULVERIZER_ACTIVE = new BlockPulverizer("pulverizer_lit", true).setLightLevel(0.875F);
 
 //	public static final Block ELECTRIC_FURNACE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
 //	public static final Block ELECTRIC_FURNACE_ACTIVE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
