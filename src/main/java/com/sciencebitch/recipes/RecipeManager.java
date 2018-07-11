@@ -1,9 +1,10 @@
-package com.sciencebitch.mod;
+package com.sciencebitch.recipes;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.items.SB_Items;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,10 +14,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RecipeManager {
 
-	protected static void initialize() {
+	public static void initialize() {
 
-		RecipeManager.addCraftingRecipes();
-		RecipeManager.addSmeltingRecipes();
+		addCraftingRecipes();
+		addSmeltingRecipes();
+		addPulverizerRecipes();
 	}
 
 	private static void addCraftingRecipes() {
@@ -39,6 +41,16 @@ public class RecipeManager {
 		GameRegistry.addSmelting(SB_Blocks.TIN_ORE_BLOCK, new ItemStack(SB_Items.TIN_INGOT), 0.5F);
 		GameRegistry.addSmelting(SB_Blocks.NATRIUM_ORE_BLOCK, new ItemStack(SB_Items.NATRIUM_CHUNK), 0.25F);
 		GameRegistry.addSmelting(SB_Blocks.LEAD_ORE_BLOCK, new ItemStack(SB_Items.LEAD_INGOT), 0.6F);
+	}
+
+	private static void addPulverizerRecipes() {
+
+		PulverizerRecipes.instance().addRecipe(new ItemStack(Blocks.IRON_ORE), new ItemStack(SB_Items.IRON_DUST));
+		PulverizerRecipes.instance().addRecipe(new ItemStack(Blocks.GOLD_ORE), new ItemStack(SB_Items.GOLD_DUST));
+		PulverizerRecipes.instance().addRecipe(new ItemStack(SB_Blocks.COPPER_ORE_BLOCK), new ItemStack(SB_Items.COPPER_DUST));
+		PulverizerRecipes.instance().addRecipe(new ItemStack(SB_Blocks.TIN_ORE_BLOCK), new ItemStack(SB_Items.TIN_DUST));
+		PulverizerRecipes.instance().addRecipe(new ItemStack(SB_Blocks.LEAD_ORE_BLOCK), new ItemStack(SB_Items.LEAD_DUST));
+
 	}
 
 	private static Ingredient getIngredient(Block block) {

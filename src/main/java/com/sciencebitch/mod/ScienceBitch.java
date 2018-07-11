@@ -6,6 +6,7 @@ import com.sciencebitch.gui.GuiElectricFurnace;
 import com.sciencebitch.gui.GuiPulverizer;
 import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.proxy.CommonProxy;
+import com.sciencebitch.recipes.RecipeManager;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
 

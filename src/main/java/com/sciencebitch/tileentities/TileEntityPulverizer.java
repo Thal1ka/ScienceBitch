@@ -1,11 +1,11 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockPulverizer;
+import com.sciencebitch.recipes.PulverizerRecipes;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -150,7 +150,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	}
 
 	private ItemStack getSmeltingResult(ItemStack stack) {
-		return FurnaceRecipes.instance().getSmeltingResult(stack);
+		return PulverizerRecipes.instance().getRecipeResult(stack);
 	}
 
 	@Override
