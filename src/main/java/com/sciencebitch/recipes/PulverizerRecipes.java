@@ -36,8 +36,6 @@ public class PulverizerRecipes {
 			result = ItemStack.EMPTY;
 		}
 
-		System.out.println(result);
-
 		return result;
 	}
 
