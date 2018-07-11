@@ -57,10 +57,8 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2)
-			return false;
-		if (index == ID_FUELFIELD)
-			return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2) return false;
+		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -126,23 +124,19 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty())
-			return false;
+		if (inputStack.isEmpty()) return false;
 
 		ItemStack smeltingResult = getSmeltingResult(inputStack);
-		if (smeltingResult.isEmpty())
-			return false;
+		if (smeltingResult.isEmpty()) return false;
 
 		return isOutputStackValid(getOutputStack1(), smeltingResult) && isOutputStackValid(getOutputStack2(), smeltingResult);
 	}
 
 	private boolean isOutputStackValid(ItemStack outputStack, ItemStack smeltingResult) {
 
-		if (outputStack.isEmpty())
-			return true;
+		if (outputStack.isEmpty()) return true;
 
-		if (!outputStack.isItemEqual(smeltingResult))
-			return false;
+		if (!outputStack.isItemEqual(smeltingResult)) return false;
 
 		int stackSize = outputStack.getCount() + smeltingResult.getCount();
 		return stackSize <= getInventoryStackLimit() && stackSize <= outputStack.getMaxStackSize();
@@ -150,7 +144,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	}
 
 	private ItemStack getSmeltingResult(ItemStack stack) {
-		return PulverizerRecipes.instance().getRecipeResult(stack);
+		return PulverizerRecipes.instance().getRecipeResult(stack.getItem());
 	}
 
 	@Override

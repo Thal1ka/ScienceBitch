@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "age=0": { "model": "hops_stage0" },
+        "age=1": { "model": "hops_stage1" },
+        "age=2": { "model": "hops_stage2" },
+        "age=3": { "model": "hops_stage3" },
+        "age=4": { "model": "hops_stage4" }
+    }
+}

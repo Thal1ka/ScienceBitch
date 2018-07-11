@@ -3,13 +3,14 @@ package com.sciencebitch.recipes;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class PulverizerRecipes {
 
 	private static PulverizerRecipes instance;
 
-	private Map<ItemStack, ItemStack> recipes = new HashMap<>();
+	private Map<Item, ItemStack> recipes = new HashMap<>();
 
 	private PulverizerRecipes() {
 
@@ -24,16 +25,18 @@ public class PulverizerRecipes {
 	}
 
 	public void addRecipe(ItemStack input, ItemStack output) {
-		recipes.put(input, output);
+		recipes.put(input.getItem(), output);
 	}
 
-	public ItemStack getRecipeResult(ItemStack input) {
+	public ItemStack getRecipeResult(Item input) {
 
 		ItemStack result = recipes.get(input);
 
 		if (result == null) {
 			result = ItemStack.EMPTY;
 		}
+
+		System.out.println(result);
 
 		return result;
 	}
