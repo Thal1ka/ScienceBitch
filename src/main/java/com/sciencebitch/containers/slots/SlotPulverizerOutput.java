@@ -5,12 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotElectricFurnaceOutput extends Slot {
+public class SlotPulverizerOutput extends Slot {
 
 	private final EntityPlayer player;
 	private int removeCount;
 
-	public SlotElectricFurnaceOutput(EntityPlayer player, IInventory inventoryIn, int index, int xPosition, int yPosition) {
+	public SlotPulverizerOutput(EntityPlayer player, IInventory inventoryIn, int index, int xPosition, int yPosition) {
 
 		super(inventoryIn, index, xPosition, yPosition);
 		this.player = player;

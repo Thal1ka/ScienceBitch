@@ -22,7 +22,7 @@ public class ContainerPulverizer extends ContainerBase {
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
 		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 2, 116, 35));
-		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 3, 134, 35));
+		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 3, 144, 35));
 
 		// Playerinventory
 		for (int row = 0; row < 3; row++) {

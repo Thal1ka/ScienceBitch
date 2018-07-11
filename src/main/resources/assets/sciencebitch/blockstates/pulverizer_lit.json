@@ -1,9 +1,9 @@
 {
     "variants": 
     {
-        "facing=north": { "model": "sciencebitch:puverizer_lit" },
-        "facing=east": { "model": "sciencebitch:puverizer_lit", "y": 90 },
-        "facing=south": { "model": "sciencebitch:puverizer_lit", "y": 180 },
-        "facing=west": { "model": "sciencebitch:puverizer_lit", "y": 270 }
+        "facing=north": { "model": "sciencebitch:pulverizer_lit" },
+        "facing=east": { "model": "sciencebitch:pulverizer_lit", "y": 90 },
+        "facing=south": { "model": "sciencebitch:pulverizer_lit", "y": 180 },
+        "facing=west": { "model": "sciencebitch:pulverizer_lit", "y": 270 }
     }
 }

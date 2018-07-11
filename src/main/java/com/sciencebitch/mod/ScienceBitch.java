@@ -1,10 +1,13 @@
 package com.sciencebitch.mod;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
+import com.sciencebitch.containers.ContainerPulverizer;
 import com.sciencebitch.gui.GuiElectricFurnace;
+import com.sciencebitch.gui.GuiPulverizer;
 import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.proxy.CommonProxy;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.TileEntityPulverizer;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -51,6 +54,7 @@ public class ScienceBitch {
 	private void registerGUIs() {
 
 		guiHandler.registerGui((i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
+		guiHandler.registerGui((i, t) -> new ContainerPulverizer(i, (TileEntityPulverizer) t), (i, t) -> new GuiPulverizer(i, (TileEntityPulverizer) t));
 	}
 
 	@EventHandler

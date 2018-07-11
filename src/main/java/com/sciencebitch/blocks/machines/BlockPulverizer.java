@@ -43,7 +43,7 @@ public class BlockPulverizer extends BlockMachineBase implements ITileEntityProv
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
 		if (!worldIn.isRemote) {
-			playerIn.openGui(ScienceBitch.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(ScienceBitch.instance, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		return true;
