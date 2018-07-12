@@ -1,7 +1,7 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockPulverizer;
-import com.sciencebitch.recipes.PulverizerRecipes;
+import com.sciencebitch.recipes.RecipeManager;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -144,7 +144,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	}
 
 	private ItemStack getSmeltingResult(ItemStack stack) {
-		return PulverizerRecipes.instance().getRecipeResult(stack.getItem());
+		return RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem());
 	}
 
 	@Override
