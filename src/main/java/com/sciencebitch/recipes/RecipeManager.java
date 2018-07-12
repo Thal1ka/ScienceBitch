@@ -30,11 +30,10 @@ public class RecipeManager {
 		GameRegistry.addShapedRecipe(new ResourceLocation("leadBlock"), null, new ItemStack(SB_Blocks.LEAD_BLOCK), new String[] { "LLL", "LLL", "LLL" }, 'L', SB_Items.LEAD_INGOT);
 		GameRegistry.addShapedRecipe(new ResourceLocation("battery"), null, new ItemStack(SB_Items.BATTERY), new String[] { "TCT", "TJT", "TTT" }, 'T', SB_Items.TIN_INGOT, 'J', SB_Items.APPLE_JUICE_BOTTLE, 'C', SB_Items.COPPER_INGOT);
 
-		GameRegistry.addShapelessRecipe(new ResourceLocation("copperBlockToIngot"), null, new ItemStack(SB_Items.COPPER_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.COPPER_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("tinBlockToIngot"), null, new ItemStack(SB_Items.TIN_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.TIN_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("leadBlockToIngot"), null, new ItemStack(SB_Items.LEAD_INGOT, 9), RecipeManager.getIngredient(SB_Blocks.LEAD_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), RecipeManager.getIngredient(Items.GLASS_BOTTLE), RecipeManager.getIngredient(Items.APPLE),
-				RecipeManager.getIngredient(Items.APPLE), RecipeManager.getIngredient(Items.APPLE));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("copperBlockToIngot"), null, new ItemStack(SB_Items.COPPER_INGOT, 9), getIngredient(SB_Blocks.COPPER_BLOCK));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("tinBlockToIngot"), null, new ItemStack(SB_Items.TIN_INGOT, 9), getIngredient(SB_Blocks.TIN_BLOCK));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("leadBlockToIngot"), null, new ItemStack(SB_Items.LEAD_INGOT, 9), getIngredient(SB_Blocks.LEAD_BLOCK));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), getIngredient(Items.GLASS_BOTTLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE));
 	}
 
 	private static void addSmeltingRecipes() {
