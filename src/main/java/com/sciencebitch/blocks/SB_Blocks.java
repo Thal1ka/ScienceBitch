@@ -23,19 +23,25 @@ public class SB_Blocks {
 	public static final Block NATRIUM_ORE_BLOCK = new BlockOre("natrium_ore_block", 25, 8, 56, BlockOre.DEFAULT_MAX_HEIGHT).setHardness(4.0F);
 	public static final Block LEAD_ORE_BLOCK = new BlockOre("lead_ore_block", 15, 8).setHardness(4.5F);
 	public static final Block LEAD_BLOCK = new BlockBase("lead_block", Material.IRON).setHardness(4.5F);
-//	public static final Block NATRIUM_BLOCK = new BlockBase("natrium_block", Material.IRON).setHardness(3.5F).setResistance(8.0F);
+	// public static final Block NATRIUM_BLOCK = new BlockBase("natrium_block",
+	// Material.IRON).setHardness(3.5F).setResistance(8.0F);
 
 	// PLANTS
-//	public static final Block CROP_HOPS = new BlockCropBase("plant_hops", null, SB_Items.BATTERY, 7);
+	// public static final Block CROP_HOPS = new BlockCropBase("plant_hops", null,
+	// SB_Items.BATTERY, 7);
 
 	// MACHINES
 	public static final Block ELECTRIC_FURNACE = new BlockElectricFurnace("electric_furnace", false);
 	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
 	public static final Block PULVERIZER = new BlockPulverizer("pulverizer", false);
 	public static final Block PULVERIZER_ACTIVE = new BlockPulverizer("pulverizer_lit", true).setLightLevel(0.875F);
+	public static final Block EXTRACTOR = new BlockPulverizer("extractor", false);
+	public static final Block EXTRACTOR_ACTIVE = new BlockPulverizer("extractor_lit", true).setLightLevel(0.875F);
 
-//	public static final Block ELECTRIC_FURNACE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
-//	public static final Block ELECTRIC_FURNACE_ACTIVE = MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
+	// public static final Block ELECTRIC_FURNACE =
+	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
+	// public static final Block ELECTRIC_FURNACE_ACTIVE =
+	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getActiveBlock();
 
 	// -------------------
 
