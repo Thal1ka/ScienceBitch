@@ -18,11 +18,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockExtracter extends BlockMachineBase implements ITileEntityProvider {
+public class BlockExtractor extends BlockMachineBase implements ITileEntityProvider {
 
 	private static boolean keepInventory = false;
 
-	public BlockExtracter(String name, boolean isBurning) {
+	public BlockExtractor(String name, boolean isBurning) {
 
 		super(name, isBurning);
 	}
