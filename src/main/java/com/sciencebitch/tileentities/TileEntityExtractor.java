@@ -1,6 +1,6 @@
 package com.sciencebitch.tileentities;
 
-import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.blocks.machines.BlockExtractor;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -25,8 +25,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	public static final int ID_OUTPUTFIELD = 2;
 	public static final int ID_BOTTLEFIELD = 3;
 
-	private FluidStack currentFluid;
+	private FluidStack storedFluid;
 	private Item currentWorkItem;
+	private FluidStack currentWorkingResult;
 
 	private int totalCookTime, cookTime;
 
@@ -64,12 +65,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD)
-			return false;
-		if (index == ID_FUELFIELD)
-			return TileEntityElectricMachineBase.isItemFuel(stack);
-		if (index == ID_BOTTLEFIELD)
-			return (stack.getItem() == Items.GLASS_BOTTLE);
+		if (index == ID_OUTPUTFIELD) return false;
+		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_BOTTLEFIELD) return (stack.getItem() == Items.GLASS_BOTTLE);
 
 		return true;
 	}
@@ -87,7 +85,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 			case 3:
 				return this.totalCookTime;
 			case 4:
-				return (currentFluid == null) ? 0 : this.currentFluid.amount;
+				return (storedFluid == null) ? 0 : this.storedFluid.amount;
 			case 5:
 				return this.FLUID_CAPACITY;
 			default:
@@ -112,8 +110,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				this.totalCookTime = value;
 				break;
 			case 4:
-				if (currentFluid != null)
-					this.currentFluid.amount = value;
+				if (storedFluid != null) {
+					this.storedFluid.amount = value;
+				}
 				break;
 			case 5:
 				System.err.println("WARNING: Tried to change the fluid capacity of BlockExtractor");
@@ -157,8 +156,10 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				if (canWork()) {
 					inputStack.shrink(1);
 
-					if (currentFluid == null) {
-						currentFluid = new FluidStack(getWorkingResult(currentWorkItem).getFluid(), 0);
+					currentWorkingResult = getWorkingResult(currentWorkItem);
+
+					if (storedFluid == null) {
+						storedFluid = new FluidStack(currentWorkingResult.getFluid(), 0);
 					}
 				} else {
 					currentWorkItem = null;
@@ -172,20 +173,16 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	protected boolean canWork() {
 
-		if (currentWorkItem == null)
-			return false;
+		if (currentWorkItem == null) return false;
 
-		FluidStack workingResult = getWorkingResult(currentWorkItem);
-		if (workingResult == null)
-			return false;
+		FluidStack workingResult = (currentWorkingResult == null) ? getWorkingResult(currentWorkItem) : currentWorkingResult;
+		if (workingResult == null) return false;
 
-		if (currentFluid == null)
-			return true;
+		if (storedFluid == null) return true;
 
-		if (!currentFluid.isFluidEqual(workingResult))
-			return false;
+		if (!storedFluid.isFluidEqual(workingResult)) return false;
 
-		return currentFluid.amount < FLUID_CAPACITY;
+		return storedFluid.amount < FLUID_CAPACITY;
 	}
 
 	private FluidStack getWorkingResult(Item currentWorkItem2) {
@@ -196,6 +193,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	protected void doWork() {
 
 		cookTime++;
+		storedFluid.amount += currentWorkingResult.amount / totalCookTime;
 
 		if (cookTime == totalCookTime) {
 			processItem();
@@ -212,13 +210,14 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 		if (canWork()) {
 			currentWorkItem = null;
+			currentWorkingResult = null;
 		}
 	}
 
 	@Override
 	protected void updateState(boolean isWorking, World world, BlockPos pos) {
 
-		BlockElectricFurnace.setState(isWorking, world, pos);
+		BlockExtractor.setState(isWorking, world, pos);
 	}
 
 	@SideOnly(Side.CLIENT)
