@@ -81,7 +81,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntity implement
 	}
 
 	@Override
-	public final void update() {
+	public void update() {
 
 		boolean isWorkingBeforeUpdate = hasEnergy();
 		boolean updated = false;

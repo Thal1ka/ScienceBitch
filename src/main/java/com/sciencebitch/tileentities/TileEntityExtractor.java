@@ -1,15 +1,16 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
-import com.sciencebitch.recipes.RecipeManager;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -24,7 +25,10 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	public static final int ID_OUTPUTFIELD = 2;
 	public static final int ID_BOTTLEFIELD = 3;
 
-	private int totalCookTime, cookTime, storedFluid;
+	private FluidStack currentFluid;
+	private Item currentWorkItem;
+
+	private int totalCookTime, cookTime;
 
 	public TileEntityExtractor() {
 		super(NAME, ENERGY_CAPACITY);
@@ -45,6 +49,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		if (stack.getCount() > this.getInventoryStackLimit()) {
 			stack.setCount(this.getInventoryStackLimit());
 		}
+
 		if (index == ID_INPUTFIELD && !sameItem) {
 			this.totalCookTime = this.getCookTime(stack);
 			this.cookTime = 0;
@@ -59,9 +64,12 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
-		if (index == ID_BOTTLEFIELD) return (stack.getItem() == Items.GLASS_BOTTLE);
+		if (index == ID_OUTPUTFIELD)
+			return false;
+		if (index == ID_FUELFIELD)
+			return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_BOTTLEFIELD)
+			return (stack.getItem() == Items.GLASS_BOTTLE);
 
 		return true;
 	}
@@ -78,6 +86,10 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				return this.cookTime;
 			case 3:
 				return this.totalCookTime;
+			case 4:
+				return (currentFluid == null) ? 0 : this.currentFluid.amount;
+			case 5:
+				return this.FLUID_CAPACITY;
 			default:
 				return 0;
 		}
@@ -91,19 +103,27 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				this.storedEnergy = value;
 				break;
 			case 1:
-				System.err.println("WARNING: Tried to change the capacity of BlockExtractor");
+				System.err.println("WARNING: Tried to change the energy capacity of BlockExtractor");
 				break;
 			case 2:
 				this.cookTime = value;
 				break;
 			case 3:
 				this.totalCookTime = value;
+				break;
+			case 4:
+				if (currentFluid != null)
+					this.currentFluid.amount = value;
+				break;
+			case 5:
+				System.err.println("WARNING: Tried to change the fluid capacity of BlockExtractor");
+				break;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 4;
+		return 6;
 	}
 
 	@Override
@@ -124,26 +144,52 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	}
 
 	@Override
-	protected boolean canWork() {
+	public void update() {
 
-		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty()) return false;
+		if (currentWorkItem == null) {
 
-		ItemStack workingResult = getWorkingResult(inputStack);
-		if (workingResult.isEmpty()) return false;
+			ItemStack inputStack = getInputStack();
 
-		ItemStack outputStack = getOutputStack();
-		if (outputStack.isEmpty()) return true;
+			if (!inputStack.isEmpty()) {
 
-		if (!outputStack.isItemEqual(workingResult)) return false;
+				currentWorkItem = inputStack.getItem();
 
-		int stackSize = outputStack.getCount() + workingResult.getCount();
+				if (canWork()) {
+					inputStack.shrink(1);
 
-		return stackSize <= getInventoryStackLimit() && stackSize <= outputStack.getMaxStackSize();
+					if (currentFluid == null) {
+						currentFluid = new FluidStack(getWorkingResult(currentWorkItem).getFluid(), 0);
+					}
+				} else {
+					currentWorkItem = null;
+				}
+			}
+		}
+
+		super.update();
 	}
 
-	private ItemStack getWorkingResult(ItemStack stack) {
-		return RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stack.getItem());
+	@Override
+	protected boolean canWork() {
+
+		if (currentWorkItem == null)
+			return false;
+
+		FluidStack workingResult = getWorkingResult(currentWorkItem);
+		if (workingResult == null)
+			return false;
+
+		if (currentFluid == null)
+			return true;
+
+		if (!currentFluid.isFluidEqual(workingResult))
+			return false;
+
+		return currentFluid.amount < FLUID_CAPACITY;
+	}
+
+	private FluidStack getWorkingResult(Item currentWorkItem2) {
+		return null;
 	}
 
 	@Override
@@ -160,22 +206,12 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	protected void onWorkCanceled() {
 
-		cookTime = 0;
 	}
 
 	private void processItem() {
 
 		if (canWork()) {
-			ItemStack working = getWorkingResult(getInputStack());
-			ItemStack outputStack = getOutputStack();
-
-			if (outputStack.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD, working.copy());
-			} else {
-				outputStack.grow(working.getCount());
-			}
-
-			getInputStack().shrink(1);
+			currentWorkItem = null;
 		}
 	}
 
