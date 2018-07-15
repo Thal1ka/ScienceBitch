@@ -1,11 +1,12 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.recipes.RecipeManager;
 
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,22 +15,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
-	public static final String NAME = "electric_furnace";
-	public static final int CAPACITY = 200;
+	public static final String NAME = "extractor";
+	public static final int ENERGY_CAPACITY = 200;
+	public static final int FLUID_CAPACITY = 200;
 
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_FUELFIELD = 1;
 	public static final int ID_OUTPUTFIELD = 2;
+	public static final int ID_BOTTLEFIELD = 3;
 
-	private int totalCookTime, cookTime;
+	private int totalCookTime, cookTime, storedFluid;
 
 	public TileEntityExtractor() {
-		super(NAME, CAPACITY);
+		super(NAME, ENERGY_CAPACITY);
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -58,6 +61,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 		if (index == ID_OUTPUTFIELD) return false;
 		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_BOTTLEFIELD) return (stack.getItem() == Items.GLASS_BOTTLE);
 
 		return true;
 	}
@@ -69,7 +73,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 			case 0:
 				return this.storedEnergy;
 			case 1:
-				return this.CAPACITY;
+				return this.ENERGY_CAPACITY;
 			case 2:
 				return this.cookTime;
 			case 3:
@@ -87,7 +91,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				this.storedEnergy = value;
 				break;
 			case 1:
-				System.err.println("WARNING: Tried to change the capacity of BlockElectricFurnace");
+				System.err.println("WARNING: Tried to change the capacity of BlockExtractor");
 				break;
 			case 2:
 				this.cookTime = value;
@@ -115,27 +119,31 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		return this.inventory.get(ID_OUTPUTFIELD);
 	}
 
+	private ItemStack getBottleStack() {
+		return this.inventory.get(ID_BOTTLEFIELD);
+	}
+
 	@Override
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
 		if (inputStack.isEmpty()) return false;
 
-		ItemStack smeltingResult = getSmeltingResult(inputStack);
-		if (smeltingResult.isEmpty()) return false;
+		ItemStack workingResult = getWorkingResult(inputStack);
+		if (workingResult.isEmpty()) return false;
 
 		ItemStack outputStack = getOutputStack();
 		if (outputStack.isEmpty()) return true;
 
-		if (!outputStack.isItemEqual(smeltingResult)) return false;
+		if (!outputStack.isItemEqual(workingResult)) return false;
 
-		int stackSize = outputStack.getCount() + smeltingResult.getCount();
+		int stackSize = outputStack.getCount() + workingResult.getCount();
 
 		return stackSize <= getInventoryStackLimit() && stackSize <= outputStack.getMaxStackSize();
 	}
 
-	private ItemStack getSmeltingResult(ItemStack stack) {
-		return FurnaceRecipes.instance().getSmeltingResult(stack);
+	private ItemStack getWorkingResult(ItemStack stack) {
+		return RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stack.getItem());
 	}
 
 	@Override
@@ -144,7 +152,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		cookTime++;
 
 		if (cookTime == totalCookTime) {
-			smeltItem();
+			processItem();
 			cookTime = 0;
 		}
 	}
@@ -155,16 +163,16 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		cookTime = 0;
 	}
 
-	private void smeltItem() {
+	private void processItem() {
 
 		if (canWork()) {
-			ItemStack smeltingResult = getSmeltingResult(getInputStack());
+			ItemStack working = getWorkingResult(getInputStack());
 			ItemStack outputStack = getOutputStack();
 
 			if (outputStack.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD, smeltingResult.copy());
+				this.inventory.set(ID_OUTPUTFIELD, working.copy());
 			} else {
-				outputStack.grow(smeltingResult.getCount());
+				outputStack.grow(working.getCount());
 			}
 
 			getInputStack().shrink(1);

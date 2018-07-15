@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class RecipeManager {
 
 	public static final MachineRecipes PULVERIZER_RECIPES = new MachineRecipes();
+	public static final MachineRecipes EXTRACTOR_RECIPES = new MachineRecipes();
 
 	public static void initialize() {
 
@@ -51,6 +52,10 @@ public class RecipeManager {
 		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.COPPER_ORE_BLOCK), new ItemStack(SB_Items.COPPER_DUST));
 		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.TIN_ORE_BLOCK), new ItemStack(SB_Items.TIN_DUST));
 		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.LEAD_ORE_BLOCK), new ItemStack(SB_Items.LEAD_DUST));
+
+	}
+
+	private static void addExtractorRecipes() {
 
 	}
 
