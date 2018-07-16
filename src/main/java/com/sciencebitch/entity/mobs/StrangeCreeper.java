@@ -1,4 +1,4 @@
-package com.sciencebitch.mobs;
+package com.sciencebitch.entity.mobs;
 
 import java.util.Collection;
 
