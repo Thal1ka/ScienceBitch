@@ -2,6 +2,7 @@ package com.sciencebitch.mod;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.containers.ContainerPulverizer;
+import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.gui.GuiElectricFurnace;
 import com.sciencebitch.gui.GuiPulverizer;
 import com.sciencebitch.mod.handlers.GuiHandler;
@@ -50,6 +51,7 @@ public class ScienceBitch {
 
 		registerGUIs();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, getGuiHandler());
+		SB_CreativeTabs.initializeTabIcons();
 	}
 
 	private void registerGUIs() {

@@ -1,9 +1,9 @@
 package com.sciencebitch.items;
 
+import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.mod.ScienceBitch;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 public class ItemBase extends Item implements IHasModel {
@@ -12,7 +12,7 @@ public class ItemBase extends Item implements IHasModel {
 
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		setCreativeTab(CreativeTabs.MATERIALS);
+		setCreativeTab(SB_CreativeTabs.TAB_ITEMS);
 
 		SB_Items.ITEMS.add(this);
 	}

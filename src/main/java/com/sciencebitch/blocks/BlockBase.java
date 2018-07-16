@@ -1,12 +1,12 @@
 package com.sciencebitch.blocks;
 
+import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
@@ -18,7 +18,7 @@ public class BlockBase extends Block implements IHasModel {
 
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+		setCreativeTab(SB_CreativeTabs.TAB_RESOURCES);
 
 		SB_Blocks.BLOCKS.add(this);
 		SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(getRegistryName()));

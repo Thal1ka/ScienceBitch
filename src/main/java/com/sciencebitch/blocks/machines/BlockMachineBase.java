@@ -1,6 +1,7 @@
 package com.sciencebitch.blocks.machines;
 
 import com.sciencebitch.blocks.SB_Blocks;
+import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
@@ -13,7 +14,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -44,7 +44,7 @@ public abstract class BlockMachineBase extends Block implements IHasModel {
 		SB_Blocks.BLOCKS.add(this);
 
 		if (!isBurning) {
-			this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+			this.setCreativeTab(SB_CreativeTabs.TAB_MACHINES);
 			SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(name));
 		}
 	}

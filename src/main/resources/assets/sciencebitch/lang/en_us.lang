@@ -30,3 +30,9 @@ tile.pulverizer.name=Pulverizer
 //Containers
 container.electric_furnace=Electric Furnace
 container.pulverizer=Pulverizer
+
+//Creative tabs
+itemGroup.machines=Machines
+itemGroup.resources=Resources
+itemGroup.items=Items
+itemGroup.electric_items=Electric Items

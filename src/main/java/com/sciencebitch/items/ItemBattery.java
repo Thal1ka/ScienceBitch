@@ -1,5 +1,6 @@
 package com.sciencebitch.items;
 
+import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IEnergyProvider;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +15,7 @@ public class ItemBattery extends ItemBase implements IEnergyProvider {
 
 		setMaxDamage(MAX_ENERGY);
 		setMaxStackSize(1);
+		setCreativeTab(SB_CreativeTabs.TAB_ELECTRIC_ITEMS);
 	}
 
 	@Override
