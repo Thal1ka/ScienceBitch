@@ -12,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 public class GuiPulverizer extends GuiContainer {
 
 	private static final ResourceLocation TEXTURES = new ResourceLocation(ScienceBitch.MODID + ":textures/gui/container/pulverizer.png");
+	private static final int DEFAULT_FONT_COLOR = 0xffffff;
+
 	private final InventoryPlayer playerInventory;
 	private final TileEntityPulverizer tileEntity;
 
@@ -21,6 +23,13 @@ public class GuiPulverizer extends GuiContainer {
 
 		this.playerInventory = playerInventory;
 		this.tileEntity = tileEntity;
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
@@ -46,8 +55,8 @@ public class GuiPulverizer extends GuiContainer {
 
 		String tileName = this.tileEntity.getDisplayName().getUnformattedComponentText();
 		int stringWidth = fontRenderer.getStringWidth(tileName);
-		this.fontRenderer.drawString(tileName, (this.xSize - stringWidth) / 2, 5, 0x404040);
-		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 122, this.ySize - 94, 0x404040);
+		this.fontRenderer.drawString(tileName, (this.xSize - stringWidth) / 2, 5, DEFAULT_FONT_COLOR);
+		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 122, this.ySize - 94, DEFAULT_FONT_COLOR);
 	}
 
 	private int getEnergyLeftScaled(int pixels) {
@@ -67,8 +76,7 @@ public class GuiPulverizer extends GuiContainer {
 		int cookTime = this.tileEntity.getField(2);
 		int totalCookTime = this.tileEntity.getField(3);
 
-		if (cookTime == 0 || totalCookTime == 0)
-			return 0;
+		if (cookTime == 0 || totalCookTime == 0) return 0;
 		return (int) (cookTime * pixels / (double) totalCookTime + 0.5);
 	}
 }

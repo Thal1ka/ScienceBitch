@@ -1,0 +1,11 @@
+Machine Texture
+	Mainframe: #292929
+	Topbackground: #424242
+	Botbackground: #3b3b3b
+	Topframe: #333333
+	Botframe: #333333
+	ContrastActive: #760b0f
+	
+Machine GUI
+	Outerborder: #525252
+	Background: #424242
