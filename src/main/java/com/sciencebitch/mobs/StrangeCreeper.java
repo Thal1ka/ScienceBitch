@@ -18,7 +18,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -40,7 +40,8 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class StrangeCreeper extends EntityMob {
+public class StrangeCreeper extends EntityCreeper {
+
 	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(StrangeCreeper.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean>createKey(StrangeCreeper.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> IGNITED = EntityDataManager.<Boolean>createKey(StrangeCreeper.class, DataSerializers.BOOLEAN);
@@ -66,7 +67,7 @@ public class StrangeCreeper extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAICreeperSwell(EntityCreeper));
+		this.tasks.addTask(2, new EntityAICreeperSwell(this));
 		this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntitySkeleton.class, 6.0F, 1.0D, 1.2D));
 		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
@@ -221,6 +222,7 @@ public class StrangeCreeper extends EntityMob {
 	/**
 	 * Returns true if the creeper is powered by a lightning bolt.
 	 */
+	@Override
 	public boolean getPowered() {
 		return this.dataManager.get(POWERED).booleanValue();
 	}
@@ -229,6 +231,7 @@ public class StrangeCreeper extends EntityMob {
 	 * Params: (Float)Render tick. Returns the intensity of the creeper's flash when
 	 * it is ignited.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public float getCreeperFlashIntensity(float p_70831_1_) {
 		return (this.lastActiveTime + (this.timeSinceIgnited - this.lastActiveTime) * p_70831_1_) / (this.fuseTime - 2);
@@ -243,6 +246,7 @@ public class StrangeCreeper extends EntityMob {
 	/**
 	 * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
 	 */
+	@Override
 	public int getCreeperState() {
 		return this.dataManager.get(STATE).intValue();
 	}
@@ -250,6 +254,7 @@ public class StrangeCreeper extends EntityMob {
 	/**
 	 * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
 	 */
+	@Override
 	public void setCreeperState(int state) {
 		this.dataManager.set(STATE, Integer.valueOf(state));
 	}
@@ -287,10 +292,10 @@ public class StrangeCreeper extends EntityMob {
 	 */
 	private void explode() {
 		if (!this.world.isRemote) {
-			boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this);
+
 			float f = this.getPowered() ? 2.0F : 1.0F;
 			this.dead = true;
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionRadius * f, flag);
+			this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionRadius * f, true);
 			this.setDead();
 			this.spawnLingeringCloud();
 		}
@@ -315,10 +320,12 @@ public class StrangeCreeper extends EntityMob {
 		}
 	}
 
+	@Override
 	public boolean hasIgnited() {
 		return this.dataManager.get(IGNITED).booleanValue();
 	}
 
+	@Override
 	public void ignite() {
 		this.dataManager.set(IGNITED, Boolean.valueOf(true));
 	}
@@ -334,6 +341,7 @@ public class StrangeCreeper extends EntityMob {
 		return this.droppedSkulls < 1 && this.world.getGameRules().getBoolean("doMobLoot");
 	}
 
+	@Override
 	public void incrementDroppedSkulls() {
 		++this.droppedSkulls;
 	}
