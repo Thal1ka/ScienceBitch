@@ -15,6 +15,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -30,14 +31,16 @@ public abstract class BlockMachineBase extends Block implements IHasModel {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	protected final boolean isBurning;
+	private final int guiId;
 
-	public BlockMachineBase(String name, boolean isBurning) {
+	public BlockMachineBase(String name, boolean isBurning, int guiId) {
 
 		super(Material.IRON);
 
 		setSoundType(SoundType.METAL);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.isBurning = isBurning;
+		this.guiId = guiId;
 
 		setUnlocalizedName(name);
 		setRegistryName(name);
@@ -121,5 +124,15 @@ public abstract class BlockMachineBase extends Block implements IHasModel {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		if (!worldIn.isRemote) {
+			playerIn.openGui(ScienceBitch.instance, guiId, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		}
+
+		return true;
 	}
 }

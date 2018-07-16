@@ -4,18 +4,15 @@ package com.sciencebitch.blocks.machines;
 import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
-import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,7 +22,7 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 
 	public BlockElectricFurnace(String name, boolean isBurning) {
 
-		super(name, isBurning);
+		super(name, isBurning, SB_GUIs.ID_ELECTRIC_FURNACE);
 	}
 
 	@Override
@@ -36,16 +33,6 @@ public class BlockElectricFurnace extends BlockMachineBase implements ITileEntit
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(SB_Blocks.ELECTRIC_FURNACE);
-	}
-
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
-		if (!worldIn.isRemote) {
-			playerIn.openGui(ScienceBitch.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
-		}
-
-		return true;
 	}
 
 	public static void setState(boolean active, World worldIn, BlockPos pos) {

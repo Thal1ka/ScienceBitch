@@ -1,15 +1,9 @@
 package com.sciencebitch.mod;
 
-import com.sciencebitch.containers.ContainerElectricFurnace;
-import com.sciencebitch.containers.ContainerPulverizer;
 import com.sciencebitch.creativeTabs.SB_CreativeTabs;
-import com.sciencebitch.gui.GuiElectricFurnace;
-import com.sciencebitch.gui.GuiPulverizer;
-import com.sciencebitch.mod.handlers.GuiHandler;
+import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.proxy.CommonProxy;
 import com.sciencebitch.recipes.RecipeManager;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
-import com.sciencebitch.tileentities.TileEntityPulverizer;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -33,8 +27,6 @@ public class ScienceBitch {
 	@Instance
 	public static ScienceBitch instance;
 
-	private static final GuiHandler guiHandler = new GuiHandler();
-
 	@SidedProxy(clientSide = ScienceBitch.CLIENT_PROXY_CLASS, serverSide = ScienceBitch.COMMON_PROXY_CLASS)
 	public static CommonProxy proxy;
 
@@ -50,21 +42,16 @@ public class ScienceBitch {
 		RecipeManager.initialize();
 
 		registerGUIs();
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, getGuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, SB_GUIs.guiHandler);
 		SB_CreativeTabs.initializeTabIcons();
 	}
 
 	private void registerGUIs() {
 
-		guiHandler.registerGui((i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
-		guiHandler.registerGui((i, t) -> new ContainerPulverizer(i, (TileEntityPulverizer) t), (i, t) -> new GuiPulverizer(i, (TileEntityPulverizer) t));
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
 	}
 
-	public static GuiHandler getGuiHandler() {
-		return guiHandler;
-	}
 }

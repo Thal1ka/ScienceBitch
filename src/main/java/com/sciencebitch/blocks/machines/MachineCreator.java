@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.gui.GuiElectricFurnace;
+import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.interfaces.IBlockHandler;
 import com.sciencebitch.interfaces.IContainerProvider;
 import com.sciencebitch.interfaces.IGuiProvider;
 import com.sciencebitch.interfaces.ITileEntityCreator;
-import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.mod.handlers.RegistryHandler;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 
@@ -28,8 +28,7 @@ public class MachineCreator implements IBlockHandler {
 
 	private MachineCreator() {
 
-		if (disable)
-			return;
+		if (disable) return;
 
 		create(ELECTRIC_FURNACE, (w, m) -> new TileEntityElectricFurnace(), (i, t) -> new ContainerElectricFurnace(i, (TileEntityElectricFurnace) t), (i, t) -> new GuiElectricFurnace(i, (TileEntityElectricFurnace) t));
 
@@ -48,7 +47,7 @@ public class MachineCreator implements IBlockHandler {
 
 	private void create(String name, ITileEntityCreator tileEntity, IContainerProvider container, IGuiProvider gui) {
 
-		int guiId = ScienceBitch.getGuiHandler().registerGui(container, gui);
+		int guiId = SB_GUIs.guiHandler.registerGui(container, gui);
 
 		Block machineIdle = new BlockMachineBaseExp(name, false, tileEntity, guiId);
 		Block machineActive = new BlockMachineBaseExp(name + "_lit", true, tileEntity, guiId);

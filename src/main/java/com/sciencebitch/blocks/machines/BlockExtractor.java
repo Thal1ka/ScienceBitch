@@ -24,7 +24,7 @@ public class BlockExtractor extends BlockMachineBase implements ITileEntityProvi
 
 	public BlockExtractor(String name, boolean isBurning) {
 
-		super(name, isBurning);
+		super(name, isBurning, 0);
 	}
 
 	@Override
