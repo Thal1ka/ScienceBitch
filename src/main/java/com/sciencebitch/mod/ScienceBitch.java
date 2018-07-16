@@ -41,13 +41,8 @@ public class ScienceBitch {
 		ScienceBitch.proxy.initialize();
 		RecipeManager.initialize();
 
-		registerGUIs();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, SB_GUIs.guiHandler);
 		SB_CreativeTabs.initializeTabIcons();
-	}
-
-	private void registerGUIs() {
-
 	}
 
 	@EventHandler
