@@ -1,0 +1,9 @@
+{
+    "variants": 
+    {
+        "facing=north": { "model": "sciencebitch:extractor" },
+        "facing=east": { "model": "sciencebitch:extractor", "y": 90 },
+        "facing=south": { "model": "sciencebitch:extractor", "y": 180 },
+        "facing=west": { "model": "sciencebitch:extractor", "y": 270 }
+    }
+}

@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiExtractor extends GuiContainer {
 
-	private static final ResourceLocation TEXTURES = new ResourceLocation(ScienceBitch.MODID + ":textures/gui/container/Extractor.png");
+	private static final ResourceLocation TEXTURES = new ResourceLocation(ScienceBitch.MODID + ":textures/gui/container/extractor.png");
 	private static final int DEFAULT_FONT_COLOR = 0xffffff;
 
 	private final InventoryPlayer playerInventory;

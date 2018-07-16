@@ -1,6 +1,7 @@
 package com.sciencebitch.containers;
 
 import com.sciencebitch.containers.slots.SlotElectricFuel;
+import com.sciencebitch.recipes.RecipeManager;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +10,6 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class ContainerPulverizer extends ContainerBase {
 
@@ -77,25 +77,23 @@ public class ContainerPulverizer extends ContainerBase {
 
 			if (index == TileEntityPulverizer.ID_OUTPUTFIELD_1 || index == TileEntityPulverizer.ID_OUTPUTFIELD_2) {
 
-				if (!this.mergeItemStack(stackInSlot, 4, 40, true))
-					return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, true)) return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityPulverizer.ID_FUELFIELD && index != TileEntityPulverizer.ID_INPUTFIELD) {
 				// From inventory to furnace
-				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
-						return ItemStack.EMPTY;
+				if (!RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stackInSlot.getItem()).isEmpty()) {
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
 				} else if (TileEntityPulverizer.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
-						return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
 				} else if (index >= 4 && index < 31) {
-					if (!this.mergeItemStack(stackInSlot, 31, 40, false))
-						return ItemStack.EMPTY;
-				} else if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false))
-					return ItemStack.EMPTY;
-			} else if (!this.mergeItemStack(stackInSlot, 4, 40, false))
-				return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 31, 40, false)) return ItemStack.EMPTY;
+				} else {
+					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
+				}
+			} else {
+				if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
+			}
 
 			if (stackInSlot.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
@@ -103,8 +101,7 @@ public class ContainerPulverizer extends ContainerBase {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount())
-				return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

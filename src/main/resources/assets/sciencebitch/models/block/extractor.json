@@ -1,0 +1,13 @@
+{
+    "parent": "block/orientable",
+    "textures":
+    {
+        "particle": "sciencebitch:blocks/extractor_front_off",
+        "up": "sciencebitch:blocks/extractor_top",
+        "down": "sciencebitch:blocks/extractor_top",
+        "north": "sciencebitch:blocks/extractor_front_off",
+        "east": "sciencebitch:blocks/extractor_side",
+        "south": "sciencebitch:blocks/extractor_side",
+        "west": "sciencebitch:blocks/extractor_side"
+    }
+}

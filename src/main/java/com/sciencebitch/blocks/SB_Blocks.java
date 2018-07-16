@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
 
 import net.minecraft.block.Block;
@@ -35,8 +36,8 @@ public class SB_Blocks {
 	public static final Block ELECTRIC_FURNACE_ACTIVE = new BlockElectricFurnace("electric_furnace_lit", true).setLightLevel(0.875F);
 	public static final Block PULVERIZER = new BlockPulverizer("pulverizer", false);
 	public static final Block PULVERIZER_ACTIVE = new BlockPulverizer("pulverizer_lit", true).setLightLevel(0.875F);
-	public static final Block EXTRACTOR = new BlockPulverizer("extractor", false);
-	public static final Block EXTRACTOR_ACTIVE = new BlockPulverizer("extractor_lit", true).setLightLevel(0.875F);
+	public static final Block EXTRACTOR = new BlockExtractor("extractor", false);
+	public static final Block EXTRACTOR_ACTIVE = new BlockExtractor("extractor_lit", true).setLightLevel(0.875F);
 
 	// public static final Block ELECTRIC_FURNACE =
 	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();

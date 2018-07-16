@@ -1,15 +1,17 @@
 package com.sciencebitch.containers;
 
+import com.sciencebitch.containers.slots.SlotBottleInput;
 import com.sciencebitch.containers.slots.SlotElectricFuel;
+import com.sciencebitch.containers.slots.SlotElectricFurnaceOutput;
+import com.sciencebitch.recipes.RecipeManager;
 import com.sciencebitch.tileentities.TileEntityExtractor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class ContainerExtractor extends ContainerBase {
 
@@ -21,8 +23,8 @@ public class ContainerExtractor extends ContainerBase {
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
-		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 2, 116, 35));
-		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 3, 144, 35));
+		this.addSlotToContainer(new SlotBottleInput(tileEntity, 2, 143, 17));
+		this.addSlotToContainer(new SlotElectricFurnaceOutput(playerInventory.player, tileEntity, 3, 143, 53));
 
 		// Playerinventory
 		for (int row = 0; row < 3; row++) {
@@ -80,16 +82,22 @@ public class ContainerExtractor extends ContainerBase {
 				if (!this.mergeItemStack(stackInSlot, 4, 40, true)) return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
-			} else if (index != TileEntityExtractor.ID_FUELFIELD && index != TileEntityExtractor.ID_INPUTFIELD) {
+			} else if (index != TileEntityExtractor.ID_FUELFIELD && index != TileEntityExtractor.ID_INPUTFIELD && index != TileEntityExtractor.ID_BOTTLEFIELD) {
 				// From inventory to furnace
-				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
+				if (!RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stackInSlot.getItem()).isEmpty()) {
 					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
 				} else if (TileEntityExtractor.isItemFuel(stackInSlot)) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
+				} else if (this.isItemBottle(stackInSlot)) {
+					if (!this.mergeItemStack(stackInSlot, 2, 3, false)) return ItemStack.EMPTY;
 				} else if (index >= 4 && index < 31) {
 					if (!this.mergeItemStack(stackInSlot, 31, 40, false)) return ItemStack.EMPTY;
-				} else if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
-			} else if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
+				} else {
+					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
+				}
+			} else {
+				if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
+			}
 
 			if (stackInSlot.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
@@ -103,5 +111,9 @@ public class ContainerExtractor extends ContainerBase {
 		}
 
 		return stackCopy;
+	}
+
+	private boolean isItemBottle(ItemStack stack) {
+		return stack.getItem() == Items.GLASS_BOTTLE;
 	}
 }

@@ -26,10 +26,12 @@ tile.lemon_leaves_block.name=Lemon leaves
 //Machines
 tile.electric_furnace.name=Electric Furnace
 tile.pulverizer.name=Pulverizer
+tile.extractor.name=Extractor
 
 //Containers
 container.electric_furnace=Electric Furnace
 container.pulverizer=Pulverizer
+container.extractor=Extractor
 
 //Creative tabs
 itemGroup.machines=Machines

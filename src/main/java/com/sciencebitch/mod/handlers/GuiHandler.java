@@ -28,8 +28,10 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 
-		if (ID < 0 || ID >= containerProviders.size())
-			throw new IllegalArgumentException("Unregistered GUI ID: " + ID);
+		if (ID < 0 || ID >= containerProviders.size()) throw new IllegalArgumentException("Unregistered GUI ID: " + ID);
+
+		System.out.println(ID);
+		System.out.println(guiProviders.get(ID).getGui(player.inventory, world.getTileEntity(new BlockPos(x, y, z))).getClass().getName());
 
 		return containerProviders.get(ID).getContainer(player.inventory, world.getTileEntity(new BlockPos(x, y, z)));
 	}
@@ -37,8 +39,7 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 
-		if (ID < 0 || ID >= guiProviders.size())
-			throw new IllegalArgumentException("Unregistered GUI ID: " + ID);
+		if (ID < 0 || ID >= guiProviders.size()) throw new IllegalArgumentException("Unregistered GUI ID: " + ID);
 
 		return guiProviders.get(ID).getGui(player.inventory, world.getTileEntity(new BlockPos(x, y, z)));
 	}
