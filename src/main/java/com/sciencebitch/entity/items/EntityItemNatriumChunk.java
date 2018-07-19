@@ -13,8 +13,9 @@ public class EntityItemNatriumChunk extends DropItemEntityBase {
 		super.onUpdate();
 
 		if (isInWater()) {
-			this.world.createExplosion(this, this.posX, this.posY + 1, this.posZ, 10.0F, false);
+
 			this.setDead();
+			this.world.createExplosion(this, this.posX, this.posY + this.height / 16.0F + 1, this.posZ, 1.0F, true);
 		}
 	}
 }
