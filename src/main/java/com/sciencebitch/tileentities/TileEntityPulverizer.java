@@ -163,7 +163,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		cookTime++;
 
 		if (cookTime == totalCookTime) {
-			smeltItem();
+			processItem();
 			cookTime = 0;
 		}
 	}
@@ -174,41 +174,39 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		cookTime = 0;
 	}
 
-	private void smeltItem() {
+	private void processItem() {
 
-		if (canWork()) {
-			ItemStack smeltingResult = getSmeltingResult(getInputStack());
-			ItemStack outputStack1 = getOutputStack1();
-			ItemStack outputStack2 = getOutputStack2();
+		ItemStack smeltingResult = getSmeltingResult(getInputStack());
+		ItemStack outputStack1 = getOutputStack1();
+		ItemStack outputStack2 = getOutputStack2();
 
-			getInputStack().shrink(1);
+		getInputStack().shrink(1);
 
-			boolean singleOutput = smeltingResult.getCount() == 1;
+		boolean singleOutput = smeltingResult.getCount() == 1;
 
-			if (!singleOutput) {
-				smeltingResult.setCount(smeltingResult.getCount() / 2);
-			}
+		if (!singleOutput) {
+			smeltingResult.setCount(smeltingResult.getCount() / 2);
+		}
 
-			boolean addedResult = false;
+		boolean addedResult = false;
 
-			if (outputStack1.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD_1, smeltingResult.copy());
+		if (outputStack1.isEmpty()) {
+			this.inventory.set(ID_OUTPUTFIELD_1, smeltingResult.copy());
+			addedResult = true;
+		} else {
+
+			if (isOutputStackValid(outputStack1, smeltingResult)) {
+				outputStack1.grow(smeltingResult.getCount());
 				addedResult = true;
-			} else {
-
-				if (isOutputStackValid(outputStack1, smeltingResult)) {
-					outputStack1.grow(smeltingResult.getCount());
-					addedResult = true;
-				}
 			}
+		}
 
-			if (singleOutput && addedResult) return;
+		if (singleOutput && addedResult) return;
 
-			if (outputStack2.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD_2, smeltingResult.copy());
-			} else {
-				outputStack2.grow(smeltingResult.getCount());
-			}
+		if (outputStack2.isEmpty()) {
+			this.inventory.set(ID_OUTPUTFIELD_2, smeltingResult.copy());
+		} else {
+			outputStack2.grow(smeltingResult.getCount());
 		}
 	}
 

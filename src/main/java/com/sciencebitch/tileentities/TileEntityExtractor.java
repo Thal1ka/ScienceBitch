@@ -208,10 +208,8 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 	private void processItem() {
 
-		if (canWork()) {
-			currentWorkItem = null;
-			currentWorkingResult = null;
-		}
+		currentWorkItem = null;
+		currentWorkingResult = null;
 	}
 
 	@Override

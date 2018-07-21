@@ -56,10 +56,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD)
-			return false;
-		if (index == ID_FUELFIELD)
-			return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD) return false;
+		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -121,19 +119,15 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty())
-			return false;
+		if (inputStack.isEmpty()) return false;
 
 		ItemStack smeltingResult = getSmeltingResult(inputStack);
-		if (smeltingResult.isEmpty())
-			return false;
+		if (smeltingResult.isEmpty()) return false;
 
 		ItemStack outputStack = getOutputStack();
-		if (outputStack.isEmpty())
-			return true;
+		if (outputStack.isEmpty()) return true;
 
-		if (!outputStack.isItemEqual(smeltingResult))
-			return false;
+		if (!outputStack.isItemEqual(smeltingResult)) return false;
 
 		int stackSize = outputStack.getCount() + smeltingResult.getCount();
 
@@ -163,18 +157,16 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 
 	private void smeltItem() {
 
-		if (canWork()) {
-			ItemStack smeltingResult = getSmeltingResult(getInputStack());
-			ItemStack outputStack = getOutputStack();
+		ItemStack smeltingResult = getSmeltingResult(getInputStack());
+		ItemStack outputStack = getOutputStack();
 
-			if (outputStack.isEmpty()) {
-				this.inventory.set(ID_OUTPUTFIELD, smeltingResult.copy());
-			} else {
-				outputStack.grow(smeltingResult.getCount());
-			}
-
-			getInputStack().shrink(1);
+		if (outputStack.isEmpty()) {
+			this.inventory.set(ID_OUTPUTFIELD, smeltingResult.copy());
+		} else {
+			outputStack.grow(smeltingResult.getCount());
 		}
+
+		getInputStack().shrink(1);
 	}
 
 	@Override
