@@ -65,12 +65,18 @@ public class RecipeManager {
 	private static void addPulverizerRecipes() {
 
 		PULVERIZER_RECIPES.addRecipe(new ItemStack(Items.DIAMOND), new ItemStack(Items.COAL, 8));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.IRON_ORE), new ItemStack(SB_Items.IRON_DUST));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.GOLD_ORE), new ItemStack(SB_Items.GOLD_DUST));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.COPPER_ORE_BLOCK), new ItemStack(SB_Items.COPPER_DUST));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.TIN_ORE_BLOCK), new ItemStack(SB_Items.TIN_DUST));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.LEAD_ORE_BLOCK), new ItemStack(SB_Items.LEAD_DUST));
-		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.PLATIN_ORE), new ItemStack(SB_Items.PLATIN_DUST));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.GRAVEL));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.SANDSTONE), new ItemStack(Blocks.SAND, 4));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Items.COAL), new ItemStack(SB_Items.COAL_DUST, 2));
+
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.IRON_ORE), new ItemStack(SB_Items.IRON_DUST, 2));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(Blocks.GOLD_ORE), new ItemStack(SB_Items.GOLD_DUST, 2));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.COPPER_ORE_BLOCK), new ItemStack(SB_Items.COPPER_DUST, 2));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.TIN_ORE_BLOCK), new ItemStack(SB_Items.TIN_DUST, 2));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.LEAD_ORE_BLOCK), new ItemStack(SB_Items.LEAD_DUST, 2));
+		PULVERIZER_RECIPES.addRecipe(new ItemStack(SB_Blocks.PLATIN_ORE), new ItemStack(SB_Items.PLATIN_DUST, 2));
 	}
 
 	private static void addExtractorRecipes() {

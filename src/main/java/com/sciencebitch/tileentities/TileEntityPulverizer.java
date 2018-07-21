@@ -129,7 +129,17 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		ItemStack smeltingResult = getSmeltingResult(inputStack);
 		if (smeltingResult.isEmpty()) return false;
 
-		return isOutputStackValid(getOutputStack1(), smeltingResult) && isOutputStackValid(getOutputStack2(), smeltingResult);
+		boolean singleOutput = smeltingResult.getCount() == 1;
+
+		if (!singleOutput) {
+			smeltingResult.setCount(smeltingResult.getCount() / 2);
+		}
+
+		boolean output1Valid = isOutputStackValid(getOutputStack1(), smeltingResult);
+		boolean output2Valid = isOutputStackValid(getOutputStack2(), smeltingResult);
+
+		if (singleOutput) return output1Valid || output2Valid;
+		return output1Valid && output2Valid;
 	}
 
 	private boolean isOutputStackValid(ItemStack outputStack, ItemStack smeltingResult) {
@@ -144,7 +154,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	}
 
 	private ItemStack getSmeltingResult(ItemStack stack) {
-		return RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem());
+		return RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem()).copy();
 	}
 
 	@Override
@@ -171,19 +181,34 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 			ItemStack outputStack1 = getOutputStack1();
 			ItemStack outputStack2 = getOutputStack2();
 
+			getInputStack().shrink(1);
+
+			boolean singleOutput = smeltingResult.getCount() == 1;
+
+			if (!singleOutput) {
+				smeltingResult.setCount(smeltingResult.getCount() / 2);
+			}
+
+			boolean addedResult = false;
+
 			if (outputStack1.isEmpty()) {
 				this.inventory.set(ID_OUTPUTFIELD_1, smeltingResult.copy());
+				addedResult = true;
 			} else {
-				outputStack1.grow(smeltingResult.getCount());
+
+				if (isOutputStackValid(outputStack1, smeltingResult)) {
+					outputStack1.grow(smeltingResult.getCount());
+					addedResult = true;
+				}
 			}
+
+			if (singleOutput && addedResult) return;
 
 			if (outputStack2.isEmpty()) {
 				this.inventory.set(ID_OUTPUTFIELD_2, smeltingResult.copy());
 			} else {
 				outputStack2.grow(smeltingResult.getCount());
 			}
-
-			getInputStack().shrink(1);
 		}
 	}
 
