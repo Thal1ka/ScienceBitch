@@ -24,6 +24,9 @@ public class RecipeManager {
 		addPulverizerRecipes();
 	}
 
+	/**
+	 * Adds normal crafting recipes. Will be replaced by json recipes
+	 */
 	@Deprecated
 	private static void addCraftingRecipes() {
 

@@ -4,6 +4,7 @@ import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.util.CrossReferenceRegister;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,6 +23,8 @@ public class BlockBase extends Block implements IHasModel {
 
 		SB_Blocks.BLOCKS.add(this);
 		SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(getRegistryName()));
+
+		CrossReferenceRegister.registerBlock(this);
 	}
 
 	@Override
@@ -29,5 +32,4 @@ public class BlockBase extends Block implements IHasModel {
 
 		ScienceBitch.proxy.registerItemRenderer(Item.getItemFromBlock(this), 0, "inventory");
 	}
-
 }

@@ -3,6 +3,7 @@ package com.sciencebitch.items;
 import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.util.CrossReferenceRegister;
 
 import net.minecraft.item.Item;
 
@@ -15,6 +16,7 @@ public class ItemBase extends Item implements IHasModel {
 		setCreativeTab(SB_CreativeTabs.TAB_ITEMS);
 
 		SB_Items.ITEMS.add(this);
+		CrossReferenceRegister.registerItem(this);
 	}
 
 	@Override
