@@ -24,14 +24,12 @@ public class EntityItemNatriumChunk extends DropItemEntityBase {
 		super.onUpdate();
 
 		if (isInWater() && !isIgnited) {
-			isIgnited = true;
-			setInfinitePickupDelay();
+			ignite();
 		}
 	}
 
 	@Override
 	public void onEntityUpdate() {
-		super.onEntityUpdate();
 
 		if (isIgnited && !world.isRemote) {
 
@@ -47,6 +45,13 @@ public class EntityItemNatriumChunk extends DropItemEntityBase {
 				createBurningMotion();
 			}
 		}
+		super.onEntityUpdate();
+	}
+
+	private void ignite() {
+
+		this.isIgnited = true;
+		this.setInfinitePickupDelay();
 	}
 
 	private void explode() {
@@ -56,4 +61,5 @@ public class EntityItemNatriumChunk extends DropItemEntityBase {
 	private void createBurningMotion() {
 
 	}
+
 }

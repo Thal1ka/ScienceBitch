@@ -17,10 +17,12 @@ public class DropHandler {
 
 		EntityItem entityItem = e.getEntityItem();
 
-		if (entityItem.getItem().getItem() == SB_Items.NATRIUM_CHUNK) {
+		e.setCanceled(true);
 
+		if (entityItem.getItem().getItem() == SB_Items.NATRIUM_CHUNK) {
 			dropNatriumChunk(e.getPlayer(), entityItem);
-			e.setCanceled(true);
+		} else {
+			e.setCanceled(false);
 		}
 
 	}
