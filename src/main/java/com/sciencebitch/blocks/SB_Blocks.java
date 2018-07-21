@@ -24,8 +24,8 @@ public class SB_Blocks {
 	public static final Block NATRIUM_ORE_BLOCK = new BlockOre("natrium_ore_block", 25, 8, 56, BlockOre.DEFAULT_MAX_HEIGHT).setHardness(4.0F);
 	public static final Block LEAD_ORE_BLOCK = new BlockOre("lead_ore_block", 15, 8).setHardness(4.5F);
 	public static final Block LEAD_BLOCK = new BlockBase("lead_block", Material.IRON).setHardness(4.5F);
-	// public static final Block NATRIUM_BLOCK = new BlockBase("natrium_block",
-	// Material.IRON).setHardness(3.5F).setResistance(8.0F);
+	public static final Block PLATIN_ORE = new BlockOre("platin_ore_block", 3, 8, 16, 48).setHardness(5.0F);
+	public static final Block PLATIN_BLOCK = new BlockBase("platin_block", Material.IRON).setHardness(5.0F);
 
 	// PLANTS
 	// public static final Block CROP_HOPS = new BlockCropBase("plant_hops", null,
@@ -48,9 +48,5 @@ public class SB_Blocks {
 
 	public static void add(Block block) {
 		SB_Blocks.BLOCKS.add(block);
-	}
-
-	private static Block getBlock() {
-		return null;
 	}
 }
