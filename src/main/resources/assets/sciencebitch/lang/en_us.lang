@@ -11,6 +11,7 @@ item.copper_dust.name=Copper Dust
 item.tin_dust.name=Tin Dust
 item.lead_dust.name=Lead Dust
 item.platin_dust.name=Platin Dust
+item.coal_dust.name=Coal Dust
 
 item.natrium_chunk.name=Natrium Chunk
 
