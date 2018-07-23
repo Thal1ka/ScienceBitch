@@ -126,7 +126,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		ItemStack inputStack = getInputStack();
 		if (inputStack.isEmpty()) return false;
 
-		ItemStack smeltingResult = getSmeltingResult(inputStack);
+		ItemStack smeltingResult = getWorkResult(inputStack);
 		if (smeltingResult.isEmpty()) return false;
 
 		boolean singleOutput = smeltingResult.getCount() == 1;
@@ -153,8 +153,10 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	}
 
-	private ItemStack getSmeltingResult(ItemStack stack) {
-		return RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem()).copy();
+	private ItemStack getWorkResult(ItemStack stack) {
+
+		ItemStack result = RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem());
+		return (result == null) ? ItemStack.EMPTY : result.copy();
 	}
 
 	@Override
@@ -176,7 +178,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private void processItem() {
 
-		ItemStack smeltingResult = getSmeltingResult(getInputStack());
+		ItemStack smeltingResult = getWorkResult(getInputStack());
 		ItemStack outputStack1 = getOutputStack1();
 		ItemStack outputStack2 = getOutputStack2();
 

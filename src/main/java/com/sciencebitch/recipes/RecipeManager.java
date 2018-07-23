@@ -14,8 +14,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RecipeManager {
 
-	public static final MachineRecipes PULVERIZER_RECIPES = new MachineRecipes();
-	public static final MachineRecipes EXTRACTOR_RECIPES = new MachineRecipes();
+	public static final MachineRecipes<ItemStack> PULVERIZER_RECIPES = new MachineRecipes<>();
+	public static final MachineRecipes<ItemStack> EXTRACTOR_RECIPES = new MachineRecipes<>();
 
 	public static void initialize() {
 
@@ -44,10 +44,8 @@ public class RecipeManager {
 		GameRegistry.addShapelessRecipe(new ResourceLocation("leadBlockToIngot"), null, new ItemStack(SB_Items.LEAD_INGOT, 9), getIngredient(SB_Blocks.LEAD_BLOCK));
 		GameRegistry.addShapelessRecipe(new ResourceLocation("platinBlockToIngot"), null, new ItemStack(SB_Items.PLATIN_INGOT, 9), getIngredient(SB_Blocks.PLATIN_BLOCK));
 
-		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), getIngredient(Items.GLASS_BOTTLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE),
-				getIngredient(Items.APPLE));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("gunpowder"), null, new ItemStack(Items.GUNPOWDER, 5), getIngredient(SB_Items.COAL_DUST), getIngredient(SB_Items.SULFUR_DUST), getIngredient(SB_Items.NITRE_DUST),
-				getIngredient(SB_Items.NITRE_DUST), getIngredient(SB_Items.NITRE_DUST));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), getIngredient(Items.GLASS_BOTTLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE));
+		GameRegistry.addShapelessRecipe(new ResourceLocation("gunpowder"), null, new ItemStack(Items.GUNPOWDER, 5), getIngredient(SB_Items.COAL_DUST), getIngredient(SB_Items.SULFUR_DUST), getIngredient(SB_Items.NITRE_DUST), getIngredient(SB_Items.NITRE_DUST), getIngredient(SB_Items.NITRE_DUST));
 	}
 
 	private static void addSmeltingRecipes() {

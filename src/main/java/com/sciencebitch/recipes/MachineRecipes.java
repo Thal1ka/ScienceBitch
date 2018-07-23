@@ -6,23 +6,17 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class MachineRecipes {
+public class MachineRecipes<T> {
 
-	private Map<Item, ItemStack> recipes = new HashMap<>();
+	private Map<Item, T> recipes = new HashMap<>();
 
-	public void addRecipe(ItemStack input, ItemStack output) {
+	public void addRecipe(ItemStack input, T output) {
 		recipes.put(input.getItem(), output);
 	}
 
-	public ItemStack getRecipeResult(Item input) {
+	public T getRecipeResult(Item input) {
 
-		ItemStack result = recipes.get(input);
-
-		if (result == null) {
-			result = ItemStack.EMPTY;
-		}
-
-		return result;
+		return recipes.get(input);
 	}
 
 }
