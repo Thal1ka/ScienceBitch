@@ -24,7 +24,7 @@ public class BlockBase extends Block implements IHasModel {
 		SB_Blocks.BLOCKS.add(this);
 		SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(getRegistryName()));
 
-		CrossReferenceRegister.registerBlock(this);
+		CrossReferenceRegister.registerBlock(this, name);
 	}
 
 	@Override

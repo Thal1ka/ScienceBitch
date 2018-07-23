@@ -12,6 +12,8 @@ item.tin_dust.name=Tin Dust
 item.lead_dust.name=Lead Dust
 item.platin_dust.name=Platin Dust
 item.coal_dust.name=Coal Dust
+item.sulfur_dust.name=Sulfur Dust
+item.nitre_dust.name=Nitre Dust
 
 item.natrium_chunk.name=Natrium Chunk
 
@@ -29,6 +31,8 @@ tile.lead_ore_block.name=Lead Ore
 tile.lead_block.name=Block of Lead
 tile.platin_ore_block.name=Platin Ore
 tile.platin_block.name=Block of Platin
+tile.sulfur_ore_block.name=Sulfur Ore
+tile.nitre_ore_block.name=Nitre Ore
 tile.lemon_leaves_block.name=Lemon leaves
 
 //Machines

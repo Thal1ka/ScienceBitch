@@ -26,6 +26,8 @@ public class SB_Blocks {
 	public static final Block LEAD_BLOCK = new BlockBase("lead_block", Material.IRON).setHardness(4.5F);
 	public static final Block PLATIN_ORE = new BlockOre("platin_ore_block", 3, 8, 16, 48).setHardness(5.0F);
 	public static final Block PLATIN_BLOCK = new BlockBase("platin_block", Material.IRON).setHardness(5.0F);
+	public static final Block SULFUR_ORE_BLOCK = new BlockOreDustDrop("sulfur_ore_block", "sulfur_dust", 8, 8).setHardness(3.0F);
+	public static final Block NITRE_ORE_BLOCK = new BlockOreDustDrop("nitre_ore_block", "nitre_dust", 4, 12, 50, BlockOre.DEFAULT_MAX_HEIGHT);
 
 	// PLANTS
 	// public static final Block CROP_HOPS = new BlockCropBase("plant_hops", null,

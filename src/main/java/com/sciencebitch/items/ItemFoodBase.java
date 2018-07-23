@@ -18,7 +18,7 @@ public class ItemFoodBase extends ItemFood implements IHasModel {
 		setCreativeTab(CreativeTabs.FOOD);
 
 		SB_Items.ITEMS.add(this);
-		CrossReferenceRegister.registerItem(this);
+		CrossReferenceRegister.registerItem(this, name);
 	}
 
 	public ItemFoodBase(String name, int amount, boolean isWolfFood) {

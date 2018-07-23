@@ -26,6 +26,8 @@ public class SB_Items {
 	public static final Item PLATIN_DUST = new ItemBase("platin_dust");
 
 	public static final Item COAL_DUST = new ItemBase("coal_dust");
+	public static final Item SULFUR_DUST = new ItemBase("sulfur_dust");
+	public static final Item NITRE_DUST = new ItemBase("nitre_dust");
 
 	// FOOD
 	public static final Item APPLE_JUICE_BOTTLE = new ItemFoodDrinkable("apple_juice_bottle", 4, 0.3F, false);

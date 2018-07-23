@@ -16,7 +16,7 @@ public class ItemBase extends Item implements IHasModel {
 		setCreativeTab(SB_CreativeTabs.TAB_ITEMS);
 
 		SB_Items.ITEMS.add(this);
-		CrossReferenceRegister.registerItem(this);
+		CrossReferenceRegister.registerItem(this, name);
 	}
 
 	@Override

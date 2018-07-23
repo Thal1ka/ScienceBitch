@@ -11,12 +11,12 @@ public class CrossReferenceRegister {
 	private static final Map<String, Block> registeredBlocks = new HashMap<>();
 	private static final Map<String, Item> registeredItems = new HashMap<>();
 
-	public static void registerBlock(Block block) {
-		registeredBlocks.put(block.getUnlocalizedName(), block);
+	public static void registerBlock(Block block, String key) {
+		registeredBlocks.put(key, block);
 	}
 
-	public static void registerItem(Item item) {
-		registeredItems.put(item.getUnlocalizedName(), item);
+	public static void registerItem(Item item, String key) {
+		registeredItems.put(key, item);
 	}
 
 	public static Block getBlock(String key) {
