@@ -126,31 +126,22 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		ItemStack inputStack = getInputStack();
 		if (inputStack.isEmpty()) return false;
 
-		ItemStack smeltingResult = getWorkResult(inputStack);
-		if (smeltingResult.isEmpty()) return false;
+		ItemStack workResult = getWorkResult(inputStack);
+		if (workResult.isEmpty()) return false;
 
-		boolean singleOutput = smeltingResult.getCount() == 1;
+		int space = getOutputSpace(getOutputStack1(), workResult);
+		space += getOutputSpace(getOutputStack2(), workResult);
 
-		if (!singleOutput) {
-			smeltingResult.setCount(smeltingResult.getCount() / 2);
-		}
-
-		boolean output1Valid = isOutputStackValid(getOutputStack1(), smeltingResult);
-		boolean output2Valid = isOutputStackValid(getOutputStack2(), smeltingResult);
-
-		if (singleOutput) return output1Valid || output2Valid;
-		return output1Valid && output2Valid;
+		return space >= workResult.getCount();
 	}
 
-	private boolean isOutputStackValid(ItemStack outputStack, ItemStack smeltingResult) {
+	private int getOutputSpace(ItemStack outputStack, ItemStack workResult) {
 
-		if (outputStack.isEmpty()) return true;
+		if (outputStack.isEmpty()) return workResult.getMaxStackSize();
+		if (!outputStack.isItemEqual(workResult)) return 0;
 
-		if (!outputStack.isItemEqual(smeltingResult)) return false;
-
-		int stackSize = outputStack.getCount() + smeltingResult.getCount();
-		return stackSize <= getInventoryStackLimit() && stackSize <= outputStack.getMaxStackSize();
-
+		int maxStackSize = Math.min(this.getInventoryStackLimit(), workResult.getMaxStackSize());
+		return maxStackSize - outputStack.getCount();
 	}
 
 	private ItemStack getWorkResult(ItemStack stack) {
@@ -178,37 +169,42 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private void processItem() {
 
-		ItemStack smeltingResult = getWorkResult(getInputStack());
+		ItemStack workResult = getWorkResult(getInputStack());
 		ItemStack outputStack1 = getOutputStack1();
 		ItemStack outputStack2 = getOutputStack2();
 
 		getInputStack().shrink(1);
 
-		boolean singleOutput = smeltingResult.getCount() == 1;
+		int output1Space = getOutputSpace(outputStack1, workResult);
+		int output2Space = getOutputSpace(outputStack2, workResult);
 
-		if (!singleOutput) {
-			smeltingResult.setCount(smeltingResult.getCount() / 2);
+		int workResultHalf = workResult.getCount() / 2 + 1;
+
+		int addTo1 = Math.min(output1Space, workResultHalf);
+		int addTo2 = Math.min(output2Space, workResultHalf);
+
+		if (addTo1 + addTo2 > workResultHalf) {
+			addTo2--;
 		}
 
-		boolean addedResult = false;
-
-		if (outputStack1.isEmpty()) {
-			this.inventory.set(ID_OUTPUTFIELD_1, smeltingResult.copy());
-			addedResult = true;
-		} else {
-
-			if (isOutputStackValid(outputStack1, smeltingResult)) {
-				outputStack1.grow(smeltingResult.getCount());
-				addedResult = true;
-			}
+		if (addTo1 < workResultHalf) {
+			addTo2 = workResult.getCount() - addTo1;
+		} else if (addTo2 < workResultHalf) {
+			addTo1 = workResult.getCount() - addTo2;
 		}
 
-		if (singleOutput && addedResult) return;
+		addToStack(ID_OUTPUTFIELD_1, workResult, addTo1);
+		addToStack(ID_OUTPUTFIELD_2, workResult, addTo2);
+	}
 
-		if (outputStack2.isEmpty()) {
-			this.inventory.set(ID_OUTPUTFIELD_2, smeltingResult.copy());
+	private void addToStack(int outputStackId, ItemStack workResult, int amount) {
+
+		if (amount <= 0) return;
+
+		if (this.inventory.get(outputStackId).isEmpty()) {
+			this.inventory.set(outputStackId, new ItemStack(workResult.getItem(), amount));
 		} else {
-			outputStack2.grow(smeltingResult.getCount());
+			this.inventory.get(outputStackId).grow(amount);
 		}
 	}
 

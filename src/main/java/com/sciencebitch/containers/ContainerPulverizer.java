@@ -82,7 +82,7 @@ public class ContainerPulverizer extends ContainerBase {
 
 			} else if (index != TileEntityPulverizer.ID_FUELFIELD && index != TileEntityPulverizer.ID_INPUTFIELD) {
 				// From inventory to furnace
-				if (!RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stackInSlot.getItem()).isEmpty()) {
+				if (RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stackInSlot.getItem()) != null) {
 					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
 				} else if (TileEntityPulverizer.isItemFuel(stackInSlot)) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
