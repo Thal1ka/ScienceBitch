@@ -178,12 +178,12 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		int output1Space = getOutputSpace(outputStack1, workResult);
 		int output2Space = getOutputSpace(outputStack2, workResult);
 
-		int workResultHalf = workResult.getCount() / 2 + 1;
+		int workResultHalf = (workResult.getCount() + 1) / 2;
 
 		int addTo1 = Math.min(output1Space, workResultHalf);
 		int addTo2 = Math.min(output2Space, workResultHalf);
 
-		if (addTo1 + addTo2 > workResultHalf) {
+		if (addTo1 + addTo2 > workResult.getCount()) {
 			addTo2--;
 		}
 
