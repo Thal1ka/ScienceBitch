@@ -9,7 +9,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -20,35 +19,8 @@ public class RecipeManager {
 
 	public static void initialize() {
 
-		addCraftingRecipes();
 		addSmeltingRecipes();
 		addPulverizerRecipes();
-	}
-
-	/**
-	 * Adds normal crafting recipes. Will be replaced by json recipes
-	 */
-	@Deprecated
-	private static void addCraftingRecipes() {
-
-		// SHAPED
-		GameRegistry.addShapedRecipe(new ResourceLocation("copperBlock"), null, new ItemStack(SB_Blocks.COPPER_BLOCK), new String[] { "III", "III", "III" }, 'I', SB_Items.COPPER_INGOT);
-		GameRegistry.addShapedRecipe(new ResourceLocation("tinBlock"), null, new ItemStack(SB_Blocks.TIN_BLOCK), new String[] { "TTT", "TTT", "TTT" }, 'T', SB_Items.TIN_INGOT);
-		GameRegistry.addShapedRecipe(new ResourceLocation("leadBlock"), null, new ItemStack(SB_Blocks.LEAD_BLOCK), new String[] { "LLL", "LLL", "LLL" }, 'L', SB_Items.LEAD_INGOT);
-		GameRegistry.addShapedRecipe(new ResourceLocation("leadBlock"), null, new ItemStack(SB_Blocks.PLATIN_BLOCK), new String[] { "LLL", "LLL", "LLL" }, 'L', SB_Items.PLATIN_INGOT);
-
-		GameRegistry.addShapedRecipe(new ResourceLocation("battery"), null, new ItemStack(SB_Items.BATTERY), new String[] { "TCT", "TJT", "TTT" }, 'T', SB_Items.TIN_INGOT, 'J', SB_Items.APPLE_JUICE_BOTTLE, 'C', SB_Items.COPPER_INGOT);
-
-		// SHAPELESS
-		GameRegistry.addShapelessRecipe(new ResourceLocation("copperBlockToIngot"), null, new ItemStack(SB_Items.COPPER_INGOT, 9), getIngredient(SB_Blocks.COPPER_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("tinBlockToIngot"), null, new ItemStack(SB_Items.TIN_INGOT, 9), getIngredient(SB_Blocks.TIN_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("leadBlockToIngot"), null, new ItemStack(SB_Items.LEAD_INGOT, 9), getIngredient(SB_Blocks.LEAD_BLOCK));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("platinBlockToIngot"), null, new ItemStack(SB_Items.PLATIN_INGOT, 9), getIngredient(SB_Blocks.PLATIN_BLOCK));
-
-		GameRegistry.addShapelessRecipe(new ResourceLocation("fillBattery"), null, new ItemStack(SB_Items.BATTERY), getIngredient(SB_Items.BATTERY), getIngredient(SB_Items.TIN_INGOT), getIngredient(SB_Items.APPLE_JUICE_BOTTLE));
-
-		GameRegistry.addShapelessRecipe(new ResourceLocation("appleJuice"), null, new ItemStack(SB_Items.APPLE_JUICE_BOTTLE), getIngredient(Items.GLASS_BOTTLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE), getIngredient(Items.APPLE));
-		GameRegistry.addShapelessRecipe(new ResourceLocation("gunpowder"), null, new ItemStack(Items.GUNPOWDER, 5), getIngredient(SB_Items.COAL_DUST), getIngredient(SB_Items.SULFUR_DUST), getIngredient(SB_Items.NITRE_DUST), getIngredient(SB_Items.NITRE_DUST), getIngredient(SB_Items.NITRE_DUST));
 	}
 
 	private static void addSmeltingRecipes() {

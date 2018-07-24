@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "sciencebitch:copper_block"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "sciencebitch:copper_ingot",
+        "count": 9
+    }
+}

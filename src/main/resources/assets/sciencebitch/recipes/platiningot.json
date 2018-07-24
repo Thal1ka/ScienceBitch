@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "sciencebitch:platin_block"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "sciencebitch:platin_ingot",
+        "count": 9
+    }
+}

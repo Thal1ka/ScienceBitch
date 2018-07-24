@@ -1,0 +1,34 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "TCT", 
+        "TJT", 
+        "TTT"
+    ],
+    
+    "key":
+    {
+        "T":
+        {
+            "item": "sciencebitch:tin_ingot"
+        },
+        
+        "C":
+        {
+            "item": "sciencebitch:copper_ingot"
+        },
+        
+        "J":
+        {
+            "item": "sciencebitch:apple_juice_bottle"
+        }
+    },
+    
+    "result":
+    {
+        "item": "sciencebitch:battery",
+        "count": 1
+    }
+}

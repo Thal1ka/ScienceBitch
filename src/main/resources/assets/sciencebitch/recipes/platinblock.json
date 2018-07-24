@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "III",
+        "III",
+        "III"
+    ],
+    
+    "key":
+    {
+        "I":
+        {
+            "item": "sciencebitch:platin_ingot"
+        }
+    },
+    
+    "result":
+    {
+        "item": "sciencebitch:platin_block",
+        "count": 1
+    }
+}

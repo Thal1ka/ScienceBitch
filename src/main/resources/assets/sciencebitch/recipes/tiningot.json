@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "sciencebitch:tin_block"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "sciencebitch:tin_ingot",
+        "count": 9
+    }
+}

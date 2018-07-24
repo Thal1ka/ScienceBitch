@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "minecraft:glas_bottle"
+        },
+        
+        {
+            "item": "minecraft:apple"
+        },
+        
+        {
+            "item": "minecraft:apple"
+        },
+        
+        {
+            "item": "minecraft:apple"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "sciencebitch:apple_juice_bottle",
+        "count": 1
+    }
+}

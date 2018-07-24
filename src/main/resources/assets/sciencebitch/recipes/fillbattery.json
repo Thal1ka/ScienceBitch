@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "sciencebitch:tin_ingot"
+        },
+        
+        {
+            "item": "sciencebitch:apple_juice_bottle"
+        },
+        
+        {
+            "item": "sciencebitch:battery"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "sciencebitch:battery",
+        "count": 1
+    }
+}

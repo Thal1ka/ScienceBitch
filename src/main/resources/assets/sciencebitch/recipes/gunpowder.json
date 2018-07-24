@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    
+    "ingredients": 
+    [
+        {
+            "item": "sciencebitch:coal_dust"
+        },
+        
+        {
+            "item": "sciencebitch:sulfur_dust"
+        },
+        
+        {
+            "item": "sciencebitch:nitre_dust"
+        },
+        
+        {
+            "item": "sciencebitch:nitre_dust"
+        },
+        
+        {
+            "item": "sciencebitch:nitre_dust"
+        }
+    ],
+    
+    "result": 
+    {
+        "item": "minecraft:gunpowder",
+        "count": 5
+    }
+}
