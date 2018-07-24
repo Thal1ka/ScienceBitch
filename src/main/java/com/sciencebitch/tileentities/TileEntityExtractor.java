@@ -1,6 +1,7 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockExtractor;
+import com.sciencebitch.recipes.RecipeManager;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -18,7 +19,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 	public static final String NAME = "extractor";
 	public static final int ENERGY_CAPACITY = 200;
-	public static final int FLUID_CAPACITY = 200;
+	public static final int FLUID_CAPACITY = 1000;
 
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_FUELFIELD = 1;
@@ -43,22 +44,14 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 
-		ItemStack itemstack = this.inventory.get(index);
-		boolean sameItem = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
 		this.inventory.set(index, stack);
 
 		if (stack.getCount() > this.getInventoryStackLimit()) {
 			stack.setCount(this.getInventoryStackLimit());
 		}
-
-		if (index == ID_INPUTFIELD && !sameItem) {
-			this.totalCookTime = this.getCookTime(stack);
-			this.cookTime = 0;
-			this.markDirty();
-		}
 	}
 
-	private int getCookTime(ItemStack stack) {
+	private int getCookTime(Item item) {
 		return 200;
 	}
 
@@ -161,6 +154,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 					if (storedFluid == null) {
 						storedFluid = new FluidStack(currentWorkingResult.getFluid(), 0);
 					}
+
+					this.totalCookTime = getCookTime(currentWorkItem);
+
 				} else {
 					currentWorkItem = null;
 				}
@@ -185,15 +181,17 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		return storedFluid.amount < FLUID_CAPACITY;
 	}
 
-	private FluidStack getWorkingResult(Item currentWorkItem2) {
-		return null;
+	private FluidStack getWorkingResult(Item currentWorkItem) {
+		return RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(new ItemStack(currentWorkItem));
 	}
 
 	@Override
 	protected void doWork() {
 
 		cookTime++;
-		storedFluid.amount += currentWorkingResult.amount / totalCookTime;
+		storedFluid.amount += currentWorkingResult.amount;
+
+		System.out.println();
 
 		if (cookTime == totalCookTime) {
 			processItem();
@@ -231,6 +229,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
 		ItemStackHelper.loadAllItems(nbt, this.inventory);
 
+		this.storedFluid = FluidStack.loadFluidStackFromNBT(nbt);
+		System.out.println(storedFluid);
+
 		if (nbt.hasKey("CustomName", 8)) {
 			this.customName = nbt.getString("CustomName");
 		}
@@ -243,6 +244,10 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		nbt.setInteger("CookTime", (short) this.cookTime);
 		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
 		ItemStackHelper.saveAllItems(nbt, this.inventory);
+
+		if (this.storedFluid != null) {
+			storedFluid.writeToNBT(nbt);
+		}
 
 		if (this.hasCustomName()) {
 			nbt.setString("CustomName", this.customName);

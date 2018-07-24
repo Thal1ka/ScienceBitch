@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerExtractor extends ContainerBase {
 
-	private int cookTime, totalCookTime, burnTime, currentBurnTime;
+	private int cookTime, totalCookTime, burnTime, currentBurnTime, storedFluid, fluidCapacity;
 
 	public ContainerExtractor(InventoryPlayer playerInventory, TileEntityExtractor tileEntity) {
 
@@ -58,12 +58,22 @@ public class ContainerExtractor extends ContainerBase {
 			if (this.totalCookTime != this.tileEntity.getField(3)) {
 				listener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
 			}
+
+			if (this.storedFluid != this.tileEntity.getField(4)) {
+				listener.sendWindowProperty(this, 4, this.tileEntity.getField(4));
+			}
+
+			if (this.fluidCapacity != this.tileEntity.getField(5)) {
+				listener.sendWindowProperty(this, 5, this.tileEntity.getField(5));
+			}
 		}
 
 		this.cookTime = this.tileEntity.getField(2);
 		this.burnTime = this.tileEntity.getField(0);
 		this.currentBurnTime = this.tileEntity.getField(1);
 		this.totalCookTime = this.tileEntity.getField(3);
+		this.storedFluid = this.tileEntity.getField(4);
+		this.fluidCapacity = this.tileEntity.getField(5);
 	}
 
 	@Override

@@ -41,13 +41,17 @@ public class GuiExtractor extends GuiContainer {
 
 		if (TileEntityExtractor.isWorking(tileEntity)) {
 
-			int burnScale = getEnergyLeftScaled(54);
-			int mirrorBurn = 54 - burnScale;
-			this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorBurn, 176, mirrorBurn + 31, 21, burnScale);
+			int energyLeft = getEnergyLeftScaled(54);
+			int mirrorEnergy = 54 - energyLeft;
+			this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorEnergy, 176, mirrorEnergy + 31, 21, energyLeft);
 		}
 
 		int cookScale = this.getCookProgressScaled(24);
 		this.drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 35, 176, 14, cookScale + 1, 16);
+
+		int fluidScale = this.getFluidScaled(54);
+		int mirrorFluid = 54 - fluidScale;
+		this.drawTexturedModalRect(this.guiLeft + 110, this.guiTop + 16 + mirrorFluid, 176, mirrorFluid + 31, 21, fluidScale);
 	}
 
 	@Override
@@ -78,5 +82,14 @@ public class GuiExtractor extends GuiContainer {
 
 		if (cookTime == 0 || totalCookTime == 0) return 0;
 		return (int) (cookTime * pixels / (double) totalCookTime + 0.5);
+	}
+
+	private int getFluidScaled(int pixels) {
+
+		int storedFluid = this.tileEntity.getField(4);
+		int fluidCapacity = this.tileEntity.getField(5);
+
+		if (storedFluid == 0 || fluidCapacity == 0) return 0;
+		return (int) (storedFluid * pixels / (double) fluidCapacity + 0.5);
 	}
 }

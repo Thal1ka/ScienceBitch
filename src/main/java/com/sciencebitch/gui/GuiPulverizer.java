@@ -41,9 +41,9 @@ public class GuiPulverizer extends GuiContainer {
 
 		if (TileEntityPulverizer.isWorking(tileEntity)) {
 
-			int burnScale = getEnergyLeftScaled(54);
-			int mirrorBurn = 54 - burnScale;
-			this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorBurn, 176, mirrorBurn + 31, 21, burnScale);
+			int energyLeft = getEnergyLeftScaled(54);
+			int mirrorEnergy = 54 - energyLeft;
+			this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorEnergy, 176, mirrorEnergy + 31, 21, energyLeft);
 		}
 
 		int cookScale = this.getCookProgressScaled(24);

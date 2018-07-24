@@ -3,24 +3,24 @@ package com.sciencebitch.recipes;
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.items.SB_Items;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RecipeManager {
 
 	public static final MachineRecipes<ItemStack, ItemStack> PULVERIZER_RECIPES = new MachineRecipes<>(stack -> stack.getItem());
-	public static final MachineRecipes<ItemStack, FluidStack> EXTRACTOR_RECIPES = new MachineRecipes<>();
+	public static final MachineRecipes<ItemStack, FluidStack> EXTRACTOR_RECIPES = new MachineRecipes<>(stack -> stack.getItem());
 
 	public static void initialize() {
 
 		addSmeltingRecipes();
 		addPulverizerRecipes();
+		addExtractorRecipes();
 	}
 
 	private static void addSmeltingRecipes() {
@@ -60,13 +60,8 @@ public class RecipeManager {
 
 	private static void addExtractorRecipes() {
 
-	}
+		Fluid water = FluidRegistry.getFluid("water");
 
-	private static Ingredient getIngredient(Block block) {
-		return getIngredient(Item.getItemFromBlock(block));
-	}
-
-	private static Ingredient getIngredient(Item item) {
-		return Ingredient.fromItem(item);
+		EXTRACTOR_RECIPES.addRecipe(new ItemStack(SB_Items.BATTERY), new FluidStack(water, 1));
 	}
 }
