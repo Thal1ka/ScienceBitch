@@ -84,7 +84,7 @@ public class ContainerExtractor extends ContainerBase {
 
 			} else if (index != TileEntityExtractor.ID_FUELFIELD && index != TileEntityExtractor.ID_INPUTFIELD && index != TileEntityExtractor.ID_BOTTLEFIELD) {
 				// From inventory to furnace
-				if (!RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stackInSlot.getItem()).isEmpty()) {
+				if (RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stackInSlot) != null) {
 					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
 				} else if (TileEntityExtractor.isItemFuel(stackInSlot)) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;

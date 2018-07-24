@@ -146,7 +146,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private ItemStack getWorkResult(ItemStack stack) {
 
-		ItemStack result = RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack.getItem());
+		ItemStack result = RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stack);
 		return (result == null) ? ItemStack.EMPTY : result.copy();
 	}
 

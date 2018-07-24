@@ -3,20 +3,26 @@ package com.sciencebitch.recipes;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+public class MachineRecipes<S, T> {
 
-public class MachineRecipes<T> {
+	private final Map<Object, T> recipes = new HashMap<>();
+	private final IKeyModifier<S> keyModifier;
 
-	private Map<Item, T> recipes = new HashMap<>();
-
-	public void addRecipe(ItemStack input, T output) {
-		recipes.put(input.getItem(), output);
+	public MachineRecipes() {
+		this(s -> s);
 	}
 
-	public T getRecipeResult(Item input) {
+	public MachineRecipes(IKeyModifier<S> keyModifier) {
+		this.keyModifier = keyModifier;
+	}
 
-		return recipes.get(input);
+	public void addRecipe(S input, T output) {
+		recipes.put(keyModifier.getKey(input), output);
+	}
+
+	public T getRecipeResult(S input) {
+
+		return recipes.get(keyModifier.getKey(input));
 	}
 
 }
