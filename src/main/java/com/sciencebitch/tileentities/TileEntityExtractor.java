@@ -1,6 +1,7 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockExtractor;
+import com.sciencebitch.mod.handlers.FluidHandler;
 import com.sciencebitch.recipes.RecipeManager;
 import com.sciencebitch.util.NbtHelper;
 
@@ -28,7 +29,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	public static final int ID_OUTPUTFIELD = 2;
 	public static final int ID_BOTTLEFIELD = 3;
 
-	private FluidStack storedFluid;
+	private int fluidType = -1;
+	private int fluidAmount;
+
 	private Item currentWorkItem;
 	private FluidStack currentWorkingResult;
 
@@ -81,7 +84,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 			case 2:
 				return this.totalCookTime;
 			case 3:
-				return (storedFluid == null) ? 0 : this.storedFluid.amount;
+				return fluidAmount;
+			case 4:
+				return fluidType;
 			default:
 				return 0;
 		}
@@ -101,18 +106,17 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				this.totalCookTime = value;
 				break;
 			case 3:
-				if (storedFluid != null) {
-					this.storedFluid.amount = value;
-				} else {
-					storedFluid = new FluidStack(FluidRegistry.WATER, value);
-				}
+				this.fluidAmount = value;
+				break;
+			case 4:
+				this.fluidType = value;
 				break;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 4;
+		return 5;
 	}
 
 	@Override
@@ -148,8 +152,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 					currentWorkingResult = getWorkingResult(currentWorkItem);
 
-					if (storedFluid == null) {
-						storedFluid = new FluidStack(currentWorkingResult.getFluid(), 0);
+					if (fluidType < 0) {
+						fluidAmount = 0;
+						fluidType = FluidHandler.getId(currentWorkingResult.getFluid());
 					}
 
 					this.totalCookTime = getCookTime(currentWorkItem);
@@ -173,13 +178,13 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		if (workingResult == null)
 			return false;
 
-		if (storedFluid == null)
+		if (fluidType < 0)
 			return true;
 
-		if (!storedFluid.isFluidEqual(workingResult))
+		if (fluidType != FluidHandler.getId(workingResult.getFluid()))
 			return false;
 
-		return storedFluid.amount < FLUID_CAPACITY;
+		return fluidAmount < FLUID_CAPACITY;
 	}
 
 	private FluidStack getWorkingResult(Item currentWorkItem) {
@@ -190,10 +195,11 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	protected void doWork() {
 
 		cookTime++;
-		storedFluid.amount += currentWorkingResult.amount;
+		fluidAmount += currentWorkingResult.amount;
 
 		if (cookTime == totalCookTime) {
 			processItem();
+			System.out.println(FluidRegistry.getFluidName(FluidHandler.getFluid(fluidType)));
 			cookTime = 0;
 		}
 	}
@@ -231,8 +237,8 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		this.currentWorkItem = NbtHelper.loadItem("CurrentWorkItem", nbt);
 		this.currentWorkingResult = getWorkingResult(currentWorkItem);
 
-		this.storedFluid = FluidStack.loadFluidStackFromNBT(nbt);
-		System.out.println(storedFluid);
+		this.fluidType = nbt.getInteger("fluidType");
+		this.fluidAmount = nbt.getInteger("fluidAmount");
 
 		if (nbt.hasKey("CustomName", 8)) {
 			this.customName = nbt.getString("CustomName");
@@ -248,14 +254,21 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		ItemStackHelper.saveAllItems(nbt, this.inventory);
 		NbtHelper.saveItem(currentWorkItem, "CurrentWorkItem", nbt);
 
-		if (this.storedFluid != null) {
-			storedFluid.writeToNBT(nbt);
-		}
+		nbt.setInteger("fluidType", this.fluidType);
+		nbt.setInteger("fluidAmount", this.fluidAmount);
 
 		if (this.hasCustomName()) {
 			nbt.setString("CustomName", this.customName);
 		}
 
 		return nbt;
+	}
+
+	private void readFluidFromNbt(NBTTagCompound nbt) {
+
+	}
+
+	private void writeFluidToNbt(NBTTagCompound nbt) {
+
 	}
 }

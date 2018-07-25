@@ -6,7 +6,6 @@ import com.sciencebitch.items.SB_Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -60,8 +59,7 @@ public class RecipeManager {
 
 	private static void addExtractorRecipes() {
 
-		Fluid water = FluidRegistry.getFluid("water");
-
-		EXTRACTOR_RECIPES.addRecipe(new ItemStack(SB_Items.BATTERY), new FluidStack(water, 1));
+		EXTRACTOR_RECIPES.addRecipe(new ItemStack(SB_Items.BATTERY), new FluidStack(FluidRegistry.WATER, 1));
+		EXTRACTOR_RECIPES.addRecipe(new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, 2));
 	}
 }
