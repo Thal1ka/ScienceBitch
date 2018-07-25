@@ -2,6 +2,7 @@ package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.recipes.RecipeManager;
+import com.sciencebitch.util.NbtHelper;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -191,8 +192,6 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		cookTime++;
 		storedFluid.amount += currentWorkingResult.amount;
 
-		System.out.println();
-
 		if (cookTime == totalCookTime) {
 			processItem();
 			cookTime = 0;
@@ -229,6 +228,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
 		ItemStackHelper.loadAllItems(nbt, this.inventory);
 
+		this.currentWorkItem = NbtHelper.loadItem("CurrentWorkItem", nbt);
+		this.currentWorkingResult = getWorkingResult(currentWorkItem);
+
 		this.storedFluid = FluidStack.loadFluidStackFromNBT(nbt);
 		System.out.println(storedFluid);
 
@@ -244,6 +246,7 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		nbt.setInteger("CookTime", (short) this.cookTime);
 		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
 		ItemStackHelper.saveAllItems(nbt, this.inventory);
+		NbtHelper.saveItem(currentWorkItem, "CurrentWorkItem", nbt);
 
 		if (this.storedFluid != null) {
 			storedFluid.writeToNBT(nbt);
