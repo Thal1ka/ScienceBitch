@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -189,7 +190,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
 		ItemStackHelper.loadAllItems(nbt, this.inventory);
 
-		if (nbt.hasKey("CustomName", 8)) {
+		if (nbt.hasKey("CustomName", Constants.NBT.TAG_STRING)) {
 			this.customName = nbt.getString("CustomName");
 		}
 	}
