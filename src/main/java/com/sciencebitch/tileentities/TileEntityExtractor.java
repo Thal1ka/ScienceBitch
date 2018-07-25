@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -106,6 +107,8 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 			case 4:
 				if (storedFluid != null) {
 					this.storedFluid.amount = value;
+				} else {
+					storedFluid = new FluidStack(FluidRegistry.WATER, value);
 				}
 				break;
 			case 5:
