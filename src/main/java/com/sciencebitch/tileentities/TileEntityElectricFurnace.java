@@ -199,6 +199,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 		nbt.setInteger("BurnTime", (short) this.storedEnergy);
 		nbt.setInteger("CookTime", (short) this.cookTime);
 		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
+
 		ItemStackHelper.saveAllItems(nbt, this.inventory);
 
 		if (this.hasCustomName()) {

@@ -30,9 +30,6 @@ public class GuiHandler implements IGuiHandler {
 
 		if (ID < 0 || ID >= containerProviders.size()) throw new IllegalArgumentException("Unregistered GUI ID: " + ID);
 
-		System.out.println(ID);
-		System.out.println(guiProviders.get(ID).getGui(player.inventory, world.getTileEntity(new BlockPos(x, y, z))).getClass().getName());
-
 		return containerProviders.get(ID).getContainer(player.inventory, world.getTileEntity(new BlockPos(x, y, z)));
 	}
 
