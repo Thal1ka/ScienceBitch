@@ -13,11 +13,13 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class ContainerElectricFurnace extends ContainerBase {
 
-	private int cookTime, totalCookTime, burnTime, currentBurnTime;
+	private int[] containerValues;
 
 	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
 
 		super(playerInventory, tileEntity);
+
+		this.containerValues = new int[tileEntity.getFieldCount()];
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
@@ -41,26 +43,23 @@ public class ContainerElectricFurnace extends ContainerBase {
 
 		super.detectAndSendChanges();
 
+		int[] newValues = new int[this.tileEntity.getFieldCount()];
+
+		for (int i = 0; i < newValues.length; i++) {
+			newValues[i] = this.tileEntity.getField(i);
+		}
+
 		for (IContainerListener listener : listeners) {
 
-			if (this.cookTime != this.tileEntity.getField(2)) {
-				listener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
-			}
-			if (this.burnTime != this.tileEntity.getField(0)) {
-				listener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
-			}
-			if (this.currentBurnTime != this.tileEntity.getField(1)) {
-				listener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
-			}
-			if (this.totalCookTime != this.tileEntity.getField(3)) {
-				listener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
+			for (int i = 0; i < containerValues.length; i++) {
+
+				if (containerValues[i] != newValues[i]) {
+					listener.sendWindowProperty(this, i, newValues[i]);
+				}
 			}
 		}
 
-		this.cookTime = this.tileEntity.getField(2);
-		this.burnTime = this.tileEntity.getField(0);
-		this.currentBurnTime = this.tileEntity.getField(1);
-		this.totalCookTime = this.tileEntity.getField(3);
+		this.containerValues = newValues;
 	}
 
 	@Override
@@ -76,23 +75,29 @@ public class ContainerElectricFurnace extends ContainerBase {
 
 			if (index == TileEntityElectricFurnace.ID_OUTPUTFIELD) {
 
-				if (!this.mergeItemStack(stackInSlot, 3, 39, true)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 3, 39, true))
+					return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityElectricFurnace.ID_FUELFIELD && index != TileEntityElectricFurnace.ID_INPUTFIELD) {
 				// From inventory to furnace
 				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
+						return ItemStack.EMPTY;
 				} else if (TileEntityElectricFurnace.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
+						return ItemStack.EMPTY;
 				} else if (index >= 3 && index < 30) {
-					if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 30, 39, false))
+						return ItemStack.EMPTY;
 				} else {
-					if (index >= 30 && index < 39 && !this.mergeItemStack(stackInSlot, 3, 30, false)) return ItemStack.EMPTY;
+					if (index >= 30 && index < 39 && !this.mergeItemStack(stackInSlot, 3, 30, false))
+						return ItemStack.EMPTY;
 				}
 
 			} else {
-				if (!this.mergeItemStack(stackInSlot, 3, 39, false)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 3, 39, false))
+					return ItemStack.EMPTY;
 			}
 
 			if (stackInSlot.isEmpty()) {
@@ -101,7 +106,8 @@ public class ContainerElectricFurnace extends ContainerBase {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount())
+				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

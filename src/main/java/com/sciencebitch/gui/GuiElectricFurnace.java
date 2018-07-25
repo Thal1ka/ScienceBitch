@@ -61,22 +61,20 @@ public class GuiElectricFurnace extends GuiContainer {
 
 	private int getEnergyLeftScaled(int pixels) {
 
-		int currentBurnTime = this.tileEntity.getField(1);
-		int burnTime = this.tileEntity.getField(0);
+		int totalEnergy = this.tileEntity.ENERGY_CAPACITY;
+		int currentEnergy = this.tileEntity.getField(0);
 
-		if (currentBurnTime == 0) {
-			currentBurnTime = 200;
-		}
-
-		return (int) (burnTime * pixels / (double) currentBurnTime + 0.5);
+		return (int) (currentEnergy * pixels / (double) totalEnergy + 0.5);
 	}
 
 	private int getCookProgressScaled(int pixels) {
 
-		int cookTime = this.tileEntity.getField(2);
-		int totalCookTime = this.tileEntity.getField(3);
+		int cookTime = this.tileEntity.getField(1);
+		int totalCookTime = this.tileEntity.getField(2);
 
-		if (cookTime == 0 || totalCookTime == 0) return 0;
+		if (cookTime == 0 || totalCookTime == 0)
+			return 0;
+
 		return (int) (cookTime * pixels / (double) totalCookTime + 0.5);
 	}
 }

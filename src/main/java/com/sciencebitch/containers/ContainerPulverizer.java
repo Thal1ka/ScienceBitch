@@ -13,11 +13,13 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerPulverizer extends ContainerBase {
 
-	private int cookTime, totalCookTime, burnTime, currentBurnTime;
+	private int[] containerValues;
 
 	public ContainerPulverizer(InventoryPlayer playerInventory, TileEntityPulverizer tileEntity) {
 
 		super(playerInventory, tileEntity);
+
+		this.containerValues = new int[tileEntity.getFieldCount()];
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
@@ -42,26 +44,23 @@ public class ContainerPulverizer extends ContainerBase {
 
 		super.detectAndSendChanges();
 
+		int[] newValues = new int[this.tileEntity.getFieldCount()];
+
+		for (int i = 0; i < newValues.length; i++) {
+			newValues[i] = this.tileEntity.getField(i);
+		}
+
 		for (IContainerListener listener : listeners) {
 
-			if (this.cookTime != this.tileEntity.getField(2)) {
-				listener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
-			}
-			if (this.burnTime != this.tileEntity.getField(0)) {
-				listener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
-			}
-			if (this.currentBurnTime != this.tileEntity.getField(1)) {
-				listener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
-			}
-			if (this.totalCookTime != this.tileEntity.getField(3)) {
-				listener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
+			for (int i = 0; i < containerValues.length; i++) {
+
+				if (containerValues[i] != newValues[i]) {
+					listener.sendWindowProperty(this, i, newValues[i]);
+				}
 			}
 		}
 
-		this.cookTime = this.tileEntity.getField(2);
-		this.burnTime = this.tileEntity.getField(0);
-		this.currentBurnTime = this.tileEntity.getField(1);
-		this.totalCookTime = this.tileEntity.getField(3);
+		this.containerValues = newValues;
 	}
 
 	@Override
@@ -77,22 +76,28 @@ public class ContainerPulverizer extends ContainerBase {
 
 			if (index == TileEntityPulverizer.ID_OUTPUTFIELD_1 || index == TileEntityPulverizer.ID_OUTPUTFIELD_2) {
 
-				if (!this.mergeItemStack(stackInSlot, 4, 40, true)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, true))
+					return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityPulverizer.ID_FUELFIELD && index != TileEntityPulverizer.ID_INPUTFIELD) {
 				// From inventory to furnace
 				if (RecipeManager.PULVERIZER_RECIPES.getRecipeResult(stackInSlot) != null) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
+						return ItemStack.EMPTY;
 				} else if (TileEntityPulverizer.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
+						return ItemStack.EMPTY;
 				} else if (index >= 4 && index < 31) {
-					if (!this.mergeItemStack(stackInSlot, 31, 40, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 31, 40, false))
+						return ItemStack.EMPTY;
 				} else {
-					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
+					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false))
+						return ItemStack.EMPTY;
 				}
 			} else {
-				if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, false))
+					return ItemStack.EMPTY;
 			}
 
 			if (stackInSlot.isEmpty()) {
@@ -101,7 +106,8 @@ public class ContainerPulverizer extends ContainerBase {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount())
+				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

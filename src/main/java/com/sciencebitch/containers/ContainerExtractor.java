@@ -15,11 +15,13 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerExtractor extends ContainerBase {
 
-	private int cookTime, totalCookTime, burnTime, currentBurnTime, storedFluid, fluidCapacity;
+	private int[] containerValues;
 
 	public ContainerExtractor(InventoryPlayer playerInventory, TileEntityExtractor tileEntity) {
 
 		super(playerInventory, tileEntity);
+
+		containerValues = new int[tileEntity.getFieldCount()];
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
@@ -44,36 +46,23 @@ public class ContainerExtractor extends ContainerBase {
 
 		super.detectAndSendChanges();
 
+		int[] newValues = new int[this.tileEntity.getFieldCount()];
+
+		for (int i = 0; i < newValues.length; i++) {
+			newValues[i] = this.tileEntity.getField(i);
+		}
+
 		for (IContainerListener listener : listeners) {
 
-			if (this.cookTime != this.tileEntity.getField(2)) {
-				listener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
-			}
-			if (this.burnTime != this.tileEntity.getField(0)) {
-				listener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
-			}
-			if (this.currentBurnTime != this.tileEntity.getField(1)) {
-				listener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
-			}
-			if (this.totalCookTime != this.tileEntity.getField(3)) {
-				listener.sendWindowProperty(this, 3, this.tileEntity.getField(3));
-			}
+			for (int i = 0; i < containerValues.length; i++) {
 
-			if (this.storedFluid != this.tileEntity.getField(4)) {
-				listener.sendWindowProperty(this, 4, this.tileEntity.getField(4));
-			}
-
-			if (this.fluidCapacity != this.tileEntity.getField(5)) {
-				listener.sendWindowProperty(this, 5, this.tileEntity.getField(5));
+				if (containerValues[i] != newValues[i]) {
+					listener.sendWindowProperty(this, i, newValues[i]);
+				}
 			}
 		}
 
-		this.cookTime = this.tileEntity.getField(2);
-		this.burnTime = this.tileEntity.getField(0);
-		this.currentBurnTime = this.tileEntity.getField(1);
-		this.totalCookTime = this.tileEntity.getField(3);
-		this.storedFluid = this.tileEntity.getField(4);
-		this.fluidCapacity = this.tileEntity.getField(5);
+		this.containerValues = newValues;
 	}
 
 	@Override
@@ -89,24 +78,31 @@ public class ContainerExtractor extends ContainerBase {
 
 			if (index == TileEntityExtractor.ID_OUTPUTFIELD) {
 
-				if (!this.mergeItemStack(stackInSlot, 4, 40, true)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, true))
+					return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityExtractor.ID_FUELFIELD && index != TileEntityExtractor.ID_INPUTFIELD && index != TileEntityExtractor.ID_BOTTLEFIELD) {
 				// From inventory to furnace
 				if (RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stackInSlot) != null) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
+						return ItemStack.EMPTY;
 				} else if (TileEntityExtractor.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
+						return ItemStack.EMPTY;
 				} else if (this.isItemBottle(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 2, 3, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 2, 3, false))
+						return ItemStack.EMPTY;
 				} else if (index >= 4 && index < 31) {
-					if (!this.mergeItemStack(stackInSlot, 31, 40, false)) return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 31, 40, false))
+						return ItemStack.EMPTY;
 				} else {
-					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
+					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false))
+						return ItemStack.EMPTY;
 				}
 			} else {
-				if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, false))
+					return ItemStack.EMPTY;
 			}
 
 			if (stackInSlot.isEmpty()) {
@@ -115,7 +111,8 @@ public class ContainerExtractor extends ContainerBase {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount())
+				return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

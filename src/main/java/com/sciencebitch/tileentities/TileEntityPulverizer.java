@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	public static final String NAME = "pulverizer";
-	public static final int CAPACITY = 200;
+	public static final int ENERGY_CAPACITY = 200;
 
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_FUELFIELD = 1;
@@ -25,7 +25,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	private int totalCookTime, cookTime;
 
 	public TileEntityPulverizer() {
-		super(NAME, CAPACITY);
+		super(NAME, ENERGY_CAPACITY);
 	}
 
 	@Override
@@ -57,8 +57,10 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2) return false;
-		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2)
+			return false;
+		if (index == ID_FUELFIELD)
+			return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -70,10 +72,8 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 			case 0:
 				return this.storedEnergy;
 			case 1:
-				return this.CAPACITY;
-			case 2:
 				return this.cookTime;
-			case 3:
+			case 2:
 				return this.totalCookTime;
 			default:
 				return 0;
@@ -88,19 +88,16 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 				this.storedEnergy = value;
 				break;
 			case 1:
-				System.err.println("WARNING: Tried to change the capacity of BlockElectricFurnace");
-				break;
-			case 2:
 				this.cookTime = value;
 				break;
-			case 3:
+			case 2:
 				this.totalCookTime = value;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -124,10 +121,12 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty()) return false;
+		if (inputStack.isEmpty())
+			return false;
 
 		ItemStack workResult = getWorkResult(inputStack);
-		if (workResult.isEmpty()) return false;
+		if (workResult.isEmpty())
+			return false;
 
 		int space = getOutputSpace(getOutputStack1(), workResult);
 		space += getOutputSpace(getOutputStack2(), workResult);
@@ -137,8 +136,10 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private int getOutputSpace(ItemStack outputStack, ItemStack workResult) {
 
-		if (outputStack.isEmpty()) return workResult.getMaxStackSize();
-		if (!outputStack.isItemEqual(workResult)) return 0;
+		if (outputStack.isEmpty())
+			return workResult.getMaxStackSize();
+		if (!outputStack.isItemEqual(workResult))
+			return 0;
 
 		int maxStackSize = Math.min(this.getInventoryStackLimit(), workResult.getMaxStackSize());
 		return maxStackSize - outputStack.getCount();
@@ -199,7 +200,8 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private void addToStack(int outputStackId, ItemStack workResult, int amount) {
 
-		if (amount <= 0) return;
+		if (amount <= 0)
+			return;
 
 		if (this.inventory.get(outputStackId).isEmpty()) {
 			this.inventory.set(outputStackId, new ItemStack(workResult.getItem(), amount));

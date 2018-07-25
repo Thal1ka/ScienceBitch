@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 
 	public static final String NAME = "electric_furnace";
-	public static final int CAPACITY = 200;
+	public static final int ENERGY_CAPACITY = 200;
 
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_FUELFIELD = 1;
@@ -24,7 +24,7 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	private int totalCookTime, cookTime;
 
 	public TileEntityElectricFurnace() {
-		super(NAME, CAPACITY);
+		super(NAME, ENERGY_CAPACITY);
 	}
 
 	@Override
@@ -56,8 +56,10 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD)
+			return false;
+		if (index == ID_FUELFIELD)
+			return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -69,10 +71,8 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 			case 0:
 				return this.storedEnergy;
 			case 1:
-				return this.CAPACITY;
-			case 2:
 				return this.cookTime;
-			case 3:
+			case 2:
 				return this.totalCookTime;
 			default:
 				return 0;
@@ -87,19 +87,16 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 				this.storedEnergy = value;
 				break;
 			case 1:
-				System.err.println("WARNING: Tried to change the capacity of BlockElectricFurnace");
-				break;
-			case 2:
 				this.cookTime = value;
 				break;
-			case 3:
+			case 2:
 				this.totalCookTime = value;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -119,15 +116,19 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty()) return false;
+		if (inputStack.isEmpty())
+			return false;
 
 		ItemStack smeltingResult = getSmeltingResult(inputStack);
-		if (smeltingResult.isEmpty()) return false;
+		if (smeltingResult.isEmpty())
+			return false;
 
 		ItemStack outputStack = getOutputStack();
-		if (outputStack.isEmpty()) return true;
+		if (outputStack.isEmpty())
+			return true;
 
-		if (!outputStack.isItemEqual(smeltingResult)) return false;
+		if (!outputStack.isItemEqual(smeltingResult))
+			return false;
 
 		int stackSize = outputStack.getCount() + smeltingResult.getCount();
 

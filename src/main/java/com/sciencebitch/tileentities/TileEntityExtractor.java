@@ -60,9 +60,12 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
-		if (index == ID_BOTTLEFIELD) return (stack.getItem() == Items.GLASS_BOTTLE);
+		if (index == ID_OUTPUTFIELD)
+			return false;
+		if (index == ID_FUELFIELD)
+			return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_BOTTLEFIELD)
+			return (stack.getItem() == Items.GLASS_BOTTLE);
 
 		return true;
 	}
@@ -74,15 +77,11 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 			case 0:
 				return this.storedEnergy;
 			case 1:
-				return this.ENERGY_CAPACITY;
-			case 2:
 				return this.cookTime;
-			case 3:
+			case 2:
 				return this.totalCookTime;
-			case 4:
+			case 3:
 				return (storedFluid == null) ? 0 : this.storedFluid.amount;
-			case 5:
-				return this.FLUID_CAPACITY;
 			default:
 				return 0;
 		}
@@ -96,30 +95,24 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 				this.storedEnergy = value;
 				break;
 			case 1:
-				System.err.println("WARNING: Tried to change the energy capacity of BlockExtractor");
-				break;
-			case 2:
 				this.cookTime = value;
 				break;
-			case 3:
+			case 2:
 				this.totalCookTime = value;
 				break;
-			case 4:
+			case 3:
 				if (storedFluid != null) {
 					this.storedFluid.amount = value;
 				} else {
 					storedFluid = new FluidStack(FluidRegistry.WATER, value);
 				}
 				break;
-			case 5:
-				System.err.println("WARNING: Tried to change the fluid capacity of BlockExtractor");
-				break;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 6;
+		return 4;
 	}
 
 	@Override
@@ -173,14 +166,18 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	protected boolean canWork() {
 
-		if (currentWorkItem == null) return false;
+		if (currentWorkItem == null)
+			return false;
 
 		FluidStack workingResult = (currentWorkingResult == null) ? getWorkingResult(currentWorkItem) : currentWorkingResult;
-		if (workingResult == null) return false;
+		if (workingResult == null)
+			return false;
 
-		if (storedFluid == null) return true;
+		if (storedFluid == null)
+			return true;
 
-		if (!storedFluid.isFluidEqual(workingResult)) return false;
+		if (!storedFluid.isFluidEqual(workingResult))
+			return false;
 
 		return storedFluid.amount < FLUID_CAPACITY;
 	}
