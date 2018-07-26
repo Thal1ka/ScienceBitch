@@ -2,12 +2,16 @@ package com.sciencebitch.gui;
 
 import com.sciencebitch.containers.ContainerExtractor;
 import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.mod.handlers.FluidHandler;
 import com.sciencebitch.tileentities.TileEntityExtractor;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 
 public class GuiExtractor extends GuiContainer {
 
@@ -49,9 +53,21 @@ public class GuiExtractor extends GuiContainer {
 		int cookScale = this.getCookProgressScaled(24);
 		this.drawTexturedModalRect(this.guiLeft + 79, this.guiTop + 35, 176, 14, cookScale + 1, 16);
 
+		drawFluid();
+	}
+
+	private void drawFluid() {
+
+		Fluid fluid = FluidHandler.getFluid(tileEntity.getField(4));
+
+		if (fluid == null) return;
+
+		TextureAtlasSprite fluidTexture = mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+		mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
 		int fluidScale = this.getFluidScaled(54);
 		int mirrorFluid = 54 - fluidScale;
-		this.drawTexturedModalRect(this.guiLeft + 110, this.guiTop + 16 + mirrorFluid, 176, mirrorFluid + 31, 21, fluidScale);
+		drawTexturedModalRect(this.guiLeft + 110, this.guiTop + 16 + mirrorFluid, fluidTexture, 21, fluidScale);
 	}
 
 	@Override
@@ -76,8 +92,7 @@ public class GuiExtractor extends GuiContainer {
 		int cookTime = this.tileEntity.getField(1);
 		int totalCookTime = this.tileEntity.getField(2);
 
-		if (cookTime == 0 || totalCookTime == 0)
-			return 0;
+		if (cookTime == 0 || totalCookTime == 0) return 0;
 		return (int) (cookTime * pixels / (double) totalCookTime + 0.5);
 	}
 
@@ -86,8 +101,7 @@ public class GuiExtractor extends GuiContainer {
 		int storedFluid = this.tileEntity.getField(3);
 		int fluidCapacity = this.tileEntity.FLUID_CAPACITY;
 
-		if (storedFluid == 0 || fluidCapacity == 0)
-			return 0;
+		if (storedFluid == 0 || fluidCapacity == 0) return 0;
 		return (int) (storedFluid * pixels / (double) fluidCapacity + 0.5);
 	}
 }

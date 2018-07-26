@@ -63,12 +63,9 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD)
-			return false;
-		if (index == ID_FUELFIELD)
-			return TileEntityElectricMachineBase.isItemFuel(stack);
-		if (index == ID_BOTTLEFIELD)
-			return (stack.getItem() == Items.GLASS_BOTTLE);
+		if (index == ID_OUTPUTFIELD) return false;
+		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_BOTTLEFIELD) return (stack.getItem() == Items.GLASS_BOTTLE);
 
 		return true;
 	}
@@ -171,18 +168,14 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 	@Override
 	protected boolean canWork() {
 
-		if (currentWorkItem == null)
-			return false;
+		if (currentWorkItem == null) return false;
 
 		FluidStack workingResult = (currentWorkingResult == null) ? getWorkingResult(currentWorkItem) : currentWorkingResult;
-		if (workingResult == null)
-			return false;
+		if (workingResult == null) return false;
 
-		if (fluidType < 0)
-			return true;
+		if (fluidType < 0) return true;
 
-		if (fluidType != FluidHandler.getId(workingResult.getFluid()))
-			return false;
+		if (fluidType != FluidHandler.getId(workingResult.getFluid())) return false;
 
 		return fluidAmount < FLUID_CAPACITY;
 	}
