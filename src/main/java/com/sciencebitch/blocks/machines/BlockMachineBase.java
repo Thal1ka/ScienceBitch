@@ -5,6 +5,7 @@ import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
+import com.sciencebitch.util.CrossReferenceRegister;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -50,6 +51,8 @@ public abstract class BlockMachineBase extends Block implements IHasModel {
 			this.setCreativeTab(SB_CreativeTabs.TAB_MACHINES);
 			SB_Items.ITEMS.add(new ItemBlock(this).setRegistryName(name));
 		}
+
+		CrossReferenceRegister.registerBlock(this, name);
 	}
 
 	@Override
