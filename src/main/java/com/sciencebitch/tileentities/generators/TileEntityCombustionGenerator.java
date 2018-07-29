@@ -129,7 +129,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 		if (totalBurnTime > 0) return true;
 
-		return getCapacityLeft() > 0 && !getCurrentItemStack().isEmpty();
+		return getCapacityLeft() > 0 && !getInputStack().isEmpty();
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		ticksBurning++;
 
 		if (ticksBurning % TICKS_MULTIPLIER_INCREASE == 0) {
-			speedMultiplicator = Math.min(speedMultiplicator++, MAX_SPEED_MULTIPLICATOR);
+			speedMultiplicator = Math.min(speedMultiplicator + 1, MAX_SPEED_MULTIPLICATOR);
 		}
 	}
 
