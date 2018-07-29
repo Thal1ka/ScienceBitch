@@ -6,7 +6,6 @@ import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
 
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -15,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockPulverizer extends BlockMachineBase implements ITileEntityProvider {
+public class BlockPulverizer extends BlockMachineBase {
 
 	private static boolean keepInventory = false;
 

@@ -1,6 +1,6 @@
 package com.sciencebitch.containers;
 
-import com.sciencebitch.tileentities.TileEntityElectricMachineBase;
+import com.sciencebitch.tileentities.TileEntityMachineBase;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,15 +9,19 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerBase extends Container {
+public abstract class ContainerBase extends Container {
 
-	protected final TileEntityElectricMachineBase tileEntity;
+	private int[] containerValues;
+
+	protected final TileEntityMachineBase tileEntity;
 	protected final InventoryPlayer playerInventory;
 
-	public ContainerBase(InventoryPlayer playerInventory, TileEntityElectricMachineBase tileEntity) {
+	public ContainerBase(InventoryPlayer playerInventory, TileEntityMachineBase tileEntity) {
 
 		this.playerInventory = playerInventory;
 		this.tileEntity = tileEntity;
+
+		this.containerValues = new int[tileEntity.getFieldCount()];
 	}
 
 	@Override
@@ -39,4 +43,27 @@ public class ContainerBase extends Container {
 		return tileEntity.isUsableByPlayer(playerIn);
 	}
 
+	@Override
+	public void detectAndSendChanges() {
+
+		super.detectAndSendChanges();
+
+		int[] newValues = new int[this.tileEntity.getFieldCount()];
+
+		for (int i = 0; i < newValues.length; i++) {
+			newValues[i] = this.tileEntity.getField(i);
+		}
+
+		for (IContainerListener listener : listeners) {
+
+			for (int i = 0; i < containerValues.length; i++) {
+
+				if (containerValues[i] != newValues[i]) {
+					listener.sendWindowProperty(this, i, newValues[i]);
+				}
+			}
+		}
+
+		this.containerValues = newValues;
+	}
 }

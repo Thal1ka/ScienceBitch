@@ -40,10 +40,14 @@ tile.electric_furnace.name=Electric Furnace
 tile.pulverizer.name=Pulverizer
 tile.extractor.name=Extractor
 
+//Generators
+tile.combustion_generator.name=Combustion Generator
+
 //Containers
 container.electric_furnace=Electric Furnace
 container.pulverizer=Pulverizer
 container.extractor=Extractor
+container.combustion_generator=Combustion Generator
 
 //Creative tabs
 itemGroup.machines=Machines

@@ -1,5 +1,7 @@
 package com.sciencebitch.tileentities.generators;
 
+import com.sciencebitch.blocks.machines.generators.BlockCombustionGenerator;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -8,20 +10,21 @@ import net.minecraft.world.World;
 
 public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
+	public static final String NAME = "combustion_generator";
+	public static final int ENERGY_CAPACITY = 1600;
+
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_CURRENT_ITEMFIELD = 1;
 	public static final int ID_CHARGEFIELD = 2;
-
-	private static final int ENERGY_CAPACITY = 1000;
 
 	private int currentBurnTime;
 	private int totalBurnTime;
 
 	private int speedMultiplicator = 1;
 
-	public TileEntityCombustionGenerator(String name) {
+	public TileEntityCombustionGenerator() {
 
-		super(name, ENERGY_CAPACITY);
+		super(NAME, ENERGY_CAPACITY);
 	}
 
 	@Override
@@ -97,6 +100,10 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		return this.inventory.get(ID_CURRENT_ITEMFIELD);
 	}
 
+	public static boolean isWorking(TileEntityCombustionGenerator tileEntity) {
+		return tileEntity.isWorking();
+	}
+
 	@Override
 	protected boolean isWorking() {
 		return totalBurnTime > 0;
@@ -118,7 +125,6 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		}
 
 		generateEnergy(speedMultiplicator);
-
 		currentBurnTime += speedMultiplicator;
 
 		if (currentBurnTime >= totalBurnTime) {
@@ -141,8 +147,9 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 			ItemStack inputStack = getInputStack();
 
 			if (!inputStack.isEmpty()) {
-				if (getItemBurnDuration(inputStack) > 0) {
-					this.inventory.set(ID_CURRENT_ITEMFIELD, new ItemStack(inputStack.getItem()));
+				if (getItemBurnDuration(inputStack) > 0 && getCapacityLeft() > 0) {
+					ItemStack currentItem = new ItemStack(inputStack.getItem(), 1, inputStack.getMetadata());
+					this.inventory.set(ID_CURRENT_ITEMFIELD, currentItem);
 					inputStack.shrink(1);
 				}
 			}
@@ -153,7 +160,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 	@Override
 	protected void updateState(boolean isWorking, World world, BlockPos pos) {
-
+		BlockCombustionGenerator.setState(isWorking, world, pos);
 	}
 
 	@Override
@@ -172,9 +179,13 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		return nbt;
 	}
 
-	private int getItemBurnDuration(ItemStack stack) {
+	private static int getItemBurnDuration(ItemStack stack) {
 
 		if (stack.getItem().hasContainerItem(stack)) return 0;
 		return TileEntityFurnace.getItemBurnTime(stack);
+	}
+
+	public static boolean isItemFuel(ItemStack stack) {
+		return getItemBurnDuration(stack) > 0;
 	}
 }

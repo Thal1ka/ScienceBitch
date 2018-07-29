@@ -9,6 +9,7 @@ import com.sciencebitch.util.CrossReferenceRegister;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -28,7 +29,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class BlockMachineBase extends Block implements IHasModel {
+public abstract class BlockMachineBase extends Block implements IHasModel, ITileEntityProvider {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	protected final boolean isBurning;

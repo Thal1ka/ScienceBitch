@@ -1,0 +1,9 @@
+{
+    "variants": 
+    {
+        "facing=north": { "model": "sciencebitch:combustion_generator" },
+        "facing=east": { "model": "sciencebitch:combustion_generator", "y": 90 },
+        "facing=south": { "model": "sciencebitch:combustion_generator", "y": 180 },
+        "facing=west": { "model": "sciencebitch:combustion_generator", "y": 270 }
+    }
+}

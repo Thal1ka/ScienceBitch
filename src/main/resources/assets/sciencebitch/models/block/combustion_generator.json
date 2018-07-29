@@ -1,0 +1,13 @@
+{
+    "parent": "block/orientable",
+    "textures":
+    {
+        "particle": "sciencebitch:blocks/combustion_generator_front_off",
+        "up": "sciencebitch:blocks/combustion_generator_top",
+        "down": "sciencebitch:blocks/combustion_generator_top",
+        "north": "sciencebitch:blocks/combustion_generator_front_off",
+        "east": "sciencebitch:blocks/combustion_generator_side",
+        "south": "sciencebitch:blocks/combustion_generator_side",
+        "west": "sciencebitch:blocks/combustion_generator_side"
+    }
+}

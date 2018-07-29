@@ -9,19 +9,14 @@ import com.sciencebitch.tileentities.TileEntityExtractor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerExtractor extends ContainerBase {
 
-	private int[] containerValues;
-
 	public ContainerExtractor(InventoryPlayer playerInventory, TileEntityExtractor tileEntity) {
 
 		super(playerInventory, tileEntity);
-
-		containerValues = new int[tileEntity.getFieldCount()];
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
 		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
@@ -42,30 +37,6 @@ public class ContainerExtractor extends ContainerBase {
 	}
 
 	@Override
-	public void detectAndSendChanges() {
-
-		super.detectAndSendChanges();
-
-		int[] newValues = new int[this.tileEntity.getFieldCount()];
-
-		for (int i = 0; i < newValues.length; i++) {
-			newValues[i] = this.tileEntity.getField(i);
-		}
-
-		for (IContainerListener listener : listeners) {
-
-			for (int i = 0; i < containerValues.length; i++) {
-
-				if (containerValues[i] != newValues[i]) {
-					listener.sendWindowProperty(this, i, newValues[i]);
-				}
-			}
-		}
-
-		this.containerValues = newValues;
-	}
-
-	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
 		ItemStack stackCopy = ItemStack.EMPTY;
@@ -78,31 +49,24 @@ public class ContainerExtractor extends ContainerBase {
 
 			if (index == TileEntityExtractor.ID_OUTPUTFIELD) {
 
-				if (!this.mergeItemStack(stackInSlot, 4, 40, true))
-					return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, true)) return ItemStack.EMPTY;
 				slot.onSlotChange(stackInSlot, stackCopy);
 
 			} else if (index != TileEntityExtractor.ID_FUELFIELD && index != TileEntityExtractor.ID_INPUTFIELD && index != TileEntityExtractor.ID_BOTTLEFIELD) {
 				// From inventory to furnace
 				if (RecipeManager.EXTRACTOR_RECIPES.getRecipeResult(stackInSlot) != null) {
-					if (!this.mergeItemStack(stackInSlot, 0, 1, false))
-						return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
 				} else if (TileEntityExtractor.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false))
-						return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
 				} else if (this.isItemBottle(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 2, 3, false))
-						return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 2, 3, false)) return ItemStack.EMPTY;
 				} else if (index >= 4 && index < 31) {
-					if (!this.mergeItemStack(stackInSlot, 31, 40, false))
-						return ItemStack.EMPTY;
+					if (!this.mergeItemStack(stackInSlot, 31, 40, false)) return ItemStack.EMPTY;
 				} else {
-					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false))
-						return ItemStack.EMPTY;
+					if (index >= 31 && index < 40 && !this.mergeItemStack(stackInSlot, 4, 31, false)) return ItemStack.EMPTY;
 				}
 			} else {
-				if (!this.mergeItemStack(stackInSlot, 4, 40, false))
-					return ItemStack.EMPTY;
+				if (!this.mergeItemStack(stackInSlot, 4, 40, false)) return ItemStack.EMPTY;
 			}
 
 			if (stackInSlot.isEmpty()) {
@@ -111,8 +75,7 @@ public class ContainerExtractor extends ContainerBase {
 				slot.onSlotChanged();
 			}
 
-			if (stackInSlot.getCount() == stackCopy.getCount())
-				return ItemStack.EMPTY;
+			if (stackInSlot.getCount() == stackCopy.getCount()) return ItemStack.EMPTY;
 
 			slot.onTake(playerIn, stackInSlot);
 		}

@@ -1,24 +1,27 @@
-package com.sciencebitch.containers;
+package com.sciencebitch.containers.generators;
 
-import com.sciencebitch.containers.slots.SlotElectricFuel;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.containers.ContainerBase;
+import com.sciencebitch.containers.slots.SlotChargable;
+import com.sciencebitch.containers.slots.SlotPassive;
+import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 
-public class ContainerElectricFurnace extends ContainerBase {
+public class ContainerCombustionGenerator extends ContainerBase {
 
-	public ContainerElectricFurnace(InventoryPlayer playerInventory, TileEntityElectricFurnace tileEntity) {
+	private int[] containerValues;
+
+	public ContainerCombustionGenerator(InventoryPlayer playerInventory, TileEntityCombustionGenerator tileEntity) {
 
 		super(playerInventory, tileEntity);
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
-		this.addSlotToContainer(new SlotElectricFuel(tileEntity, 1, 56, 53));
-		this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, tileEntity, 2, 116, 35));
+		this.addSlotToContainer(new SlotPassive(tileEntity, 1, 56, 53));
+		this.addSlotToContainer(new SlotChargable(tileEntity, 2, 116, 35));
 
 		// Playerinventory
 		for (int row = 0; row < 3; row++) {
@@ -44,17 +47,12 @@ public class ContainerElectricFurnace extends ContainerBase {
 			ItemStack stackInSlot = slot.getStack();
 			stackCopy = stackInSlot.copy();
 
-			if (index == TileEntityElectricFurnace.ID_OUTPUTFIELD) {
-
-				if (!this.mergeItemStack(stackInSlot, 3, 39, true)) return ItemStack.EMPTY;
-				slot.onSlotChange(stackInSlot, stackCopy);
-
-			} else if (index != TileEntityElectricFurnace.ID_FUELFIELD && index != TileEntityElectricFurnace.ID_INPUTFIELD) {
-				// From inventory to furnace
-				if (!FurnaceRecipes.instance().getSmeltingResult(stackInSlot).isEmpty()) {
+			if (index != TileEntityCombustionGenerator.ID_INPUTFIELD && index != TileEntityCombustionGenerator.ID_CHARGEFIELD) {
+				// From inventory to generator
+				if (isItemChargable(stackInSlot)) {
+					if (!this.mergeItemStack(stackInSlot, 2, 3, false)) return ItemStack.EMPTY;
+				} else if (TileEntityCombustionGenerator.isItemFuel(stackInSlot)) {
 					if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
-				} else if (TileEntityElectricFurnace.isItemFuel(stackInSlot)) {
-					if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
 				} else if (index >= 3 && index < 30) {
 					if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return ItemStack.EMPTY;
 				} else {
@@ -77,5 +75,9 @@ public class ContainerElectricFurnace extends ContainerBase {
 		}
 
 		return stackCopy;
+	}
+
+	private boolean isItemChargable(ItemStack stack) {
+		return stack.getItem() instanceof IEnergySink;
 	}
 }

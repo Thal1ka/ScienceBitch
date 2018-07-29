@@ -50,7 +50,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 	public void update() {
 
 		boolean isWorkingBeforeUpdate = isWorking();
-		boolean updated = false;
 		boolean canWork = canWork();
 
 		if (hasEnergy()) {
