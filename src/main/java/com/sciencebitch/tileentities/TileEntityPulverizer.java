@@ -4,12 +4,10 @@ import com.sciencebitch.blocks.machines.BlockPulverizer;
 import com.sciencebitch.recipes.RecipeManager;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -58,10 +56,8 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2)
-			return false;
-		if (index == ID_FUELFIELD)
-			return TileEntityElectricMachineBase.isItemFuel(stack);
+		if (index == ID_OUTPUTFIELD_1 || index == ID_OUTPUTFIELD_2) return false;
+		if (index == ID_FUELFIELD) return TileEntityElectricMachineBase.isItemFuel(stack);
 
 		return true;
 	}
@@ -122,12 +118,10 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 	protected boolean canWork() {
 
 		ItemStack inputStack = getInputStack();
-		if (inputStack.isEmpty())
-			return false;
+		if (inputStack.isEmpty()) return false;
 
 		ItemStack workResult = getWorkResult(inputStack);
-		if (workResult.isEmpty())
-			return false;
+		if (workResult.isEmpty()) return false;
 
 		int space = getOutputSpace(getOutputStack1(), workResult);
 		space += getOutputSpace(getOutputStack2(), workResult);
@@ -137,10 +131,8 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private int getOutputSpace(ItemStack outputStack, ItemStack workResult) {
 
-		if (outputStack.isEmpty())
-			return workResult.getMaxStackSize();
-		if (!outputStack.isItemEqual(workResult))
-			return 0;
+		if (outputStack.isEmpty()) return workResult.getMaxStackSize();
+		if (!outputStack.isItemEqual(workResult)) return 0;
 
 		int maxStackSize = Math.min(this.getInventoryStackLimit(), workResult.getMaxStackSize());
 		return maxStackSize - outputStack.getCount();
@@ -201,8 +193,7 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 
 	private void addToStack(int outputStackId, ItemStack workResult, int amount) {
 
-		if (amount <= 0)
-			return;
+		if (amount <= 0) return;
 
 		if (this.inventory.get(outputStackId).isEmpty()) {
 			this.inventory.set(outputStackId, new ItemStack(workResult.getItem(), amount));
@@ -228,24 +219,14 @@ public class TileEntityPulverizer extends TileEntityElectricMachineBase {
 		this.storedEnergy = nbt.getInteger("BurnTime");
 		this.cookTime = nbt.getInteger("CookTime");
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
-		ItemStackHelper.loadAllItems(nbt, this.inventory);
-
-		if (nbt.hasKey("CustomName", Constants.NBT.TAG_STRING)) {
-			this.customName = nbt.getString("CustomName");
-		}
 	}
 
 	@Override
 	public NBTTagCompound writeData(NBTTagCompound nbt) {
 
-		nbt.setInteger("BurnTime", (short) this.storedEnergy);
-		nbt.setInteger("CookTime", (short) this.cookTime);
-		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
-		ItemStackHelper.saveAllItems(nbt, this.inventory);
-
-		if (this.hasCustomName()) {
-			nbt.setString("CustomName", this.customName);
-		}
+		nbt.setInteger("BurnTime", this.storedEnergy);
+		nbt.setInteger("CookTime", this.cookTime);
+		nbt.setInteger("CookTimeTotal", this.totalCookTime);
 
 		return nbt;
 	}

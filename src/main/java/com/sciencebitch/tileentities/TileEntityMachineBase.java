@@ -12,6 +12,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public abstract class TileEntityMachineBase extends TileEntity implements IInventory {
 
@@ -100,6 +101,13 @@ public abstract class TileEntityMachineBase extends TileEntity implements IInven
 	public void readFromNBT(NBTTagCompound compound) {
 
 		super.readFromNBT(compound);
+
+		ItemStackHelper.loadAllItems(compound, inventory);
+
+		if (compound.hasKey("customName", Constants.NBT.TAG_STRING)) {
+			this.customName = compound.getString("customName");
+		}
+
 		readData(compound);
 	}
 
@@ -107,6 +115,13 @@ public abstract class TileEntityMachineBase extends TileEntity implements IInven
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
 		super.writeToNBT(compound);
+
+		ItemStackHelper.saveAllItems(compound, inventory);
+
+		if (this.hasCustomName()) {
+			compound.setString("customName", this.customName);
+		}
+
 		return writeData(compound);
 	}
 

@@ -7,7 +7,6 @@ import com.sciencebitch.util.NbtHelper;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -225,7 +224,6 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		this.storedEnergy = nbt.getInteger("BurnTime");
 		this.cookTime = nbt.getInteger("CookTime");
 		this.totalCookTime = nbt.getInteger("CookTimeTotal");
-		ItemStackHelper.loadAllItems(nbt, this.inventory);
 
 		this.currentWorkItem = NbtHelper.loadItem("CurrentWorkItem", nbt);
 		this.currentWorkingResult = getWorkingResult(currentWorkItem);
@@ -233,9 +231,6 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		this.fluidType = nbt.getInteger("fluidType");
 		this.fluidAmount = nbt.getInteger("fluidAmount");
 
-		if (nbt.hasKey("CustomName", 8)) {
-			this.customName = nbt.getString("CustomName");
-		}
 	}
 
 	@Override
@@ -244,15 +239,11 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 		nbt.setInteger("BurnTime", (short) this.storedEnergy);
 		nbt.setInteger("CookTime", (short) this.cookTime);
 		nbt.setInteger("CookTimeTotal", (short) this.totalCookTime);
-		ItemStackHelper.saveAllItems(nbt, this.inventory);
+
 		NbtHelper.saveItem(currentWorkItem, "CurrentWorkItem", nbt);
 
 		nbt.setInteger("fluidType", this.fluidType);
 		nbt.setInteger("fluidAmount", this.fluidAmount);
-
-		if (this.hasCustomName()) {
-			nbt.setString("CustomName", this.customName);
-		}
 
 		return nbt;
 	}
