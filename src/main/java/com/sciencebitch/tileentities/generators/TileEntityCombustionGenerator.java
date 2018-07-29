@@ -13,12 +13,17 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 	public static final String NAME = "combustion_generator";
 	public static final int ENERGY_CAPACITY = 1600;
 
+	private static final int TICKS_MULTIPLIER_INCREASE = 200;
+	private static final int MAX_SPEED_MULTIPLICATOR = 8;
+
 	public static final int ID_INPUTFIELD = 0;
 	public static final int ID_CURRENT_ITEMFIELD = 1;
 	public static final int ID_CHARGEFIELD = 2;
 
 	private int currentBurnTime;
 	private int totalBurnTime;
+
+	private int ticksBurning;
 
 	private int speedMultiplicator = 1;
 
@@ -61,6 +66,10 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 				return totalBurnTime;
 			case 2:
 				return storedEnergy;
+			case 3:
+				return ticksBurning;
+			case 4:
+				return speedMultiplicator;
 			default:
 				return 0;
 		}
@@ -79,12 +88,18 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 			case 2:
 				this.storedEnergy = value;
 				break;
+			case 3:
+				this.ticksBurning = value;
+				break;
+			case 4:
+				this.speedMultiplicator = value;
+				break;
 		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 3;
+		return 5;
 	}
 
 	@Override
@@ -120,17 +135,33 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 	@Override
 	protected void doWork() {
 
-		if (totalBurnTime <= 0) {
-			totalBurnTime = getItemBurnDuration(getCurrentItemStack());
+		if (!isWorking()) {
+			handleFuel();
+			if (!isWorking()) {
+				ticksBurning = 0;
+				speedMultiplicator = 1;
+				return;
+			}
 		}
 
 		generateEnergy(speedMultiplicator);
 		currentBurnTime += speedMultiplicator;
 
 		if (currentBurnTime >= totalBurnTime) {
+
+			int energyToReset = totalBurnTime - currentBurnTime;
+			generateEnergy(energyToReset);
+
 			currentBurnTime = 0;
 			totalBurnTime = 0;
 			consumeCurrentItem();
+			handleFuel();
+		}
+
+		ticksBurning++;
+
+		if (ticksBurning % TICKS_MULTIPLIER_INCREASE == 0) {
+			speedMultiplicator = Math.min(speedMultiplicator++, MAX_SPEED_MULTIPLICATOR);
 		}
 	}
 
@@ -139,23 +170,22 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 		this.inventory.set(ID_CURRENT_ITEMFIELD, ItemStack.EMPTY);
 	}
 
-	@Override
-	public void update() {
+	private void handleFuel() {
 
-		if (!isWorking()) {
+		ItemStack inputStack = getInputStack();
 
-			ItemStack inputStack = getInputStack();
+		if (!inputStack.isEmpty()) {
 
-			if (!inputStack.isEmpty()) {
-				if (getItemBurnDuration(inputStack) > 0 && getCapacityLeft() > 0) {
-					ItemStack currentItem = new ItemStack(inputStack.getItem(), 1, inputStack.getMetadata());
-					this.inventory.set(ID_CURRENT_ITEMFIELD, currentItem);
-					inputStack.shrink(1);
-				}
+			int burnDuration = getItemBurnDuration(inputStack);
+
+			if (burnDuration > 0 && getCapacityLeft() > 0) {
+				ItemStack currentItem = new ItemStack(inputStack.getItem(), 1, inputStack.getMetadata());
+				this.inventory.set(ID_CURRENT_ITEMFIELD, currentItem);
+				this.totalBurnTime = burnDuration;
+				inputStack.shrink(1);
 			}
 		}
 
-		super.update();
 	}
 
 	@Override
@@ -168,6 +198,8 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 		this.currentBurnTime = nbt.getInteger("currentBurnTime");
 		this.totalBurnTime = nbt.getInteger("totalBurnTime");
+		this.ticksBurning = nbt.getInteger("ticksBurning");
+		this.speedMultiplicator = nbt.getInteger("multiplicator");
 	}
 
 	@Override
@@ -175,6 +207,8 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 		nbt.setInteger("currentBurnTime", currentBurnTime);
 		nbt.setInteger("totalBurnTime", totalBurnTime);
+		nbt.setInteger("ticksBurning", ticksBurning);
+		nbt.setInteger("multiplicator", speedMultiplicator);
 
 		return nbt;
 	}
