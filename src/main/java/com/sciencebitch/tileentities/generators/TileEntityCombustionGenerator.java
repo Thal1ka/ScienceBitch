@@ -12,14 +12,16 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 	public static final int ID_CURRENT_ITEMFIELD = 1;
 	public static final int ID_CHARGEFIELD = 2;
 
+	private static final int ENERGY_CAPACITY = 1000;
+
 	private int currentBurnTime;
 	private int totalBurnTime;
 
 	private int speedMultiplicator = 1;
 
-	public TileEntityCombustionGenerator(String name, int energyCapacity) {
+	public TileEntityCombustionGenerator(String name) {
 
-		super(name, energyCapacity);
+		super(name, ENERGY_CAPACITY);
 	}
 
 	@Override
@@ -48,17 +50,38 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 	@Override
 	public int getField(int id) {
-		return 0;
+
+		switch (id) {
+			case 0:
+				return currentBurnTime;
+			case 1:
+				return totalBurnTime;
+			case 2:
+				return storedEnergy;
+			default:
+				return 0;
+		}
 	}
 
 	@Override
 	public void setField(int id, int value) {
 
+		switch (id) {
+			case 0:
+				this.currentBurnTime = value;
+				break;
+			case 1:
+				this.totalBurnTime = value;
+				break;
+			case 2:
+				this.storedEnergy = value;
+				break;
+		}
 	}
 
 	@Override
 	public int getFieldCount() {
-		return 0;
+		return 3;
 	}
 
 	@Override
@@ -136,14 +159,22 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 	@Override
 	protected void readData(NBTTagCompound nbt) {
 
+		this.currentBurnTime = nbt.getInteger("currentBurnTime");
+		this.totalBurnTime = nbt.getInteger("totalBurnTime");
 	}
 
 	@Override
 	protected NBTTagCompound writeData(NBTTagCompound nbt) {
-		return null;
+
+		nbt.setInteger("currentBurnTime", currentBurnTime);
+		nbt.setInteger("totalBurnTime", totalBurnTime);
+
+		return nbt;
 	}
 
 	private int getItemBurnDuration(ItemStack stack) {
+
+		if (stack.getItem().hasContainerItem(stack)) return 0;
 		return TileEntityFurnace.getItemBurnTime(stack);
 	}
 }
