@@ -87,6 +87,11 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 		return energyCapacity - storedEnergy;
 	}
 
+	protected void generateEnergy(int amount) {
+
+		storedEnergy = Math.min(storedEnergy + amount, energyCapacity);
+	}
+
 	public static boolean isItemChargable(ItemStack stack) {
 		return (stack.getItem() instanceof IEnergySink);
 	}

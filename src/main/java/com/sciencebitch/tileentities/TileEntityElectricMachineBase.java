@@ -4,12 +4,11 @@ import com.sciencebitch.interfaces.IEnergyProvider;
 import com.sciencebitch.interfaces.IEnergySink;
 import com.sciencebitch.util.EnergyHelper;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 
-public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements IInventory, ITickable, IEnergySink {
+public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements ITickable, IEnergySink {
 
 	private int maxEnergyInput = 20;
 	private final int energyCapacity;
