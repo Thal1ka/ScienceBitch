@@ -42,12 +42,14 @@ tile.extractor.name=Extractor
 
 //Generators
 tile.combustion_generator.name=Combustion Generator
+tile.lava_generator.name=Lava Generator
 
 //Containers
 container.electric_furnace=Electric Furnace
 container.pulverizer=Pulverizer
 container.extractor=Extractor
 container.combustion_generator=Combustion Generator
+container.lava_generator=Lava Generator
 
 //Creative tabs
 itemGroup.machines=Machines

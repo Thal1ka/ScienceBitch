@@ -4,10 +4,13 @@ import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.blocks.machines.BlockMachineBase;
+import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +23,8 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 	private static boolean keepInventory;
 
 	public BlockLavaGenerator(String name, boolean isBurning) {
-		super(name, isBurning, 0);
+
+		super(name, isBurning, SB_GUIs.ID_LAVA_GENERATOR);
 	}
 
 	@Override
@@ -40,9 +44,9 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.GENERATOR_LAVA_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.GENERATOR_LAVA.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 
 		keepInventory = false;
@@ -64,8 +68,8 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 		if (!keepInventory) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
-			if (tileentity instanceof TileEntityElectricFurnace) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
+			if (tileentity instanceof TileEntityLavaGenerator) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 		}

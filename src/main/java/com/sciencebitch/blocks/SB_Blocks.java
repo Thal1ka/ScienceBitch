@@ -7,6 +7,7 @@ import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
 import com.sciencebitch.blocks.machines.generators.BlockCombustionGenerator;
+import com.sciencebitch.blocks.machines.generators.BlockLavaGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -45,6 +46,8 @@ public class SB_Blocks {
 	// GENERATORS
 	public static final Block GENERATOR_COMBUSTION = new BlockCombustionGenerator("combustion_generator", false);
 	public static final Block GENERATOR_COMBUSTION_ACTIVE = new BlockCombustionGenerator("combustion_generator_lit", true).setLightLevel(0.875F);
+	public static final Block GENERATOR_LAVA = new BlockLavaGenerator("lava_generator", false);
+	public static final Block GENERATOR_LAVA_ACTIVE = new BlockLavaGenerator("lava_generator_lit", true).setLightLevel(0.875F);
 
 	// public static final Block ELECTRIC_FURNACE =
 	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();

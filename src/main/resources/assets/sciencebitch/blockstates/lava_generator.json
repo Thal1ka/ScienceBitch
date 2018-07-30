@@ -1,0 +1,9 @@
+{
+    "variants": 
+    {
+        "facing=north": { "model": "sciencebitch:lava_generator" },
+        "facing=east": { "model": "sciencebitch:lava_generator", "y": 90 },
+        "facing=south": { "model": "sciencebitch:lava_generator", "y": 180 },
+        "facing=west": { "model": "sciencebitch:lava_generator", "y": 270 }
+    }
+}

@@ -4,12 +4,15 @@ import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.containers.ContainerExtractor;
 import com.sciencebitch.containers.ContainerPulverizer;
 import com.sciencebitch.containers.generators.ContainerCombustionGenerator;
+import com.sciencebitch.containers.generators.ContainerLavaGenerator;
 import com.sciencebitch.gui.generators.GuiCombustionGenerator;
+import com.sciencebitch.gui.generators.GuiLavaGenerator;
 import com.sciencebitch.mod.handlers.GuiHandler;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.TileEntityExtractor;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
+import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
 
 public class SB_GUIs {
 
@@ -22,4 +25,6 @@ public class SB_GUIs {
 
 	// Generators
 	public static final int ID_COMBUSTION_GENERATOR = guiHandler.registerGui((i, t) -> new ContainerCombustionGenerator(i, (TileEntityCombustionGenerator) t), (i, t) -> new GuiCombustionGenerator(i, (TileEntityCombustionGenerator) t));
+	public static final int ID_LAVA_GENERATOR = guiHandler.registerGui((i, t) -> new ContainerLavaGenerator(i, (TileEntityLavaGenerator) t), (i, t) -> new GuiLavaGenerator(i, (TileEntityLavaGenerator) t));
+
 }
