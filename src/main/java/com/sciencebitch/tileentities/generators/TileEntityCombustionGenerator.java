@@ -1,10 +1,12 @@
 package com.sciencebitch.tileentities.generators;
 
 import com.sciencebitch.blocks.machines.generators.BlockCombustionGenerator;
+import com.sciencebitch.util.BlockHelper.BlockSide;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -221,5 +223,27 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 	public static boolean isItemFuel(ItemStack stack) {
 		return getItemBurnDuration(stack) > 0;
+	}
+
+	@Override
+	protected int[] getSlotsForSide(BlockSide side) {
+
+		return new int[] { ID_INPUTFIELD, ID_CHARGEFIELD };
+	}
+
+	@Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+
+		if (index == ID_CHARGEFIELD) return isItemChargable(itemStackIn);
+
+		ItemStack stackInSlot = this.inventory.get(index);
+		return canAddToSlot(stackInSlot, itemStackIn);
+	}
+
+	@Override
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+
+		if (index == ID_CHARGEFIELD) return isItemFullyCharged();
+		return false;
 	}
 }

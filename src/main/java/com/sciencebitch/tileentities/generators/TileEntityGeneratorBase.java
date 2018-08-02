@@ -56,8 +56,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 			handleEnergy();
 		}
 
-		if (world.isRemote)
-			return;
+		if (world.isRemote) return;
 
 		if (canWork) {
 			doWork();
@@ -78,8 +77,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 	private void handleEnergy() {
 
 		ItemStack chargeStack = getChargeStack();
-		if (chargeStack.isEmpty())
-			return;
+		if (chargeStack.isEmpty()) return;
 
 		EnergyHelper.transferEnergy(this, (IEnergySink) chargeStack.getItem(), chargeStack);
 	}
@@ -113,6 +111,15 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 		compound.setInteger("storedEnergy", storedEnergy);
 
 		return compound;
+	}
+
+	protected boolean isItemFullyCharged() {
+
+		ItemStack chargeStack = getChargeStack();
+		if (chargeStack.isEmpty()) return true;
+
+		IEnergySink sink = (IEnergySink) chargeStack.getItem();
+		return sink.getCapacityLeft(chargeStack) <= 0;
 	}
 
 	protected abstract ItemStack getChargeStack();
