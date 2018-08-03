@@ -1,14 +1,14 @@
 package com.sciencebitch.tileentities;
 
-import com.sciencebitch.interfaces.IEnergyProvider;
-import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.interfaces.energy.IEnergyProvider;
 import com.sciencebitch.util.EnergyHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements ITickable, IEnergySink {
+public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements ITickable, IEnergyStorage {
 
 	private boolean burningBeforeUpdate;
 
@@ -25,25 +25,6 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 
 	public void setMaxEnergyInput(int maxEnergyInput) {
 		this.maxEnergyInput = maxEnergyInput;
-	}
-
-	@Override
-	public int getMaxEnergyInput() {
-		return this.maxEnergyInput;
-	}
-
-	@Override
-	public int getCapacityLeft(ItemStack stack) {
-		return this.energyCapacity - this.storedEnergy;
-	}
-
-	@Override
-	public int injectEnergy(IEnergyProvider provider, int amount, ItemStack stack) {
-
-		amount = Math.min(amount, getCapacityLeft(stack));
-		storedEnergy += amount;
-
-		return amount;
 	}
 
 	@Override
@@ -116,6 +97,48 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 		IEnergyProvider provider = (IEnergyProvider) fuelStack.getItem();
 
 		return provider.getEnergyLeft(fuelStack) <= 0;
+	}
+
+	protected int getCapacityLeft() {
+		return energyCapacity - storedEnergy;
+	}
+
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+
+		int receiveAmount = Math.min(maxReceive, getCapacityLeft());
+		receiveAmount = Math.min(receiveAmount, maxEnergyInput);
+
+		if (!simulate) {
+			storedEnergy += receiveAmount;
+		}
+
+		return receiveAmount;
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		return 0;
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return this.storedEnergy;
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return this.energyCapacity;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return false;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return true;
 	}
 
 	protected abstract ItemStack getFuelStack();

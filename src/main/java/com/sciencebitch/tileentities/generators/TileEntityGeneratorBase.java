@@ -3,19 +3,18 @@ package com.sciencebitch.tileentities.generators;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sciencebitch.interfaces.IEnergyProvider;
-import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.interfaces.energy.IEnergyReceiver;
 import com.sciencebitch.tileentities.TileEntityMachineBase;
 import com.sciencebitch.util.EnergyHelper;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public abstract class TileEntityGeneratorBase extends TileEntityMachineBase implements ITickable, IEnergyProvider {
+public abstract class TileEntityGeneratorBase extends TileEntityMachineBase implements ITickable, IEnergyStorage {
 
 	private int maxEnergyOutput = 100;
 	private final int energyCapacity;
@@ -30,25 +29,6 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 
 	public void setMaxEnergyOutput(int maxEnergyOutput) {
 		this.maxEnergyOutput = maxEnergyOutput;
-	}
-
-	@Override
-	public int getMaxEnergyOutput() {
-		return maxEnergyOutput;
-	}
-
-	@Override
-	public int getEnergyLeft(ItemStack stack) {
-		return storedEnergy;
-	}
-
-	@Override
-	public int drainEnergy(EntityLivingBase entity, int amount, ItemStack stack) {
-
-		amount = Math.min(amount, getEnergyLeft(stack));
-		storedEnergy -= amount;
-
-		return amount;
 	}
 
 	@Override
@@ -81,11 +61,11 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 
 	private void handleEnergy() {
 
-		if (getEnergyLeft(null) <= 0) return;
+		if (this.storedEnergy <= 0) return;
 
 		ItemStack chargeStack = getChargeStack();
 		if (!chargeStack.isEmpty()) {
-			EnergyHelper.transferEnergy(this, (IEnergySink) chargeStack.getItem(), chargeStack);
+			EnergyHelper.transferEnergy(this, (IEnergyReceiver) chargeStack.getItem(), chargeStack);
 		}
 
 		transferEnergyToNeighborBlocks();
@@ -95,14 +75,18 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 
 		BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
 
-		List<IEnergySink> energyReceivers = new ArrayList<>();
+		List<IEnergyStorage> energyReceivers = new ArrayList<>();
 
 		for (BlockPos neighbor : neighbors) {
 
 			TileEntity tileEntity = world.getTileEntity(neighbor);
 
-			if (tileEntity != null && tileEntity instanceof IEnergySink) {
-				energyReceivers.add((IEnergySink) tileEntity);
+			if (tileEntity != null && tileEntity instanceof IEnergyStorage) {
+				IEnergyStorage storage = (IEnergyStorage) tileEntity;
+
+				if (storage.canReceive()) {
+					energyReceivers.add(storage);
+				}
 			}
 		}
 
@@ -119,7 +103,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 	}
 
 	public static boolean isItemChargable(ItemStack stack) {
-		return (stack.getItem() instanceof IEnergySink);
+		return (stack.getItem() instanceof IEnergyReceiver);
 	}
 
 	@Override
@@ -145,8 +129,46 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 		ItemStack chargeStack = getChargeStack();
 		if (chargeStack.isEmpty()) return true;
 
-		IEnergySink sink = (IEnergySink) chargeStack.getItem();
+		IEnergyReceiver sink = (IEnergyReceiver) chargeStack.getItem();
 		return sink.getCapacityLeft(chargeStack) <= 0;
+	}
+
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		return 0;
+	}
+
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+
+		int extractAmount = Math.min(maxExtract, storedEnergy);
+		extractAmount = Math.min(extractAmount, maxEnergyOutput);
+
+		if (!simulate) {
+			storedEnergy -= extractAmount;
+		}
+
+		return extractAmount;
+	}
+
+	@Override
+	public int getEnergyStored() {
+		return this.storedEnergy;
+	}
+
+	@Override
+	public int getMaxEnergyStored() {
+		return this.energyCapacity;
+	}
+
+	@Override
+	public boolean canExtract() {
+		return true;
+	}
+
+	@Override
+	public boolean canReceive() {
+		return false;
 	}
 
 	protected abstract ItemStack getChargeStack();

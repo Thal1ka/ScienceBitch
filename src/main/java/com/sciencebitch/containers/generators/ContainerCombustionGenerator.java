@@ -3,7 +3,7 @@ package com.sciencebitch.containers.generators;
 import com.sciencebitch.containers.ContainerBase;
 import com.sciencebitch.containers.slots.SlotChargable;
 import com.sciencebitch.containers.slots.SlotPassive;
-import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.interfaces.energy.IEnergyReceiver;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,6 +78,6 @@ public class ContainerCombustionGenerator extends ContainerBase {
 	}
 
 	private boolean isItemChargable(ItemStack stack) {
-		return stack.getItem() instanceof IEnergySink;
+		return stack.getItem() instanceof IEnergyReceiver;
 	}
 }
