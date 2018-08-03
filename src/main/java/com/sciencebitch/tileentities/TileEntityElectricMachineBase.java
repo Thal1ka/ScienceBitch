@@ -119,6 +119,16 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 		return compound;
 	}
 
+	protected boolean isFuelEmpty() {
+
+		ItemStack fuelStack = getFuelStack();
+		if (fuelStack.isEmpty()) return true;
+
+		IEnergyProvider provider = (IEnergyProvider) fuelStack.getItem();
+
+		return provider.getEnergyLeft(fuelStack) <= 0;
+	}
+
 	protected abstract ItemStack getFuelStack();
 
 	protected abstract boolean canWork();
