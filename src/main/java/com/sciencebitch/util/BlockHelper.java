@@ -11,28 +11,12 @@ public class BlockHelper {
 		if (from == EnumFacing.UP) return BlockSide.TOP;
 		if (from == EnumFacing.DOWN) return BlockSide.BOTTOM;
 
-		int blockIndex = getFacingIndex(blockFacing);
-		int fromIndex = getFacingIndex(from);
+		int blockIndex = blockFacing.getHorizontalIndex();
+		int fromIndex = from.getHorizontalIndex();
 
 		int sideIndex = (blockIndex - fromIndex + 4) % 4;
 
 		return getBlockSide(sideIndex);
-	}
-
-	private static int getFacingIndex(EnumFacing facing) {
-
-		switch (facing) {
-			case NORTH:
-				return 0;
-			case EAST:
-				return 1;
-			case SOUTH:
-				return 2;
-			case WEST:
-				return 3;
-			default:
-				return -1;
-		}
 	}
 
 	private static BlockSide getBlockSide(int index) {
