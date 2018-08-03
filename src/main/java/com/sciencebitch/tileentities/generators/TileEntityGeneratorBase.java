@@ -1,5 +1,8 @@
 package com.sciencebitch.tileentities.generators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sciencebitch.interfaces.IEnergyProvider;
 import com.sciencebitch.interfaces.IEnergySink;
 import com.sciencebitch.tileentities.TileEntityMachineBase;
@@ -8,7 +11,9 @@ import com.sciencebitch.util.EnergyHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 
 public abstract class TileEntityGeneratorBase extends TileEntityMachineBase implements ITickable, IEnergyProvider {
 
@@ -56,8 +61,7 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 			handleEnergy();
 		}
 
-		if (world.isRemote)
-			return;
+		if (world.isRemote) return;
 
 		if (canWork) {
 			doWork();
@@ -78,10 +82,29 @@ public abstract class TileEntityGeneratorBase extends TileEntityMachineBase impl
 	private void handleEnergy() {
 
 		ItemStack chargeStack = getChargeStack();
-		if (chargeStack.isEmpty())
-			return;
+		if (!chargeStack.isEmpty()) {
+			EnergyHelper.transferEnergy(this, (IEnergySink) chargeStack.getItem(), chargeStack);
+		}
 
-		EnergyHelper.transferEnergy(this, (IEnergySink) chargeStack.getItem(), chargeStack);
+		this.transferEnergyToSurroundingBlocks();
+	}
+
+	private void transferEnergyToSurroundingBlocks() {
+
+		BlockPos[] neighborPositions = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
+
+		List<IEnergySink> energyReceivers = new ArrayList<>();
+
+		for (BlockPos neighborPosition : neighborPositions) {
+
+			TileEntity tileEntity = world.getTileEntity(neighborPosition);
+
+			if (tileEntity != null && tileEntity instanceof IEnergySink) {
+				energyReceivers.add((IEnergySink) tileEntity);
+			}
+		}
+
+		EnergyHelper.transferEnergyToBlocks(this, energyReceivers);
 	}
 
 	protected int getCapacityLeft() {
