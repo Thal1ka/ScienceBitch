@@ -10,6 +10,8 @@ import net.minecraft.util.ITickable;
 
 public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements ITickable, IEnergySink {
 
+	private boolean burningBeforeUpdate;
+
 	private int maxEnergyInput = 20;
 	private final int energyCapacity;
 
@@ -47,32 +49,25 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 	@Override
 	public void update() {
 
-		boolean isWorkingBeforeUpdate = hasEnergy();
-
-		boolean canWork = canWork();
-
-		if (hasEnergy()) {
-			this.storedEnergy--;
-		}
-
-		if (canWork) {
-			handleEnergy();
-		}
+		handleEnergy();
 
 		if (world.isRemote) return;
 
-		if (canWork && hasEnergy()) {
-			doWork();
-		}
+		boolean isWorking = canWork() && hasEnergy();
 
-		if (!canWork || !hasEnergy()) {
+		if (isWorking) {
+
+			doWork();
+			storedEnergy--;
+		} else {
+
 			onWorkCanceled();
 		}
 
-		boolean isWorkingAfterUpdate = hasEnergy();
+		if (burningBeforeUpdate != isWorking) {
 
-		if (isWorkingBeforeUpdate != isWorkingAfterUpdate) {
-			updateState(isWorkingAfterUpdate, this.world, this.pos);
+			burningBeforeUpdate = isWorking;
+			updateState(isWorking, this.world, this.pos);
 			this.markDirty();
 		}
 	}
@@ -98,6 +93,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 
 		super.readFromNBT(compound);
 
+		burningBeforeUpdate = compound.getBoolean("burningBeforeUpdate");
 		storedEnergy = compound.getInteger("storedEnergy");
 	}
 
@@ -106,6 +102,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 
 		super.writeToNBT(compound);
 
+		compound.setBoolean("burningBeforeUpdate", burningBeforeUpdate);
 		compound.setInteger("storedEnergy", storedEnergy);
 
 		return compound;

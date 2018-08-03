@@ -139,11 +139,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 		if (!isWorking()) {
 			handleFuel();
-			if (!isWorking()) {
-				ticksBurning = 0;
-				speedMultiplicator = 1;
-				return;
-			}
+			if (!isWorking()) return;
 		}
 
 		generateEnergy(speedMultiplicator);
@@ -192,6 +188,12 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 
 	@Override
 	protected void updateState(boolean isWorking, World world, BlockPos pos) {
+
+		if (!isWorking) {
+			speedMultiplicator = 1;
+			ticksBurning = 0;
+		}
+
 		BlockCombustionGenerator.setState(isWorking, world, pos);
 	}
 
