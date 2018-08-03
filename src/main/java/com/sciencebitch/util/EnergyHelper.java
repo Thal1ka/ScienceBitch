@@ -1,5 +1,7 @@
 package com.sciencebitch.util;
 
+import java.util.List;
+
 import com.sciencebitch.interfaces.IEnergyProvider;
 import com.sciencebitch.interfaces.IEnergySink;
 
@@ -39,4 +41,24 @@ public class EnergyHelper {
 		return transferAmount;
 	}
 
+	public static int transferEnergyToBlocks(IEnergyProvider provider, List<IEnergySink> energyReceivers) {
+
+		int energyToGive = Math.min(provider.getEnergyLeft(null), provider.getMaxEnergyOutput());
+		final int energyToGiveBefore = energyToGive;
+
+		for (int i = 0; i < energyReceivers.size(); i++) {
+
+			IEnergySink receiver = energyReceivers.get(i);
+
+			int transferAmount = Math.min(energyToGive / (energyReceivers.size() - i), receiver.getCapacityLeft(null));
+
+			transferAmount = receiver.injectEnergy(provider, transferAmount, null);
+			energyToGive -= transferAmount;
+		}
+
+		int energyTaken = energyToGiveBefore - energyToGive;
+		provider.drainEnergy(ENTITY_DUMMY, energyTaken, null);
+
+		return energyTaken;
+	}
 }

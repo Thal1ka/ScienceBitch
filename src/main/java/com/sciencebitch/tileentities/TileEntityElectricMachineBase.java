@@ -6,6 +6,7 @@ import com.sciencebitch.util.EnergyHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
 public abstract class TileEntityElectricMachineBase extends TileEntityMachineBase implements ITickable, IEnergySink {
@@ -14,6 +15,8 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 	private final int energyCapacity;
 
 	protected int storedEnergy;
+
+	private boolean energyInjectedFromOutside = false;
 
 	public TileEntityElectricMachineBase(String name, int energyCapacity) {
 
@@ -41,13 +44,18 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 		amount = Math.min(amount, getCapacityLeft(stack));
 		storedEnergy += amount;
 
+		if (provider instanceof TileEntity) {
+			energyInjectedFromOutside = true;
+		}
+
 		return amount;
 	}
 
 	@Override
 	public void update() {
 
-		boolean isWorkingBeforeUpdate = hasEnergy();
+		boolean isWorkingBeforeUpdate = hasEnergy() && !energyInjectedFromOutside;
+		energyInjectedFromOutside = false;
 
 		boolean canWork = canWork();
 
