@@ -1,11 +1,13 @@
 package com.sciencebitch.tileentities;
 
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
+import com.sciencebitch.util.BlockHelper.BlockSide;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -191,5 +193,31 @@ public class TileEntityElectricFurnace extends TileEntityElectricMachineBase {
 		nbt.setInteger("CookTimeTotal", this.totalCookTime);
 
 		return nbt;
+	}
+
+	@Override
+	protected int[] getSlotsForSide(BlockSide side) {
+
+		return new int[] { ID_FUELFIELD, ID_INPUTFIELD, ID_OUTPUTFIELD };
+	}
+
+	@Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+
+		if (index == ID_OUTPUTFIELD) return false;
+		if (index == ID_FUELFIELD) return isItemValidForSlot(index, itemStackIn);
+
+		ItemStack stackInSlot = this.inventory.get(index);
+
+		return canAddToSlot(stackInSlot, itemStackIn);
+	}
+
+	@Override
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+
+		if (index == ID_INPUTFIELD) return false;
+		if (index == ID_FUELFIELD) return isFuelEmpty();
+
+		return true;
 	}
 }
