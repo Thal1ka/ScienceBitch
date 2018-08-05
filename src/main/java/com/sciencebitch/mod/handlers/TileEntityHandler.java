@@ -1,10 +1,12 @@
 package com.sciencebitch.mod.handlers;
 
+import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.TileEntityExtractor;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileEntityHandler {
@@ -12,12 +14,17 @@ public class TileEntityHandler {
 	public static void registerTileEntities() {
 
 		// Machines
-		GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "electric_furnace");
-		GameRegistry.registerTileEntity(TileEntityPulverizer.class, "pulverizer");
-		GameRegistry.registerTileEntity(TileEntityExtractor.class, "extractor");
+		register(TileEntityElectricFurnace.class, "electric_furnace");
+		register(TileEntityPulverizer.class, "pulverizer");
+		register(TileEntityExtractor.class, "extractor");
 
 		// Generators
-		GameRegistry.registerTileEntity(TileEntityCombustionGenerator.class, "combustiongenerator");
+		register(TileEntityCombustionGenerator.class, "combustiongenerator");
+	}
+
+	private static void register(Class<? extends TileEntity> tileEntityClass, String name) {
+
+		GameRegistry.registerTileEntity(tileEntityClass, ScienceBitch.MODID + ":" + name);
 	}
 
 }
