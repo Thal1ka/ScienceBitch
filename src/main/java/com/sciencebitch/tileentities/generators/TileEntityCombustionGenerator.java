@@ -142,13 +142,13 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 			if (!isWorking()) return;
 		}
 
-		generateEnergy(speedMultiplicator);
 		currentBurnTime += speedMultiplicator;
+		int energyToGenerate = speedMultiplicator;
 
 		if (currentBurnTime >= totalBurnTime) {
 
 			int energyToReset = totalBurnTime - currentBurnTime;
-			generateEnergy(energyToReset);
+			energyToGenerate -= energyToReset;
 
 			currentBurnTime = 0;
 			totalBurnTime = 0;
@@ -156,6 +156,7 @@ public class TileEntityCombustionGenerator extends TileEntityGeneratorBase {
 			handleFuel();
 		}
 
+		generateEnergy(energyToGenerate);
 		ticksBurning++;
 
 		if (ticksBurning % TICKS_MULTIPLIER_INCREASE == 0) {
