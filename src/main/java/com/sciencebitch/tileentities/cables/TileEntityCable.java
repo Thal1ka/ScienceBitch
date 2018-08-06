@@ -25,7 +25,7 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	public static final DamageSource electrocution = new DamageSource("electric").setDamageBypassesArmor();
 
 	private final BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
-	private final int maxTransferRate;
+	private final int maxTransferRate = 10;
 
 	private int connectorCurrent;
 
@@ -33,9 +33,8 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	private final List<EnergyStoragePosition> connectedStorages = new ArrayList<>();
 	private final List<IEnergyStorage> usedStorages = new ArrayList<>();
 
-	public TileEntityCable(int maxTransferRate) {
+	public TileEntityCable() {
 
-		this.maxTransferRate = maxTransferRate;
 	}
 
 	@Override
@@ -152,6 +151,7 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 		connectedStorages.add(storage);
 	}
 
+	@Override
 	public void addUsedStorage(IEnergyStorage storage) {
 		usedStorages.add(storage);
 	}

@@ -43,6 +43,8 @@ tile.extractor.name=Extractor
 //Generators
 tile.combustion_generator.name=Combustion Generator
 
+tile.copper_cable.name=Copper cable
+
 //Containers
 container.electric_furnace=Electric Furnace
 container.pulverizer=Pulverizer

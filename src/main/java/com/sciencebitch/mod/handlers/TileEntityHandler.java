@@ -4,6 +4,7 @@ import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.TileEntityExtractor;
 import com.sciencebitch.tileentities.TileEntityPulverizer;
+import com.sciencebitch.tileentities.cables.TileEntityCable;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
 
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +21,8 @@ public class TileEntityHandler {
 
 		// Generators
 		register(TileEntityCombustionGenerator.class, "combustiongenerator");
+
+		register(TileEntityCable.class, "cable");
 	}
 
 	private static void register(Class<? extends TileEntity> tileEntityClass, String name) {
