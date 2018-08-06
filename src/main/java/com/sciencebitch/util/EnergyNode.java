@@ -1,6 +1,7 @@
 package com.sciencebitch.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -64,7 +65,9 @@ public class EnergyNode {
 	public int submitEnergy(int energyAmount) {
 
 		int energyToGive = energyAmount;
-		int energyToGiveCopy = energyToGive;// TODO Fehlerhaft @see EnergyHelper#transferEnergyIntoBlocks
+		int energyToGiveCopy = energyToGive;
+
+		Collections.sort(children, (n1, n2) -> compareChildren(n1, n2));
 
 		for (int i = 0; i < children.size(); i++) {
 
@@ -77,5 +80,9 @@ public class EnergyNode {
 
 		int energyTransfered = energyToGiveCopy - energyToGive;
 		return energyTransfered;
+	}
+
+	private int compareChildren(EnergyNode n1, EnergyNode n2) {
+		return n1.getEnergyConsumption() - n2.getEnergyConsumption();
 	}
 }

@@ -11,4 +11,6 @@ public interface IEnergyConnector {
 	List<IEnergyStorage> getConnectedConsumers();
 
 	void addCurrentThroughConnector(int amount);
+
+	void addUsedStorage(IEnergyStorage storage);
 }

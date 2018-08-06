@@ -69,6 +69,7 @@ public class EnergyHelper {
 
 		for (IEnergyConnector connector : connectedWires) {
 			src.addChild(new EnergyNode(null, connector));
+			connector.addUsedStorage(provider);
 		}
 
 		buildConnectionTree(src, closedList, detectedConsumers);

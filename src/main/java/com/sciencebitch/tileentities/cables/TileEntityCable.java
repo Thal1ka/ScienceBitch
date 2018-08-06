@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
+import com.sciencebitch.util.EnergyHelper;
+import com.sciencebitch.util.EnergyStoragePosition;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
@@ -28,7 +30,8 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	private int connectorCurrent;
 
 	private final List<IEnergyConnector> connectedCables = new ArrayList<>();
-	private final List<IEnergyStorage> connectedStorages = new ArrayList<>();
+	private final List<EnergyStoragePosition> connectedStorages = new ArrayList<>();
+	private final List<IEnergyStorage> usedStorages = new ArrayList<>();
 
 	public TileEntityCable(int maxTransferRate) {
 
@@ -38,12 +41,44 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	@Override
 	public void update() {
 
+		sendEnergy();
+		usedStorages.clear();
+
 		if (connectorCurrent > maxTransferRate) {
 
 			// TODO break cable
 		}
 
 		shockEntities();
+	}
+
+	private void sendEnergy() {
+
+		for (EnergyStoragePosition storagePos : connectedStorages) {
+			IEnergyStorage storage = storagePos.getStorage();
+			if (storage.canExtract() && storage.getEnergyStored() > 0 && !usedStorages.contains(storage)) {
+				EnergyHelper.transferEnergyThroughConnectors(storage, getStorageConnectors(storagePos));
+			}
+		}
+	}
+
+	private List<IEnergyConnector> getStorageConnectors(EnergyStoragePosition storagePos) {
+
+		BlockPos pos = storagePos.getPosition();
+		BlockPos[] neighbors = new BlockPos[] { pos.up(), pos.down(), pos.north(), pos.west(), pos.south(), pos.east() };
+
+		List<IEnergyConnector> connectedConnectors = new ArrayList<>();
+
+		for (BlockPos neighbor : neighbors) {
+
+			TileEntity tileentity = world.getTileEntity(neighbor);
+
+			if (tileentity != null && tileentity instanceof IEnergyConnector) {
+				connectedConnectors.add((IEnergyConnector) tileentity);
+			}
+		}
+
+		return connectedConnectors;
 	}
 
 	public void shockEntities() {
@@ -94,9 +129,9 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 
 		List<IEnergyStorage> consumers = new ArrayList<>();
 
-		for (IEnergyStorage storage : connectedStorages) {
-			if (storage.canReceive()) {
-				consumers.add(storage);
+		for (EnergyStoragePosition storagePosition : connectedStorages) {
+			if (storagePosition.getStorage().canReceive()) {
+				consumers.add(storagePosition.getStorage());
 			}
 		}
 
@@ -113,7 +148,11 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 		connectedCables.add(connector);
 	}
 
-	public void addConnection(IEnergyStorage storage) {
+	public void addConnection(EnergyStoragePosition storage) {
 		connectedStorages.add(storage);
+	}
+
+	public void addUsedStorage(IEnergyStorage storage) {
+		usedStorages.add(storage);
 	}
 }
