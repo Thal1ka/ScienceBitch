@@ -86,10 +86,8 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 			TileEntityCable tileentity = (TileEntityCable) world.getTileEntity(pos);
 
 			if (neighbor instanceof IEnergyConnector) {
-				System.out.println("Connect cable: " + neighborPos);
 				tileentity.addConnection((IEnergyConnector) neighbor);
 			} else {
-				System.out.println("Connect Storage: " + neighborPos);
 				tileentity.addConnection(new EnergyStoragePosition((IEnergyStorage) neighbor, neighborPos));
 			}
 		}
@@ -135,5 +133,12 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
+		TileEntityCable tileentity = (TileEntityCable) worldIn.getTileEntity(pos);
+
+		tileentity.clearConnections();
+
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			state = updateConnection(worldIn, pos, facing, state);
+		}
 	}
 }

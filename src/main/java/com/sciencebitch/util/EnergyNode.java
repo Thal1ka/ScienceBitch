@@ -85,4 +85,20 @@ public class EnergyNode {
 	private int compareChildren(EnergyNode n1, EnergyNode n2) {
 		return n1.getEnergyConsumption() - n2.getEnergyConsumption();
 	}
+
+	public void toString(StringBuilder builder, int i) {
+
+		builder.append(" -> ").append(i).append(": ");
+		if (connector != null) {
+			builder.append("Cable");
+		} else if (energyReceiver != null) {
+			builder.append("Storage");
+		} else {
+			builder.append("Provider");
+		}
+
+		for (EnergyNode child : children) {
+			child.toString(builder, i + 1);
+		}
+	}
 }

@@ -1,7 +1,9 @@
 package com.sciencebitch.tileentities.cables;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.util.EnergyHelper;
@@ -29,9 +31,9 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 
 	private int connectorCurrent;
 
-	private final List<IEnergyConnector> connectedCables = new ArrayList<>();
-	private final List<EnergyStoragePosition> connectedStorages = new ArrayList<>();
-	private final List<IEnergyStorage> usedStorages = new ArrayList<>();
+	private final Set<IEnergyConnector> connectedCables = new HashSet<>();
+	private final Set<EnergyStoragePosition> connectedStorages = new HashSet<>();
+	private final Set<IEnergyStorage> usedStorages = new HashSet<>();
 
 	public TileEntityCable() {
 
@@ -154,5 +156,11 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	@Override
 	public void addUsedStorage(IEnergyStorage storage) {
 		usedStorages.add(storage);
+	}
+
+	public void clearConnections() {
+
+		connectedCables.clear();
+		connectedStorages.clear();
 	}
 }

@@ -1,8 +1,8 @@
 package com.sciencebitch.util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.interfaces.energy.IEnergyProvider;
@@ -62,17 +62,27 @@ public class EnergyHelper {
 
 	public static void transferEnergyThroughConnectors(IEnergyStorage provider, List<IEnergyConnector> connectedWires) {
 
-		Set<IEnergyConnector> closedList = new TreeSet<>();
-		Set<IEnergyStorage> detectedConsumers = new TreeSet<>();
+		Set<IEnergyConnector> closedList = new HashSet<>();
+		Set<IEnergyStorage> detectedConsumers = new HashSet<>();
 
 		EnergyNode src = new EnergyNode(null, null);
 
 		for (IEnergyConnector connector : connectedWires) {
-			src.addChild(new EnergyNode(null, connector));
+
+			EnergyNode child = new EnergyNode(null, connector);
+
+			src.addChild(child);
+			closedList.add(connector);
 			connector.addUsedStorage(provider);
+
+			buildConnectionTree(child, closedList, detectedConsumers);
 		}
 
-		buildConnectionTree(src, closedList, detectedConsumers);
+		StringBuilder builder = new StringBuilder();
+		src.toString(builder, 0);
+		builder.append("\n\n");
+
+		System.out.println(builder);
 
 		int energyConsumption = src.getEnergyConsumption();
 		energyConsumption = provider.extractEnergy(energyConsumption, true);
@@ -84,6 +94,7 @@ public class EnergyHelper {
 	private static void buildConnectionTree(EnergyNode parent, Set<IEnergyConnector> closedList, Set<IEnergyStorage> detectedConsumers) {
 
 		List<IEnergyConnector> connectors = parent.getConnectedCables();
+		System.out.println("ConSize:" + connectors.size());
 
 		for (IEnergyConnector connector : connectors) {
 			if (!closedList.contains(connector)) {
@@ -95,6 +106,7 @@ public class EnergyHelper {
 		}
 
 		List<IEnergyStorage> consumers = parent.getConnectedConsumers();
+		System.out.println("RecSize: " + consumers.size());
 
 		for (IEnergyStorage consumer : consumers) {
 			if (!detectedConsumers.contains(consumer)) {
