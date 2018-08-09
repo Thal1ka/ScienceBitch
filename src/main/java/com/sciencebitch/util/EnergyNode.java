@@ -33,7 +33,7 @@ public class EnergyNode {
 		if (energyReceiver != null) {
 
 			energyConsumption = energyReceiver.getMaxEnergyStored() - energyReceiver.getEnergyStored();
-			energyConsumption = energyReceiver.extractEnergy(energyConsumption, true);
+			energyConsumption = energyReceiver.receiveEnergy(energyConsumption, true);
 			return energyConsumption;
 		}
 
@@ -73,6 +73,8 @@ public class EnergyNode {
 
 			EnergyNode child = children.get(i);
 			int transferAmount = Math.min(energyToGive / children.size(), child.getEnergyConsumption());
+
+			System.out.println("transferAmount: " + transferAmount);
 
 			transferAmount = child.submitEnergy(transferAmount);
 			energyToGive -= transferAmount;

@@ -85,16 +85,21 @@ public class EnergyHelper {
 		System.out.println(builder);
 
 		int energyConsumption = src.getEnergyConsumption();
+		System.out.println("EC: " + energyConsumption);
+
 		energyConsumption = provider.extractEnergy(energyConsumption, true);
 
+		System.out.println("consumption: " + energyConsumption);
+
 		energyConsumption = src.submitEnergy(energyConsumption);
+
+		System.out.println(energyConsumption);
 		provider.extractEnergy(energyConsumption, false);
 	}
 
 	private static void buildConnectionTree(EnergyNode parent, Set<IEnergyConnector> closedList, Set<IEnergyStorage> detectedConsumers) {
 
 		List<IEnergyConnector> connectors = parent.getConnectedCables();
-		System.out.println("ConSize:" + connectors.size());
 
 		for (IEnergyConnector connector : connectors) {
 			if (!closedList.contains(connector)) {
@@ -106,7 +111,6 @@ public class EnergyHelper {
 		}
 
 		List<IEnergyStorage> consumers = parent.getConnectedConsumers();
-		System.out.println("RecSize: " + consumers.size());
 
 		for (IEnergyStorage consumer : consumers) {
 			if (!detectedConsumers.contains(consumer)) {

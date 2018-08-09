@@ -122,11 +122,37 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	@Override
 	public List<IEnergyConnector> getConnectedCables() {
 
+		BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
+
+		List<IEnergyConnector> connectedCables = new ArrayList<>();
+
+		for (BlockPos position : neighbors) {
+
+			TileEntity neighbor = world.getTileEntity(position);
+
+			if (neighbor instanceof IEnergyConnector) {
+				connectedCables.add((IEnergyConnector) neighbor);
+			}
+		}
+
 		return new ArrayList<>(connectedCables);
 	}
 
 	@Override
 	public List<IEnergyStorage> getConnectedConsumers() {
+
+		BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
+
+		List<EnergyStoragePosition> connectedStorages = new ArrayList<>();
+
+		for (BlockPos position : neighbors) {
+
+			TileEntity neighbor = world.getTileEntity(position);
+
+			if (neighbor instanceof IEnergyStorage) {
+				connectedStorages.add(new EnergyStoragePosition((IEnergyStorage) neighbor, position));
+			}
+		}
 
 		List<IEnergyStorage> consumers = new ArrayList<>();
 
@@ -137,6 +163,26 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 		}
 
 		return consumers;
+	}
+
+	private void setConnected() {
+
+		// clearConnections();
+
+		BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
+
+		for (BlockPos position : neighbors) {
+
+			TileEntity neighbor = world.getTileEntity(position);
+
+			if (neighbor instanceof IEnergyConnector) {
+				addConnection((IEnergyConnector) neighbor);
+			} else if (neighbor instanceof IEnergyStorage) {
+				addConnection(new EnergyStoragePosition((IEnergyStorage) neighbor, position));
+			}
+
+		}
+
 	}
 
 	@Override
