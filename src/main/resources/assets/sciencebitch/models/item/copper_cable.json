@@ -1,3 +1,6 @@
 {
-   "parent": "sciencebitch:block/copper_cable"
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "sciencebitch:items/copper_cable_item"
+    }
 }

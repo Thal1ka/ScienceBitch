@@ -131,6 +131,27 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			state = updateConnection(worldIn, pos, facing, state);
+		}
+
+		return state;
+	}
+
+	private IBlockState updateConnection(IBlockAccess world, BlockPos pos, EnumFacing direction, IBlockState state) {
+
+		BlockPos neighborPos = pos.offset(direction);
+		TileEntity neighbor = world.getTileEntity(neighborPos);
+
+		boolean canConnect = (neighbor instanceof IEnergyConnector || neighbor instanceof IEnergyStorage);
+
+		IProperty<Boolean> dirProperty = getPropertyFromDirection(direction);
+		return state.withProperty(dirProperty, canConnect);
+	}
+
+	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
 		TileEntityCable tileentity = (TileEntityCable) worldIn.getTileEntity(pos);
@@ -140,5 +161,25 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 		for (EnumFacing facing : EnumFacing.VALUES) {
 			state = updateConnection(worldIn, pos, facing, state);
 		}
+	}
+
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 }

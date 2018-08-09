@@ -78,22 +78,17 @@ public class EnergyHelper {
 			buildConnectionTree(child, closedList, detectedConsumers);
 		}
 
-		StringBuilder builder = new StringBuilder();
-		src.toString(builder, 0);
-		builder.append("\n\n");
-
-		System.out.println(builder);
+		// StringBuilder builder = new StringBuilder();
+		// src.toString(builder, 0);
+		// builder.append("\n\n");
+		//
+		// System.out.println(builder);
 
 		int energyConsumption = src.getEnergyConsumption();
-		System.out.println("EC: " + energyConsumption);
 
 		energyConsumption = provider.extractEnergy(energyConsumption, true);
-
-		System.out.println("consumption: " + energyConsumption);
-
 		energyConsumption = src.submitEnergy(energyConsumption);
 
-		System.out.println(energyConsumption);
 		provider.extractEnergy(energyConsumption, false);
 	}
 

@@ -64,6 +64,11 @@ public class EnergyNode {
 
 	public int submitEnergy(int energyAmount) {
 
+		if (isEnergyReceiver()) {
+			receiveEnergy(energyAmount);
+			return energyAmount;
+		}
+
 		int energyToGive = energyAmount;
 		int energyToGiveCopy = energyToGive;
 
@@ -74,14 +79,21 @@ public class EnergyNode {
 			EnergyNode child = children.get(i);
 			int transferAmount = Math.min(energyToGive / children.size(), child.getEnergyConsumption());
 
-			System.out.println("transferAmount: " + transferAmount);
-
 			transferAmount = child.submitEnergy(transferAmount);
 			energyToGive -= transferAmount;
 		}
 
 		int energyTransfered = energyToGiveCopy - energyToGive;
 		return energyTransfered;
+	}
+
+	private void receiveEnergy(int amount) {
+
+		energyReceiver.receiveEnergy(amount, false);
+	}
+
+	private boolean isEnergyReceiver() {
+		return energyReceiver != null;
 	}
 
 	private int compareChildren(EnergyNode n1, EnergyNode n2) {
