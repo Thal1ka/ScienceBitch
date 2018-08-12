@@ -1,6 +1,11 @@
 package com.sciencebitch.util;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class BlockHelper {
 
@@ -37,5 +42,24 @@ public class BlockHelper {
 
 	public enum BlockSide {
 		TOP, BOTTOM, LEFT, RIGHT, BACK, FRONT
+	}
+
+	public static void dropSpecialInventory(IInventory inventory, World world, BlockPos pos, int[] exclude) {
+
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+
+			for (int j = 0; j < exclude.length; j++) {
+				if (exclude[j] == i) {
+					continue;
+				}
+			}
+
+			ItemStack itemstack = inventory.getStackInSlot(i);
+
+			if (!itemstack.isEmpty()) {
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
+			}
+		}
+
 	}
 }

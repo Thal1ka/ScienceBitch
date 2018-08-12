@@ -6,10 +6,9 @@ import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.blocks.machines.BlockMachineBase;
 import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
+import com.sciencebitch.util.BlockHelper;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -64,10 +63,10 @@ public class BlockCombustionGenerator extends BlockMachineBase {
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 
 		if (!keepInventory) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			TileEntityCombustionGenerator tileentity = (TileEntityCombustionGenerator) worldIn.getTileEntity(pos);
 
 			if (tileentity instanceof TileEntityCombustionGenerator) {
-				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+				BlockHelper.dropSpecialInventory(tileentity, worldIn, pos, new int[] { tileentity.ID_CURRENT_ITEMFIELD });
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 		}
