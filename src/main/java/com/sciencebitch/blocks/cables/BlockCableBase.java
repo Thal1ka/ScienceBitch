@@ -1,12 +1,9 @@
 package com.sciencebitch.blocks.cables;
 
-import java.util.Random;
-
 import com.sciencebitch.blocks.BlockBase;
 import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.tileentities.cables.TileEntityCable;
-import com.sciencebitch.util.EnergyStoragePosition;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -14,8 +11,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -36,63 +31,6 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 		super(name, Material.CLOTH);
 
 		setCreativeTab(SB_CreativeTabs.TAB_ELECTRIC_ITEMS);
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-
-		for (EnumFacing facing : EnumFacing.VALUES) {
-			state = updateConnection(worldIn, pos, facing, state);
-		}
-	}
-
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-
-		IBlockState state = world.getBlockState(pos);
-		World worldIn = world.getTileEntity(pos).getWorld();
-
-		int dx = pos.getX() - neighbor.getX();
-		int dy = pos.getY() - neighbor.getY();
-		int dz = pos.getZ() - neighbor.getZ();
-
-		if (dx < 0) {
-			updateConnection(worldIn, pos, EnumFacing.EAST, state);
-		} else if (dx > 0) {
-			updateConnection(worldIn, pos, EnumFacing.WEST, state);
-		} else if (dy < 0) {
-			updateConnection(worldIn, pos, EnumFacing.UP, state);
-		} else if (dy > 0) {
-			updateConnection(worldIn, pos, EnumFacing.DOWN, state);
-		} else if (dz < 0) {
-			updateConnection(worldIn, pos, EnumFacing.SOUTH, state);
-		} else if (dz > 0) {
-			updateConnection(worldIn, pos, EnumFacing.NORTH, state);
-		}
-	}
-
-	private IBlockState updateConnection(World world, BlockPos pos, EnumFacing direction, IBlockState state) {
-
-		BlockPos neighborPos = pos.offset(direction);
-		TileEntity neighbor = world.getTileEntity(neighborPos);
-
-		boolean canConnect = (neighbor instanceof IEnergyConnector || neighbor instanceof IEnergyStorage);
-
-		IProperty<Boolean> dirProperty = getPropertyFromDirection(direction);
-		state = state.withProperty(dirProperty, canConnect);
-		world.setBlockState(pos, state, 2);
-
-		if (canConnect) {
-			TileEntityCable tileentity = (TileEntityCable) world.getTileEntity(pos);
-
-			if (neighbor instanceof IEnergyConnector) {
-				tileentity.addConnection((IEnergyConnector) neighbor);
-			} else {
-				tileentity.addConnection(new EnergyStoragePosition((IEnergyStorage) neighbor, neighborPos));
-			}
-		}
-
-		return state;
 	}
 
 	private IProperty<Boolean> getPropertyFromDirection(EnumFacing direction) {
@@ -131,10 +69,16 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-		for (EnumFacing facing : EnumFacing.VALUES) {
-			state = updateConnection(worldIn, pos, facing, state);
+		state = updateConnections(world, pos, state);
+		return state;
+	}
+
+	private IBlockState updateConnections(IBlockAccess world, BlockPos pos, IBlockState state) {
+
+		for (EnumFacing direction : EnumFacing.VALUES) {
+			state = updateConnection(world, pos, direction, state);
 		}
 
 		return state;
@@ -149,18 +93,6 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 
 		IProperty<Boolean> dirProperty = getPropertyFromDirection(direction);
 		return state.withProperty(dirProperty, canConnect);
-	}
-
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-
-		TileEntityCable tileentity = (TileEntityCable) worldIn.getTileEntity(pos);
-
-		tileentity.clearConnections();
-
-		for (EnumFacing facing : EnumFacing.VALUES) {
-			state = updateConnection(worldIn, pos, facing, state);
-		}
 	}
 
 	@Override

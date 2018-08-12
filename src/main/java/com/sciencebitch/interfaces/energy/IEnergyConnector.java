@@ -12,5 +12,12 @@ public interface IEnergyConnector {
 
 	void addCurrentThroughConnector(int amount);
 
-	void addUsedStorage(IEnergyStorage storage);
+	/**
+	 * Wether the cables masters the energy transmition of the given storage
+	 *
+	 * @param storage
+	 *            The storage
+	 * @return {@code True} if if is the master of the connection
+	 */
+	boolean isMaster(IEnergyStorage storage);
 }

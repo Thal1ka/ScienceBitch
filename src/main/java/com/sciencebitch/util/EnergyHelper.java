@@ -1,7 +1,9 @@
 package com.sciencebitch.util;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
@@ -62,55 +64,59 @@ public class EnergyHelper {
 
 	public static void transferEnergyThroughConnectors(IEnergyStorage provider, List<IEnergyConnector> connectedWires) {
 
-		Set<IEnergyConnector> closedList = new HashSet<>();
-		Set<IEnergyStorage> detectedConsumers = new HashSet<>();
+		Set<IEnergyConnector> closedConnectors = new HashSet<>();
+		Set<IEnergyStorage> closedConsumers = new HashSet<>();
 
-		EnergyNode src = new EnergyNode(null, null);
-
-		for (IEnergyConnector connector : connectedWires) {
-
-			EnergyNode child = new EnergyNode(null, connector);
-
-			src.addChild(child);
-			closedList.add(connector);
-			connector.addUsedStorage(provider);
-
-			buildConnectionTree(child, closedList, detectedConsumers);
-		}
+		EnergySourceNode sourceNode = new EnergySourceNode(connectedWires);
+		buildConnectionTree(sourceNode, provider);
 
 		// StringBuilder builder = new StringBuilder();
 		// src.toString(builder, 0);
 		// builder.append("\n\n");
-		//
 		// System.out.println(builder);
 
-		int energyConsumption = src.getEnergyConsumption();
+		int energyConsumption = sourceNode.getEnergyConsumption();
 
 		energyConsumption = provider.extractEnergy(energyConsumption, true);
-		energyConsumption = src.submitEnergy(energyConsumption);
+		energyConsumption = sourceNode.submitEnergy(energyConsumption);
 
 		provider.extractEnergy(energyConsumption, false);
 	}
 
-	private static void buildConnectionTree(EnergyNode parent, Set<IEnergyConnector> closedList, Set<IEnergyStorage> detectedConsumers) {
+	private static void buildConnectionTree(EnergyNode parent, IEnergyStorage provider) {
 
-		List<IEnergyConnector> connectors = parent.getConnectedCables();
+		Set<IEnergyConnector> closedCables = new HashSet<>();
+		Set<IEnergyStorage> closedConsumers = new HashSet<>();
 
-		for (IEnergyConnector connector : connectors) {
-			if (!closedList.contains(connector)) {
-				closedList.add(connector);
-				EnergyNode node = new EnergyNode(null, connector);
-				parent.addChild(node);
-				buildConnectionTree(node, closedList, detectedConsumers);
+		// To avoid self supply if provider can receive and provide
+		closedConsumers.add(provider);
+
+		Queue<EnergyNode> queue = new LinkedList<>();
+		queue.offer(parent);
+
+		while (!queue.isEmpty()) {
+
+			parent = queue.poll();
+
+			List<IEnergyConnector> connectedCables = parent.getConnectedCables();
+
+			for (IEnergyConnector connectedCable : connectedCables) {
+				if (!closedCables.contains(connectedCable)) {
+					closedCables.add(connectedCable);
+					EnergyNode node = new EnergyNode(null, connectedCable);
+					parent.addChild(node);
+					queue.offer(node);
+				}
 			}
-		}
 
-		List<IEnergyStorage> consumers = parent.getConnectedConsumers();
+			List<IEnergyStorage> connectedConsumers = parent.getConnectedConsumers();
 
-		for (IEnergyStorage consumer : consumers) {
-			if (!detectedConsumers.contains(consumer)) {
-				detectedConsumers.add(consumer);
-				parent.addChild(new EnergyNode(consumer, null));
+			for (IEnergyStorage connectedConsumer : connectedConsumers) {
+				if (!closedConsumers.contains(connectedConsumer)) {
+					closedConsumers.add(connectedConsumer);
+					EnergyNode node = new EnergyNode(connectedConsumer, null);
+					parent.addChild(node);
+				}
 			}
 		}
 	}
