@@ -48,10 +48,17 @@ public class BlockHelper {
 
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 
+			boolean dropStack = true;
+
 			for (int j = 0; j < exclude.length; j++) {
 				if (exclude[j] == i) {
-					continue;
+					dropStack = false;
+					break;
 				}
+			}
+
+			if (!dropStack) {
+				continue;
 			}
 
 			ItemStack itemstack = inventory.getStackInSlot(i);

@@ -26,12 +26,12 @@ public class BlockCombustionGenerator extends BlockMachineBase {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(SB_Blocks.EXTRACTOR);
+		return Item.getItemFromBlock(SB_Blocks.GENERATOR_COMBUSTION);
 	}
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(SB_Blocks.EXTRACTOR);
+		return new ItemStack(SB_Blocks.GENERATOR_COMBUSTION);
 	}
 
 	public static void setState(boolean active, World worldIn, BlockPos pos) {
