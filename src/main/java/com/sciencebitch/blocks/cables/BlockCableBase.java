@@ -27,8 +27,12 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 	public static final IProperty<Boolean> WEST = PropertyBool.create("west");
 	public static final IProperty<Boolean> EAST = PropertyBool.create("east");
 
-	public BlockCableBase(String name) {
+	private final boolean covered;
+
+	public BlockCableBase(String name, boolean covered) {
+
 		super(name, Material.CLOTH);
+		this.covered = covered;
 
 		setCreativeTab(SB_CreativeTabs.TAB_ELECTRIC_ITEMS);
 	}

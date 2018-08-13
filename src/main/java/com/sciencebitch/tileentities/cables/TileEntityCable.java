@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
-import com.sciencebitch.util.EnergyHelper;
-import com.sciencebitch.util.EnergyStoragePosition;
+import com.sciencebitch.util.energy.EnergyHelper;
+import com.sciencebitch.util.energy.EnergyStoragePosition;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -27,7 +29,7 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	public static final DamageSource electrocution = new DamageSource("electric").setDamageBypassesArmor();
 
 	private BlockPos[] neighbors = new BlockPos[] { pos.north(), pos.west(), pos.south(), pos.east(), pos.up(), pos.down() };
-	private final int maxTransferRate = 10;
+	private final int maxTransferRate = 40;
 
 	private int connectorCurrent;
 
@@ -49,11 +51,44 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 		sendEnergy();
 
 		if (connectorCurrent > maxTransferRate) {
-
-			// TODO break cable
+			melt();
 		}
 
 		shockEntities();
+		connectorCurrent = 0;
+	}
+
+	public void melt() {
+
+		world.removeTileEntity(pos);
+
+		IBlockState state = Blocks.FLOWING_LAVA.getStateFromMeta(1);
+		world.setBlockState(pos, state, 3);
+	}
+
+	public void shockEntities() {
+
+		float rangeMultiplier = Math.min(0.25f + (float) Math.sqrt(connectorCurrent) / 512, 0.75f);
+
+		BlockPos rangeOffset = new BlockPos(rangeMultiplier, rangeMultiplier, rangeMultiplier);
+		BlockPos maxOffset = new BlockPos(1, 1, 1);
+		AxisAlignedBB range = new AxisAlignedBB(this.pos.subtract(rangeOffset), this.pos.add(maxOffset).add(rangeOffset));
+		List entities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, range);
+
+		for (int i = 0; i < entities.size(); i++) {
+			shock((EntityLivingBase) entities.get(i), (float) Math.sqrt(connectorCurrent / 4));
+		}
+	}
+
+	public void shock(EntityLivingBase target, float damage) {
+
+		target.attackEntityFrom(electrocution, damage);
+		target.setFire(10);
+		this.getWorld().playSound(null, target.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+		target.addPotionEffect(new PotionEffect(Potion.getPotionById(2), 2, 6, true, false));
+		target.addPotionEffect(new PotionEffect(Potion.getPotionById(4), 2, 1, true, false));
+		target.addPotionEffect(new PotionEffect(Potion.getPotionById(24), 2, 1, true, false));
+		target.addPotionEffect(new PotionEffect(Potion.getPotionById(8), 2, -10, true, false));
 	}
 
 	private void sendEnergy() {
@@ -92,31 +127,6 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 		}
 
 		return connectedConnectors;
-	}
-
-	public void shockEntities() {
-
-		float rangeMultiplier = Math.min(0.25f + (float) Math.sqrt(connectorCurrent) / 512, 0.75f);
-
-		BlockPos rangeOffset = new BlockPos(rangeMultiplier, rangeMultiplier, rangeMultiplier);
-		BlockPos maxOffset = new BlockPos(1, 1, 1);
-		AxisAlignedBB range = new AxisAlignedBB(this.pos.subtract(rangeOffset), this.pos.add(maxOffset).add(rangeOffset));
-		List entities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, range);
-
-		for (int i = 0; i < entities.size(); i++) {
-			shock((EntityLivingBase) entities.get(i), (float) Math.sqrt(connectorCurrent / 4));
-		}
-	}
-
-	public void shock(EntityLivingBase target, float damage) {
-
-		target.attackEntityFrom(electrocution, damage);
-		target.setFire(10);
-		this.getWorld().playSound(null, target.getPosition(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-		target.addPotionEffect(new PotionEffect(Potion.getPotionById(2), 2, 6, true, false));
-		target.addPotionEffect(new PotionEffect(Potion.getPotionById(4), 2, 1, true, false));
-		target.addPotionEffect(new PotionEffect(Potion.getPotionById(24), 2, 1, true, false));
-		target.addPotionEffect(new PotionEffect(Potion.getPotionById(8), 2, -10, true, false));
 	}
 
 	@Override
@@ -194,5 +204,10 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	@Override
 	public boolean isMaster(IEnergyStorage storage) {
 		return masteredStorages.contains(storage);
+	}
+
+	@Override
+	public float getLoss() {
+		return 0.1F;
 	}
 }

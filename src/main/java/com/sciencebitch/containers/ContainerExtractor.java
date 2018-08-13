@@ -4,7 +4,7 @@ import com.sciencebitch.containers.slots.SlotBottleInput;
 import com.sciencebitch.containers.slots.SlotElectricFuel;
 import com.sciencebitch.containers.slots.SlotElectricFurnaceOutput;
 import com.sciencebitch.recipes.RecipeManager;
-import com.sciencebitch.tileentities.TileEntityExtractor;
+import com.sciencebitch.tileentities.machines.TileEntityExtractor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

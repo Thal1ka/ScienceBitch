@@ -6,10 +6,10 @@ import com.sciencebitch.containers.ContainerPulverizer;
 import com.sciencebitch.containers.generators.ContainerCombustionGenerator;
 import com.sciencebitch.gui.generators.GuiCombustionGenerator;
 import com.sciencebitch.mod.handlers.GuiHandler;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
-import com.sciencebitch.tileentities.TileEntityExtractor;
-import com.sciencebitch.tileentities.TileEntityPulverizer;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityExtractor;
+import com.sciencebitch.tileentities.machines.TileEntityPulverizer;
 
 public class SB_GUIs {
 

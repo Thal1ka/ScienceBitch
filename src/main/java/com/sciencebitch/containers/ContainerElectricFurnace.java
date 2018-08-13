@@ -1,7 +1,7 @@
 package com.sciencebitch.containers;
 
 import com.sciencebitch.containers.slots.SlotElectricFuel;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

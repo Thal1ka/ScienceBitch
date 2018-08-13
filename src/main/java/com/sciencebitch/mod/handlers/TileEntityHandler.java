@@ -1,11 +1,11 @@
 package com.sciencebitch.mod.handlers;
 
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
-import com.sciencebitch.tileentities.TileEntityExtractor;
-import com.sciencebitch.tileentities.TileEntityPulverizer;
 import com.sciencebitch.tileentities.cables.TileEntityCable;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityExtractor;
+import com.sciencebitch.tileentities.machines.TileEntityPulverizer;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;

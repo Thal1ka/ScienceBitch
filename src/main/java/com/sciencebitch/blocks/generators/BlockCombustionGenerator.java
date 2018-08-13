@@ -1,4 +1,4 @@
-package com.sciencebitch.blocks.machines.generators;
+package com.sciencebitch.blocks.generators;
 
 import java.util.Random;
 

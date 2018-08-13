@@ -1,5 +1,7 @@
-package com.sciencebitch.util;
+package com.sciencebitch.util.energy;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Set;
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.interfaces.energy.IEnergyProvider;
 import com.sciencebitch.interfaces.energy.IEnergyReceiver;
+import com.sciencebitch.util.EntityLivingDummy;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -68,22 +71,20 @@ public class EnergyHelper {
 		Set<IEnergyStorage> closedConsumers = new HashSet<>();
 
 		EnergySourceNode sourceNode = new EnergySourceNode(connectedWires);
-		buildConnectionTree(sourceNode, provider);
+		List<EnergyReceiverNode> leaves = buildConnectionTreeAndGetLeaves(sourceNode, provider);
 
-		// StringBuilder builder = new StringBuilder();
-		// src.toString(builder, 0);
-		// builder.append("\n\n");
-		// System.out.println(builder);
+		int energyToGive = provider.getEnergyStored();
+		energyToGive = provider.extractEnergy(energyToGive, true);
 
-		int energyConsumption = sourceNode.getEnergyConsumption();
+		distributeEnergy(leaves, energyToGive);
 
-		energyConsumption = provider.extractEnergy(energyConsumption, true);
-		energyConsumption = sourceNode.submitEnergy(energyConsumption);
-
-		provider.extractEnergy(energyConsumption, false);
+		int submittedEnergy = sourceNode.submitEnergy();
+		provider.extractEnergy(submittedEnergy, false);
 	}
 
-	private static void buildConnectionTree(EnergyNode parent, IEnergyStorage provider) {
+	private static List<EnergyReceiverNode> buildConnectionTreeAndGetLeaves(EnergyNode parent, IEnergyStorage provider) {
+
+		List<EnergyReceiverNode> leaves = new ArrayList<>();
 
 		Set<IEnergyConnector> closedCables = new HashSet<>();
 		Set<IEnergyStorage> closedConsumers = new HashSet<>();
@@ -102,8 +103,10 @@ public class EnergyHelper {
 
 			for (IEnergyConnector connectedCable : connectedCables) {
 				if (!closedCables.contains(connectedCable)) {
+
 					closedCables.add(connectedCable);
-					EnergyNode node = new EnergyNode(null, connectedCable);
+					EnergyConnectorNode node = new EnergyConnectorNode(connectedCable);
+
 					parent.addChild(node);
 					queue.offer(node);
 				}
@@ -113,11 +116,33 @@ public class EnergyHelper {
 
 			for (IEnergyStorage connectedConsumer : connectedConsumers) {
 				if (!closedConsumers.contains(connectedConsumer)) {
+
 					closedConsumers.add(connectedConsumer);
-					EnergyNode node = new EnergyNode(connectedConsumer, null);
-					parent.addChild(node);
+					EnergyReceiverNode node = new EnergyReceiverNode(connectedConsumer);
+
+					// Nodes without actual consumption should not be processed
+					if (node.getEnergyConsumption() > 0) {
+						parent.addChild(node);
+						leaves.add(node);
+					}
 				}
 			}
+		}
+
+		return leaves;
+	}
+
+	private static void distributeEnergy(List<EnergyReceiverNode> leaves, int energyToGive) {
+
+		Collections.sort(leaves);
+
+		for (int i = 0; i < leaves.size(); i++) {
+
+			EnergyReceiverNode leave = leaves.get(i);
+			int leaveEnergy = Math.min(leave.getEnergyConsumption(), energyToGive / (leaves.size() - i));
+			leave.setAllowedEnergy(leaveEnergy);
+
+			energyToGive -= leaveEnergy;
 		}
 	}
 }

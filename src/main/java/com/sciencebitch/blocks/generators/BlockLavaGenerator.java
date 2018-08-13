@@ -1,10 +1,10 @@
-package com.sciencebitch.blocks.machines.generators;
+package com.sciencebitch.blocks.generators;
 
 import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.blocks.machines.BlockMachineBase;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;

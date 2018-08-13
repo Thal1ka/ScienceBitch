@@ -2,7 +2,7 @@ package com.sciencebitch.gui;
 
 import com.sciencebitch.containers.ContainerElectricFurnace;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

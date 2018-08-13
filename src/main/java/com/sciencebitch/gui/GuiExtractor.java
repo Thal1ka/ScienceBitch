@@ -3,7 +3,7 @@ package com.sciencebitch.gui;
 import com.sciencebitch.containers.ContainerExtractor;
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.mod.handlers.FluidHandler;
-import com.sciencebitch.tileentities.TileEntityExtractor;
+import com.sciencebitch.tileentities.machines.TileEntityExtractor;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

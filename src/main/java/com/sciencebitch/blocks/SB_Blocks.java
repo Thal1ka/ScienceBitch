@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.blocks.cables.BlockCableBase;
+import com.sciencebitch.blocks.generators.BlockCombustionGenerator;
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
-import com.sciencebitch.blocks.machines.generators.BlockCombustionGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -47,7 +47,8 @@ public class SB_Blocks {
 	public static final Block GENERATOR_COMBUSTION = new BlockCombustionGenerator("combustion_generator", false);
 	public static final Block GENERATOR_COMBUSTION_ACTIVE = new BlockCombustionGenerator("combustion_generator_lit", true).setLightLevel(0.875F);
 
-	public static final Block COPPER_CABLE = new BlockCableBase("copper_cable");
+	// CABLES
+	public static final Block COPPER_CABLE = new BlockCableBase("copper_cable", false);
 
 	// public static final Block ELECTRIC_FURNACE =
 	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();

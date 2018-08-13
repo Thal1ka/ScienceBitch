@@ -5,7 +5,7 @@ import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.gui.SB_GUIs;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;

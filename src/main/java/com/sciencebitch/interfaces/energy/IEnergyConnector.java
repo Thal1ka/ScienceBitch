@@ -20,4 +20,6 @@ public interface IEnergyConnector {
 	 * @return {@code True} if if is the master of the connection
 	 */
 	boolean isMaster(IEnergyStorage storage);
+
+	float getLoss();
 }

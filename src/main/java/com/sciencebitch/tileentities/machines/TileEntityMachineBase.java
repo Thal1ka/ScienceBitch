@@ -1,4 +1,4 @@
-package com.sciencebitch.tileentities;
+package com.sciencebitch.tileentities.machines;
 
 import com.sciencebitch.blocks.machines.BlockMachineBase;
 import com.sciencebitch.util.BlockHelper;

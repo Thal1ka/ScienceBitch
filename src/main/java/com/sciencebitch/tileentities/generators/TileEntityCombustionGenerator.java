@@ -1,6 +1,6 @@
 package com.sciencebitch.tileentities.generators;
 
-import com.sciencebitch.blocks.machines.generators.BlockCombustionGenerator;
+import com.sciencebitch.blocks.generators.BlockCombustionGenerator;
 import com.sciencebitch.util.BlockHelper.BlockSide;
 
 import net.minecraft.item.ItemStack;

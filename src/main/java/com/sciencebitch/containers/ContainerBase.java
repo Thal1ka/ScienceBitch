@@ -1,6 +1,6 @@
 package com.sciencebitch.containers;
 
-import com.sciencebitch.tileentities.TileEntityMachineBase;
+import com.sciencebitch.tileentities.machines.TileEntityMachineBase;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

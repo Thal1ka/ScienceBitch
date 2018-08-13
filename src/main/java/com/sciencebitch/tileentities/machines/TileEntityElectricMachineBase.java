@@ -1,7 +1,7 @@
-package com.sciencebitch.tileentities;
+package com.sciencebitch.tileentities.machines;
 
 import com.sciencebitch.interfaces.energy.IEnergyProvider;
-import com.sciencebitch.util.EnergyHelper;
+import com.sciencebitch.util.energy.EnergyHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +12,7 @@ public abstract class TileEntityElectricMachineBase extends TileEntityMachineBas
 
 	private boolean burningBeforeUpdate;
 
-	private int maxEnergyInput = 20;
+	private int maxEnergyInput = 10;
 	private final int energyCapacity;
 
 	protected int storedEnergy;

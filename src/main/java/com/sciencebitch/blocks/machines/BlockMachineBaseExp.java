@@ -6,7 +6,7 @@ import com.sciencebitch.interfaces.IHasModel;
 import com.sciencebitch.interfaces.ITileEntityCreator;
 import com.sciencebitch.items.SB_Items;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;

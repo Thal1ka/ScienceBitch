@@ -2,7 +2,7 @@ package com.sciencebitch.gui;
 
 import com.sciencebitch.containers.ContainerPulverizer;
 import com.sciencebitch.mod.ScienceBitch;
-import com.sciencebitch.tileentities.TileEntityPulverizer;
+import com.sciencebitch.tileentities.machines.TileEntityPulverizer;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

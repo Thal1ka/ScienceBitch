@@ -1,4 +1,4 @@
-package com.sciencebitch.util;
+package com.sciencebitch.util.energy;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.IEnergyStorage;
