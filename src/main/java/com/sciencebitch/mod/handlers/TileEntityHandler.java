@@ -3,6 +3,7 @@ package com.sciencebitch.mod.handlers;
 import com.sciencebitch.mod.ScienceBitch;
 import com.sciencebitch.tileentities.cables.TileEntityCable;
 import com.sciencebitch.tileentities.generators.TileEntityCombustionGenerator;
+import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
 import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.machines.TileEntityExtractor;
 import com.sciencebitch.tileentities.machines.TileEntityPulverizer;
@@ -21,6 +22,7 @@ public class TileEntityHandler {
 
 		// Generators
 		register(TileEntityCombustionGenerator.class, "combustiongenerator");
+		register(TileEntityLavaGenerator.class, "lavagenerator");
 
 		register(TileEntityCable.class, "cable");
 	}

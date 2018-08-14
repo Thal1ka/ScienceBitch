@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sciencebitch.blocks.cables.BlockCableBase;
 import com.sciencebitch.blocks.generators.BlockCombustionGenerator;
+import com.sciencebitch.blocks.generators.BlockLavaGenerator;
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
@@ -46,6 +47,8 @@ public class SB_Blocks {
 	// GENERATORS
 	public static final Block GENERATOR_COMBUSTION = new BlockCombustionGenerator("combustion_generator", false);
 	public static final Block GENERATOR_COMBUSTION_ACTIVE = new BlockCombustionGenerator("combustion_generator_lit", true).setLightLevel(0.875F);
+	public static final Block GENERATOR_LAVA = new BlockLavaGenerator("lava_generator", false);
+	public static final Block GENERATOR_LAVA_ACTIVE = new BlockLavaGenerator("lava_generator_lit", true).setLightLevel(0.875F);
 
 	// CABLES
 	public static final Block COPPER_CABLE = new BlockCableBase("copper_cable", false);
