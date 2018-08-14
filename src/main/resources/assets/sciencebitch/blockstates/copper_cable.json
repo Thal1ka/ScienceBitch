@@ -3,7 +3,7 @@
     "defaults": {
         "model": "sciencebitch:cable_centre",
         "textures": {
-            "cable" : "sciencebitch:blocks/copper_texture"
+            "cable" : "sciencebitch:blocks/cables/copper_texture"
         },
         "uvlock": false
     },
@@ -14,7 +14,7 @@
         "down": {
             "true": {
                 "submodel": {
-                    "cable_down": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "x": 90 }
+                    "cable_down": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "x": 90 }
                }
             },
             "false": {
@@ -23,7 +23,7 @@
         "east": {
             "true": {
                 "submodel": {
-                    "cable_east": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "y": 90 }
+                    "cable_east": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "y": 90 }
                }
             },
             "false": {
@@ -32,7 +32,7 @@
         "north": {
             "true": {
                 "submodel": {
-                    "cable_north": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "y": 0 }
+                    "cable_north": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "y": 0 }
                }
             },
             "false": {
@@ -41,7 +41,7 @@
         "south": {
             "true": {
                 "submodel": {
-                    "cable_south": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "y": 180 }
+                    "cable_south": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "y": 180 }
                }
             },
             "false": {
@@ -50,7 +50,7 @@
         "up": {
             "true": {
                 "submodel": {
-                    "cable_up": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "x": 270 }
+                    "cable_up": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "x": 270 }
                }
             },
             "false": {
@@ -59,7 +59,7 @@
         "west": {
             "true": {
                 "submodel": {
-                    "cable_west": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/copper_texture", "cablecap" : "sciencebitch:blocks/copper_texture" }, "y": 270 }
+                    "cable_west": { "model": "sciencebitch:cable_ends", "textures" : { "cableend" : "sciencebitch:blocks/cables/copper_texture", "cablecap" : "sciencebitch:blocks/cables/copper_texture" }, "y": 270 }
                }
             },
             "false": {

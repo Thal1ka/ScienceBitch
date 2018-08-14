@@ -40,6 +40,16 @@ public class EnergySourceNode extends EnergyNode {
 	}
 
 	@Override
+	public float handleLoss(float previousLoss) {
+
+		for (EnergyConnectorNode connectorNode : connectorChildren) {
+			connectorNode.handleLoss(previousLoss); // previousLoss should be 0 at this point
+		}
+
+		return 0F;
+	}
+
+	@Override
 	public int submitEnergy() {
 
 		int energySubmitted = 0;

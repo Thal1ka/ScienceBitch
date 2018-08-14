@@ -76,6 +76,7 @@ public class EnergyHelper {
 		int energyToGive = provider.getEnergyStored();
 		energyToGive = provider.extractEnergy(energyToGive, true);
 
+		sourceNode.handleLoss(0F);
 		distributeEnergy(leaves, energyToGive);
 
 		int submittedEnergy = sourceNode.submitEnergy();
@@ -134,6 +135,9 @@ public class EnergyHelper {
 
 	private static void distributeEnergy(List<EnergyReceiverNode> leaves, int energyToGive) {
 
+		// To prevent that a single storage will get energy if the source just has an
+		// 1FE output
+		Collections.shuffle(leaves);
 		Collections.sort(leaves);
 
 		for (int i = 0; i < leaves.size(); i++) {

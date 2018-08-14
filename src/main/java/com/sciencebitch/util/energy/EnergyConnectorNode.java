@@ -1,5 +1,6 @@
 package com.sciencebitch.util.energy;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
@@ -47,6 +48,52 @@ public class EnergyConnectorNode extends EnergyNode {
 	public List<IEnergyStorage> getConnectedConsumers() {
 
 		return connector.getConnectedConsumers();
+	}
+
+	@Override
+	public float handleLoss(float previousLoss) {
+
+		int consumerChildrenAmount = getConsumerChildrenAmount();
+
+		if (consumerChildrenAmount == 0) return previousLoss;
+		previousLoss += connector.getLoss();
+
+		float spareLoss = 0;
+		int amountRemoteConsumers = 0;
+
+		for (EnergyConnectorNode connectorNode : connectorChildren) {
+
+			int remoteConsumers = connectorNode.getConsumerChildrenAmount();
+			amountRemoteConsumers += remoteConsumers;
+			spareLoss += connectorNode.handleLoss(previousLoss * remoteConsumers / consumerChildrenAmount);
+		}
+
+		if (amountRemoteConsumers == 0) {
+
+			previousLoss = spareLoss + previousLoss * consumerChildren.size() / consumerChildrenAmount;
+			if (previousLoss < 1) return previousLoss;
+
+			int prevLoss = (int) previousLoss;
+			int lossPerConsumer = 0;
+			int consumersToGiveLoss = consumerChildrenAmount;
+
+			for (; consumersToGiveLoss > 0; consumersToGiveLoss--) {
+				lossPerConsumer = prevLoss / consumersToGiveLoss;
+				if (lossPerConsumer > 0) {
+					break;
+				}
+			}
+
+			Collections.shuffle(consumerChildren);
+
+			for (EnergyReceiverNode receiverNode : consumerChildren) {
+				receiverNode.handleLoss(lossPerConsumer);
+			}
+
+			return previousLoss - lossPerConsumer * consumersToGiveLoss;
+		}
+
+		return spareLoss;
 	}
 
 	@Override

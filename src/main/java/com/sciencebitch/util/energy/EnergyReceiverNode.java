@@ -11,13 +11,14 @@ public class EnergyReceiverNode extends EnergyNode {
 
 	private final IEnergyStorage consumer;
 	private int allowedEnergy;
+	private int lossToReceiver;
 
 	public EnergyReceiverNode(IEnergyStorage consumer) {
 		this.consumer = consumer;
 	}
 
 	public void setAllowedEnergy(int allowedEnergy) {
-		this.allowedEnergy = allowedEnergy;
+		this.allowedEnergy = Math.max(allowedEnergy - lossToReceiver, 0);
 	}
 
 	public IEnergyStorage getConsumer() {
@@ -31,6 +32,7 @@ public class EnergyReceiverNode extends EnergyNode {
 
 		energyConsumption = consumer.getMaxEnergyStored() - consumer.getEnergyStored();
 		energyConsumption = consumer.receiveEnergy(energyConsumption, true);
+		energyConsumption += lossToReceiver;
 
 		return energyConsumption;
 	}
@@ -46,8 +48,14 @@ public class EnergyReceiverNode extends EnergyNode {
 	}
 
 	@Override
+	public float handleLoss(float previousLoss) {
+		lossToReceiver = (int) previousLoss;
+		return previousLoss - lossToReceiver;
+	}
+
+	@Override
 	public int submitEnergy() {
-		return this.consumer.receiveEnergy(allowedEnergy, false);
+		return this.consumer.receiveEnergy(allowedEnergy, false) + lossToReceiver;
 	}
 
 	@Override
