@@ -37,6 +37,7 @@ public class RecipeManager {
 
 		GameRegistry.addSmelting(SB_Items.IRON_DUST, new ItemStack(Items.IRON_INGOT), 0.7F);
 		GameRegistry.addSmelting(SB_Items.GOLD_DUST, new ItemStack(Items.GOLD_INGOT), 1.0F);
+
 	}
 
 	private static void addPulverizerRecipes() {

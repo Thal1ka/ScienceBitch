@@ -1,59 +1,42 @@
 package com.sciencebitch.util;
 
-import java.util.List;
-
-import com.sciencebitch.interfaces.energy.IEnergyProvider;
-import com.sciencebitch.interfaces.energy.IEnergyReceiver;
+import com.sciencebitch.interfaces.IEnergyProvider;
+import com.sciencebitch.interfaces.IEnergySink;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class EnergyHelper {
 
 	public static final EntityLivingDummy ENTITY_DUMMY = new EntityLivingDummy(null);
 
-	public static int transferEnergy(IEnergyStorage storage, IEnergyReceiver receiver, ItemStack receiverStack) {
+	public static int transferEnergy(IEnergyProvider provider, IEnergySink sink) {
 
-		if (!storage.canExtract()) return 0;
-
-		int transferValue = Math.min(receiver.getCapacityLeft(receiverStack), receiver.getMaxEnergyInput());
-		transferValue = storage.extractEnergy(transferValue, false);
-		receiver.injectEnergy(null, transferValue, receiverStack);
-
-		return transferValue;
+		return transferEnergy(provider, null, sink, null);
 	}
 
-	public static int transferEnergy(IEnergyProvider provider, ItemStack providerStack, IEnergyStorage storage) {
+	public static int transferEnergy(IEnergyProvider provider, ItemStack providerStack, IEnergySink sink) {
 
-		if (!storage.canReceive()) return 0;
-
-		int transferValue = Math.min(provider.getEnergyLeft(providerStack), provider.getMaxEnergyOutput());
-		transferValue = storage.receiveEnergy(transferValue, false);
-		provider.drainEnergy(ENTITY_DUMMY, transferValue, providerStack);
-
-		return transferValue;
+		return transferEnergy(provider, providerStack, sink, null);
 	}
 
-	public static int transferEnergyIntoBlocks(IEnergyStorage provider, List<IEnergyStorage> energyReceivers) {
+	public static int transferEnergy(IEnergyProvider provider, IEnergySink sink, ItemStack sinkStack) {
 
-		int energyToGive = provider.getEnergyStored();
-		energyToGive = Math.min(energyToGive, provider.extractEnergy(energyToGive, true));
-		int energyToGiveCopy = energyToGive;
-
-		for (int i = 0; i < energyReceivers.size(); i++) {
-
-			IEnergyStorage receiver = energyReceivers.get(i);
-
-			int capacity = receiver.getMaxEnergyStored() - receiver.getEnergyStored();
-			int transferAmount = Math.min(energyToGive / energyReceivers.size(), capacity);
-
-			transferAmount = receiver.receiveEnergy(transferAmount, false);
-			energyToGive -= transferAmount;
-		}
-
-		int energyTransfered = energyToGiveCopy - energyToGive;
-		provider.extractEnergy(energyTransfered, false);
-
-		return energyTransfered;
+		return transferEnergy(provider, null, sink, sinkStack);
 	}
+
+	public static int transferEnergy(IEnergyProvider provider, ItemStack providerStack, IEnergySink sink, ItemStack sinkStack) {
+
+		int maxAmountProvider, maxAmountSink;
+
+		maxAmountProvider = Math.min(provider.getMaxEnergyOutput(), provider.getEnergyLeft(providerStack));
+		maxAmountSink = Math.min(sink.getMaxEnergyInput(), sink.getCapacityLeft(sinkStack));
+
+		int transferAmount = Math.min(maxAmountProvider, maxAmountSink);
+
+		provider.drainEnergy(ENTITY_DUMMY, transferAmount, providerStack);
+		sink.injectEnergy(provider, transferAmount, sinkStack);
+
+		return transferAmount;
+	}
+
 }

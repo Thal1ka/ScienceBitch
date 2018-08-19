@@ -1,6 +1,6 @@
 package com.sciencebitch.containers.slots;
 
-import com.sciencebitch.interfaces.energy.IEnergyReceiver;
+import com.sciencebitch.interfaces.IEnergySink;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -15,6 +15,6 @@ public class SlotChargable extends Slot {
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return stack.getItem() instanceof IEnergyReceiver;
+		return stack.getItem() instanceof IEnergySink;
 	}
 }

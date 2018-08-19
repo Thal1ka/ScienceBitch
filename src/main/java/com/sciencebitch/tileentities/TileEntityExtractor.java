@@ -3,7 +3,6 @@ package com.sciencebitch.tileentities;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.mod.handlers.FluidHandler;
 import com.sciencebitch.recipes.RecipeManager;
-import com.sciencebitch.util.BlockHelper.BlockSide;
 import com.sciencebitch.util.NbtHelper;
 
 import net.minecraft.init.Items;
@@ -11,7 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -256,32 +254,5 @@ public class TileEntityExtractor extends TileEntityElectricMachineBase {
 
 	private void writeFluidToNbt(NBTTagCompound nbt) {
 
-	}
-
-	@Override
-	protected int[] getSlotsForSide(BlockSide side) {
-
-		return new int[] { ID_INPUTFIELD, ID_FUELFIELD, ID_OUTPUTFIELD, ID_BOTTLEFIELD };
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-
-		if (index == ID_OUTPUTFIELD) return false;
-		if (index == ID_FUELFIELD) return isItemValidForSlot(index, itemStackIn);
-		if (index == ID_BOTTLEFIELD) return isItemValidForSlot(index, itemStackIn);
-
-		ItemStack stackInSlot = this.inventory.get(index);
-
-		return canAddToSlot(stackInSlot, itemStackIn);
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-
-		if (index == ID_INPUTFIELD || index == ID_BOTTLEFIELD) return false;
-		if (index == ID_FUELFIELD) return isFuelEmpty();
-
-		return true;
 	}
 }
