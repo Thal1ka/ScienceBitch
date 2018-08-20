@@ -1,11 +1,18 @@
 package com.sciencebitch.tileentities;
 
+import com.sciencebitch.blocks.machines.BlockMachineBase;
+import com.sciencebitch.util.BlockHelper;
+import com.sciencebitch.util.BlockHelper.BlockSide;
+
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -14,7 +21,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public abstract class TileEntityMachineBase extends TileEntity implements IInventory {
+public abstract class TileEntityMachineBase extends TileEntity implements ISidedInventory {
 
 	private final String name;
 	protected String customName;
@@ -125,10 +132,31 @@ public abstract class TileEntityMachineBase extends TileEntity implements IInven
 		return writeData(compound);
 	}
 
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		IBlockState blockstate = world.getBlockState(getPos());
+		PropertyDirection facingProperty = ((BlockMachineBase) blockstate.getBlock()).FACING;
+		EnumFacing blockFacing = blockstate.getValue(facingProperty);
+		BlockSide blockSide = BlockHelper.getBlockSide(blockFacing, side);
+
+		return getSlotsForSide(blockSide);
+	}
+
+	protected boolean canAddToSlot(ItemStack slotStack, ItemStack addStack) {
+
+		if (slotStack.isEmpty() || addStack.isEmpty()) return true;
+		if (!slotStack.isItemEqual(addStack) || ItemStack.areItemStackTagsEqual(slotStack, addStack)) return false;
+
+		int count = slotStack.getCount() + addStack.getCount();
+		return count <= Math.min(slotStack.getMaxStackSize(), getInventoryStackLimit());
+	}
+
 	protected abstract void updateState(boolean isWorking, World world, BlockPos pos);
 
 	protected abstract void readData(NBTTagCompound nbt);
 
 	protected abstract NBTTagCompound writeData(NBTTagCompound nbt);
 
+	protected abstract int[] getSlotsForSide(BlockSide side);
 }

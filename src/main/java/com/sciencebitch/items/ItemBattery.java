@@ -1,7 +1,7 @@
 package com.sciencebitch.items;
 
 import com.sciencebitch.creativeTabs.SB_CreativeTabs;
-import com.sciencebitch.interfaces.IEnergyProvider;
+import com.sciencebitch.interfaces.energy.IEnergyProvider;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
 package com.sciencebitch.containers.slots;
 
-import com.sciencebitch.interfaces.IEnergyProvider;
+import com.sciencebitch.interfaces.energy.IEnergyProvider;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
