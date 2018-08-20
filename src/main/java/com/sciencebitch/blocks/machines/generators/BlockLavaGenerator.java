@@ -4,9 +4,13 @@ import java.util.Random;
 
 import com.sciencebitch.blocks.SB_Blocks;
 import com.sciencebitch.blocks.machines.BlockMachineBase;
+<<<<<<< HEAD:src/main/java/com/sciencebitch/blocks/machines/generators/BlockLavaGenerator.java
 import com.sciencebitch.gui.SB_GUIs;
 import com.sciencebitch.tileentities.TileEntityElectricFurnace;
 import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
+=======
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
+>>>>>>> parent of b76bbfe... ADD: Lava generator:src/main/java/com/sciencebitch/blocks/generators/BlockLavaGenerator.java
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -23,8 +27,12 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 	private static boolean keepInventory;
 
 	public BlockLavaGenerator(String name, boolean isBurning) {
+<<<<<<< HEAD:src/main/java/com/sciencebitch/blocks/machines/generators/BlockLavaGenerator.java
 
 		super(name, isBurning, SB_GUIs.ID_LAVA_GENERATOR);
+=======
+		super(name, isBurning, 0);
+>>>>>>> parent of b76bbfe... ADD: Lava generator:src/main/java/com/sciencebitch/blocks/generators/BlockLavaGenerator.java
 	}
 
 	@Override
@@ -44,9 +52,9 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, SB_Blocks.GENERATOR_LAVA_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE_ACTIVE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, SB_Blocks.GENERATOR_LAVA.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
+			worldIn.setBlockState(pos, SB_Blocks.ELECTRIC_FURNACE.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
 		}
 
 		keepInventory = false;
@@ -68,8 +76,13 @@ public class BlockLavaGenerator extends BlockMachineBase implements ITileEntityP
 		if (!keepInventory) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
+<<<<<<< HEAD:src/main/java/com/sciencebitch/blocks/machines/generators/BlockLavaGenerator.java
 			if (tileentity instanceof TileEntityLavaGenerator) {
 				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+=======
+			if (tileentity instanceof TileEntityElectricFurnace) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityElectricFurnace) tileentity);
+>>>>>>> parent of b76bbfe... ADD: Lava generator:src/main/java/com/sciencebitch/blocks/generators/BlockLavaGenerator.java
 				worldIn.updateComparatorOutputLevel(pos, this);
 			}
 		}
