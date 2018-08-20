@@ -3,11 +3,6 @@ package com.sciencebitch.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
-import com.sciencebitch.blocks.cables.BlockCableBase;
-import com.sciencebitch.blocks.generators.BlockCombustionGenerator;
->>>>>>> parent of b76bbfe... ADD: Lava generator
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
@@ -51,6 +46,8 @@ public class SB_Blocks {
 	// GENERATORS
 	public static final Block GENERATOR_COMBUSTION = new BlockCombustionGenerator("combustion_generator", false);
 	public static final Block GENERATOR_COMBUSTION_ACTIVE = new BlockCombustionGenerator("combustion_generator_lit", true).setLightLevel(0.875F);
+	public static final Block GENERATOR_LAVA = new BlockLavaGenerator("lava_generator", false);
+	public static final Block GENERATOR_LAVA_ACTIVE = new BlockLavaGenerator("lava_generator_lit", true).setLightLevel(0.875F);
 
 	// public static final Block ELECTRIC_FURNACE =
 	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
