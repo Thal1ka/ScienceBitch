@@ -13,7 +13,7 @@ import com.sciencebitch.interfaces.IContainerProvider;
 import com.sciencebitch.interfaces.IGuiProvider;
 import com.sciencebitch.interfaces.ITileEntityCreator;
 import com.sciencebitch.mod.handlers.RegistryHandler;
-import com.sciencebitch.tileentities.TileEntityElectricFurnace;
+import com.sciencebitch.tileentities.machines.TileEntityElectricFurnace;
 
 import net.minecraft.block.Block;
 

@@ -2,7 +2,7 @@ package com.sciencebitch.containers;
 
 import com.sciencebitch.containers.slots.SlotElectricFuel;
 import com.sciencebitch.recipes.RecipeManager;
-import com.sciencebitch.tileentities.TileEntityPulverizer;
+import com.sciencebitch.tileentities.machines.TileEntityPulverizer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

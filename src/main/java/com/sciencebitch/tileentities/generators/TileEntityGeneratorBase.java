@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sciencebitch.interfaces.energy.IEnergyReceiver;
-import com.sciencebitch.tileentities.TileEntityMachineBase;
-import com.sciencebitch.util.EnergyHelper;
+import com.sciencebitch.tileentities.machines.TileEntityMachineBase;
+import com.sciencebitch.util.energy.EnergyHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

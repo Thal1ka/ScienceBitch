@@ -6,8 +6,12 @@ import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class GuiLavaGenerator extends GuiContainer {
 
@@ -39,26 +43,37 @@ public class GuiLavaGenerator extends GuiContainer {
 		this.mc.getTextureManager().bindTexture(TEXTURES);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		drawEnergyBar();
-
 		if (TileEntityLavaGenerator.isWorking(tileEntity)) {
 			drawBurnBar();
 		}
+
+		drawEnergyBar();
+		drawFluid();
 	}
 
 	private void drawEnergyBar() {
 
 		int energyScale = getEnergyStoredScaled(54);
 		int mirrorEnergy = 54 - energyScale;
-		this.drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorEnergy, 176, mirrorEnergy + 31, 21, energyScale);
+		this.drawTexturedModalRect(this.guiLeft + 145, this.guiTop + 16 + mirrorEnergy, 176, mirrorEnergy + 31, 21, energyScale);
+	}
+
+	private void drawFluid() {
+
+		Fluid fluid = FluidRegistry.LAVA;
+
+		TextureAtlasSprite fluidTexture = mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+		mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+		int fluidScale = this.getFluidScaled(54);
+		int mirrorFluid = 54 - fluidScale;
+		drawTexturedModalRect(this.guiLeft + 13, this.guiTop + 16 + mirrorFluid, fluidTexture, 21, fluidScale);
 	}
 
 	private void drawBurnBar() {
 
-		int burnScale = getBurnScaled(13);
-		int mirrorBurn = 13 - burnScale;
-
-		this.drawTexturedModalRect(this.guiLeft + 56, this.guiTop + 37 + mirrorBurn, 176, mirrorBurn, 14, burnScale);
+		int burnScale = 13;
+		this.drawTexturedModalRect(this.guiLeft + 57, this.guiTop + 37, 176, 0, 14, burnScale);
 	}
 
 	@Override
@@ -73,16 +88,17 @@ public class GuiLavaGenerator extends GuiContainer {
 	private int getEnergyStoredScaled(int pixels) {
 
 		int totalEnergy = this.tileEntity.ENERGY_CAPACITY;
-		int currentEnergy = this.tileEntity.getField(2);
+		int currentEnergy = this.tileEntity.getField(0);
 
 		return (int) (currentEnergy * pixels / (double) totalEnergy + 0.5);
 	}
 
-	private int getBurnScaled(int pixels) {
+	private int getFluidScaled(int pixels) {
 
-		int currentBurnTime = this.tileEntity.getField(0);
-		int totalBurnTime = this.tileEntity.getField(1);
+		int storedFluid = this.tileEntity.getField(1);
+		int fluidCapacity = this.tileEntity.FLUID_CAPACITY;
 
-		return (int) ((totalBurnTime - currentBurnTime) * pixels / (double) totalBurnTime + 0.5);
+		if (storedFluid == 0 || fluidCapacity == 0) return 0;
+		return (int) (storedFluid * pixels / (double) fluidCapacity + 0.5);
 	}
 }

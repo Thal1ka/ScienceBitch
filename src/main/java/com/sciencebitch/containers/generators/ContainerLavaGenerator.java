@@ -2,8 +2,7 @@ package com.sciencebitch.containers.generators;
 
 import com.sciencebitch.containers.ContainerBase;
 import com.sciencebitch.containers.slots.SlotChargable;
-import com.sciencebitch.containers.slots.SlotPassive;
-import com.sciencebitch.interfaces.IEnergySink;
+import com.sciencebitch.interfaces.energy.IEnergyReceiver;
 import com.sciencebitch.tileentities.generators.TileEntityLavaGenerator;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ public class ContainerLavaGenerator extends ContainerBase {
 		super(playerInventory, tileEntity);
 
 		this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
-		this.addSlotToContainer(new SlotPassive(tileEntity, 1, 56, 53));
+		this.addSlotToContainer(new Slot(tileEntity, 1, 56, 53));
 		this.addSlotToContainer(new SlotChargable(tileEntity, 2, 116, 35));
 
 		// Playerinventory
@@ -78,6 +77,6 @@ public class ContainerLavaGenerator extends ContainerBase {
 	}
 
 	private boolean isItemChargable(ItemStack stack) {
-		return stack.getItem() instanceof IEnergySink;
+		return stack.getItem() instanceof IEnergyReceiver;
 	}
 }
