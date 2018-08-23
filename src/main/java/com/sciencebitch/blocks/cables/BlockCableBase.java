@@ -1,6 +1,7 @@
 package com.sciencebitch.blocks.cables;
 
 import com.sciencebitch.blocks.BlockBase;
+import com.sciencebitch.blocks.transformers.Voltage;
 import com.sciencebitch.creativeTabs.SB_CreativeTabs;
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.tileentities.cables.TileEntityCable;
@@ -28,11 +29,13 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 	public static final IProperty<Boolean> EAST = PropertyBool.create("east");
 
 	private final boolean covered;
+	private final Voltage voltage;
 
-	public BlockCableBase(String name, boolean covered) {
+	public BlockCableBase(String name, boolean covered, Voltage voltage) {
 
 		super(name, Material.CLOTH);
 		this.covered = covered;
+		this.voltage = voltage;
 
 		setCreativeTab(SB_CreativeTabs.TAB_ELECTRIC_ITEMS);
 	}
@@ -59,7 +62,11 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityCable();
+
+		TileEntityCable tileEntity = new TileEntityCable();
+		tileEntity.setVoltage(voltage);
+
+		return tileEntity;
 	}
 
 	@Override
@@ -93,10 +100,16 @@ public class BlockCableBase extends BlockBase implements ITileEntityProvider {
 		BlockPos neighborPos = pos.offset(direction);
 		TileEntity neighbor = world.getTileEntity(neighborPos);
 
-		boolean canConnect = (neighbor instanceof IEnergyConnector || neighbor instanceof IEnergyStorage);
+		boolean canConnect = canConnectTo(neighbor);
 
 		IProperty<Boolean> dirProperty = getPropertyFromDirection(direction);
 		return state.withProperty(dirProperty, canConnect);
+	}
+
+	private boolean canConnectTo(TileEntity connectTo) {
+
+		if (connectTo instanceof IEnergyConnector) return ((IEnergyConnector) connectTo).getVoltage() == this.voltage;
+		return (connectTo instanceof IEnergyStorage);
 	}
 
 	@Override

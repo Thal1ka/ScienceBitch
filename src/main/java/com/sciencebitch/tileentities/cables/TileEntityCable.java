@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sciencebitch.blocks.transformers.Voltage;
 import com.sciencebitch.interfaces.energy.IEnergyConnector;
 import com.sciencebitch.util.energy.EnergyHelper;
 import com.sciencebitch.util.energy.EnergyStoragePosition;
@@ -32,6 +33,7 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	private final int maxTransferRate = 40;
 
 	private int connectorCurrent;
+	private Voltage voltage;
 
 	private final Set<IEnergyConnector> connectedCables = new HashSet<>();
 	private final Set<EnergyStoragePosition> connectedStorages = new HashSet<>();
@@ -209,5 +211,14 @@ public class TileEntityCable extends TileEntity implements ITickable, IEnergyCon
 	@Override
 	public float getLoss() {
 		return 0.1F;
+	}
+
+	@Override
+	public Voltage getVoltage() {
+		return voltage;
+	}
+
+	public void setVoltage(Voltage voltage) {
+		this.voltage = voltage;
 	}
 }
