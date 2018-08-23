@@ -76,7 +76,7 @@ public class EnergyHelper {
 		int energyToGive = provider.getEnergyStored();
 		energyToGive = provider.extractEnergy(energyToGive, true);
 
-		sourceNode.handleLoss(0F);
+		// sourceNode.handleLoss(0F);
 		distributeEnergy(leaves, energyToGive);
 
 		int submittedEnergy = sourceNode.submitEnergy();
