@@ -9,6 +9,7 @@ import com.sciencebitch.blocks.generators.BlockLavaGenerator;
 import com.sciencebitch.blocks.machines.BlockElectricFurnace;
 import com.sciencebitch.blocks.machines.BlockExtractor;
 import com.sciencebitch.blocks.machines.BlockPulverizer;
+import com.sciencebitch.blocks.transformers.Voltage;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -51,7 +52,8 @@ public class SB_Blocks {
 	public static final Block GENERATOR_LAVA_ACTIVE = new BlockLavaGenerator("lava_generator_lit", true).setLightLevel(0.875F);
 
 	// CABLES
-	public static final Block COPPER_CABLE = new BlockCableBase("copper_cable", false);
+	public static final Block TIN_CABLE = new BlockCableBase("tin_cable", false, Voltage.LOW_VOLTAGE);
+	public static final Block COPPER_CABLE = new BlockCableBase("copper_cable", false, Voltage.LOW_VOLTAGE);
 
 	// public static final Block ELECTRIC_FURNACE =
 	// MachineCreator.instance().getMachine(MachineCreator.ELECTRIC_FURNACE).getIdleBlock();
