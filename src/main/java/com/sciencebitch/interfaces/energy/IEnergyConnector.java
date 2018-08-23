@@ -2,6 +2,8 @@ package com.sciencebitch.interfaces.energy;
 
 import java.util.List;
 
+import com.sciencebitch.blocks.transformers.Voltage;
+
 import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IEnergyConnector {
@@ -22,4 +24,6 @@ public interface IEnergyConnector {
 	boolean isMaster(IEnergyStorage storage);
 
 	float getLoss();
+
+	Voltage getVoltage();
 }
